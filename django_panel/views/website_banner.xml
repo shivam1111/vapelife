@@ -1,0 +1,56 @@
+<openerp>
+	<data>
+		<record id = "website_banner_form" model= "ir.ui.view">
+			<field name="name">website.banner.form.view</field>
+			<field name="model">website.banner</field>
+			<field name="arch" type="xml">
+				<form string="Website Banner">
+					<sheet>
+						<group>
+							<group>
+								<field name="file_name"/>
+							</group>
+							<group>
+								<field name = "sequence" />							
+								<!-- <field name = "url" widget="url" /> -->
+							</group>
+						</group>
+						<notebook>
+							<page string = "Attach Banner">
+								<group>
+									<field name = "datas" filename="file_name" widget="image" nolabel="1" readonly="0"/>
+								</group>
+							</page>
+						</notebook>
+					</sheet>				
+				</form> 
+			</field>
+		</record> 	
+			
+		<record id = "website_banner_trees" model= "ir.ui.view">
+			<field name="name">website.banner.tree.view</field>
+			<field name="model">website.banner</field>
+			<field name="arch" type="xml">
+				<tree string="Website Banners" default_order="sequence" >
+					 <field name = "sequence" widget="handle" />
+					 <field name="file_name"  />
+				</tree>
+			</field>
+		</record> 	
+		
+		<record model="ir.actions.act_window" id="action_website_banner">
+			<field name="name">Website Banners</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">website.banner</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+	
+		<menuitem  
+			id="website_banner_link"
+			parent="django_panel.django_main_menu_website_elements_view"
+			groups="base.group_user"
+			action="action_website_banner"
+			/>
+	</data>
+</openerp>

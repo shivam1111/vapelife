@@ -1,0 +1,40 @@
+<openerp>
+	<data>
+		<record id='assgin_sales_person_view' model='ir.ui.view'>
+			<field name='name'>assign sales person</field>
+			<field name='model'>assign.sales.person</field>
+			<field name='arch' type='xml'>
+				<form string = "Select Sales Person">
+					<group>
+						<field name ="user_id"/>
+					</group>
+				<footer>
+					<button name = "select_sales_person" string = "Assign" type = "object" class = "oe_highlight" />
+					or
+					<button string = "Cancel" class = "oe_link" special = "cancel" />
+				</footer>					
+				</form>
+			</field>
+		</record>
+	
+		<record id="action_sale_person_customers" model="ir.actions.act_window">
+            <field name="name">Assign Sales Person</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">assign.sales.person</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="assgin_sales_person_view"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+
+        <record model="ir.values" id="assign_sales_person">
+            <field name="model_id" ref="base.model_res_partner" />
+            <field name="name">assign sales person</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_sale_person_customers'))" />
+            <field name="key">action</field>
+            <field name="model">res.partner</field>
+        </record>
+	</data>
+</openerp>

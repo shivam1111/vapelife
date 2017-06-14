@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="pay_payment_plan_form">
+            <field name="name">pay.payment.plan</field>
+            <field name="model">pay.payment.plan</field>
+            <field name="arch" type="xml">
+                <form string="Pay Payment Plan">
+					<group>
+						<div>
+						Amount to be adjusted is <field name = "amount" nolabel = "1" readonly = "1"/>
+						</div>
+						<group>
+							<field name = "method" readonly = "1"/>
+						</group>
+						<field name = "invoice_id" nolabel = '1' colspan = "4">
+							<tree string = " Payment Plan Line" editable = "bottom">
+								<field name = "invoice_id" readonly = "1"/>
+								<field name = "balance"/>								
+								<field name = "amount" attrs = "{'readonly':[('state','=','paid')]}"/>
+								<field name = "state" readonly = "1"/>
+								<button name = "pay_payment" string = "Pay" type = "object" attrs = "{'invisible':[('state','=','paid')]}"/>
+							</tree>
+						</field>
+					</group>
+                    <footer>
+                        <button name="pay_payment" string="Done" type="object" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+	</data>
+</openerp>

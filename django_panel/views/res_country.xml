@@ -1,0 +1,14 @@
+<openerp>
+	<data>
+		<record id = "res_country_shipping_allowed" model= "ir.ui.view">
+			<field name="name">res.country</field>
+			<field name="model">res.country</field>
+			<field name="inherit_id" ref="base.view_country_form"/>
+			<field name="arch" type="xml">
+				<xpath expr = "/form/group/group/field[@name='code']" position="after">
+					<field name = "is_shipping_allowed" />
+				</xpath>
+			</field>
+		</record>		
+	</data>
+</openerp>

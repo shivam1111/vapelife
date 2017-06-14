@@ -1,0 +1,50 @@
+<openerp>
+	<data>
+		<record id = "hr_employee_django_website" model= "ir.ui.view">
+			<field name="name">hr.employee.form</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form"/>
+			<field name="arch" type="xml">
+				<xpath expr = "/form/sheet/notebook/page[@string='Public Information']/group/group[@string='Position']" position="inside">
+					<field name = "publish" />
+				</xpath>
+			</field>
+		</record>
+
+		<record id = "hr_employee_website_tree" model= "ir.ui.view">
+			<field name="name">hr.employee.tree</field>
+			<field name="model">hr.employee</field>
+			<field name="priority" eval="1000"/>
+			<field name="arch" type="xml" >
+				<tree string = "Employees" editable="top">
+					<field name = "sequence" widget="handle" />
+					<field name = "name" string = "Name" />
+					<field name = "publish" />
+				</tree>
+			</field>
+		</record>
+			
+		<record model="ir.actions.act_window" id="hr_employee_action_website">
+			<field name="name">Team</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+ 		<record id="hr_employee_website_view_tree_website" model="ir.actions.act_window.view">
+		    <field eval="1" name="sequence"/>
+		    <field name="view_mode">tree</field>
+		    <field name="view_id" ref="hr_employee_website_tree"/>
+		    <field name="act_window_id" ref="hr_employee_action_website"/>
+		</record>		
+		
+		<menuitem  
+			id="website_hr_employee_link"
+			parent="django_panel.django_main_menu_website_elements_view"
+			groups="base.group_user"
+			action="hr_employee_action_website"
+			/>				
+		
+	</data>
+</openerp>

@@ -1,0 +1,1342 @@
+(RequestedShipment){
+   ShipTimestamp = None
+   DropoffType = 
+      (DropoffType){
+         value = None
+      }
+   ServiceType = 
+      (ServiceType){
+         value = None
+      }
+   PackagingType = 
+      (PackagingType){
+         value = None
+      }
+   VariationOptions[] = <empty>
+   TotalWeight = 
+      (Weight){
+         Units = 
+            (WeightUnits){
+               value = None
+            }
+         Value = None
+      }
+   TotalInsuredValue = 
+      (Money){
+         Currency = None
+         Amount = None
+      }
+   PreferredCurrency = None
+   Shipper = 
+      (Party){
+         AccountNumber = None
+         Tins[] = <empty>
+         Contact = 
+            (Contact){
+               ContactId = None
+               PersonName = None
+               Title = None
+               CompanyName = None
+               PhoneNumber = None
+               PhoneExtension = None
+               TollFreePhoneNumber = None
+               PagerNumber = None
+               FaxNumber = None
+               EMailAddress = None
+            }
+         Address = 
+            (Address){
+               StreetLines[] = <empty>
+               City = None
+               StateOrProvinceCode = None
+               PostalCode = None
+               UrbanizationCode = None
+               CountryCode = None
+               CountryName = None
+               Residential = None
+            }
+      }
+   Recipient = 
+      (Party){
+         AccountNumber = None
+         Tins[] = <empty>
+         Contact = 
+            (Contact){
+               ContactId = None
+               PersonName = None
+               Title = None
+               CompanyName = None
+               PhoneNumber = None
+               PhoneExtension = None
+               TollFreePhoneNumber = None
+               PagerNumber = None
+               FaxNumber = None
+               EMailAddress = None
+            }
+         Address = 
+            (Address){
+               StreetLines[] = <empty>
+               City = None
+               StateOrProvinceCode = None
+               PostalCode = None
+               UrbanizationCode = None
+               CountryCode = None
+               CountryName = None
+               Residential = None
+            }
+      }
+   RecipientLocationNumber = None
+   Origin = 
+      (ContactAndAddress){
+         Contact = 
+            (Contact){
+               ContactId = None
+               PersonName = None
+               Title = None
+               CompanyName = None
+               PhoneNumber = None
+               PhoneExtension = None
+               TollFreePhoneNumber = None
+               PagerNumber = None
+               FaxNumber = None
+               EMailAddress = None
+            }
+         Address = 
+            (Address){
+               StreetLines[] = <empty>
+               City = None
+               StateOrProvinceCode = None
+               PostalCode = None
+               UrbanizationCode = None
+               CountryCode = None
+               CountryName = None
+               Residential = None
+            }
+      }
+   SoldTo = 
+      (Party){
+         AccountNumber = None
+         Tins[] = <empty>
+         Contact = 
+            (Contact){
+               ContactId = None
+               PersonName = None
+               Title = None
+               CompanyName = None
+               PhoneNumber = None
+               PhoneExtension = None
+               TollFreePhoneNumber = None
+               PagerNumber = None
+               FaxNumber = None
+               EMailAddress = None
+            }
+         Address = 
+            (Address){
+               StreetLines[] = <empty>
+               City = None
+               StateOrProvinceCode = None
+               PostalCode = None
+               UrbanizationCode = None
+               CountryCode = None
+               CountryName = None
+               Residential = None
+            }
+      }
+   ShippingChargesPayment = 
+      (Payment){
+         PaymentType = 
+            (PaymentType){
+               value = None
+            }
+         Payor = 
+            (Payor){
+               ResponsibleParty = 
+                  (Party){
+                     AccountNumber = None
+                     Tins[] = <empty>
+                     Contact = 
+                        (Contact){
+                           ContactId = None
+                           PersonName = None
+                           Title = None
+                           CompanyName = None
+                           PhoneNumber = None
+                           PhoneExtension = None
+                           TollFreePhoneNumber = None
+                           PagerNumber = None
+                           FaxNumber = None
+                           EMailAddress = None
+                        }
+                     Address = 
+                        (Address){
+                           StreetLines[] = <empty>
+                           City = None
+                           StateOrProvinceCode = None
+                           PostalCode = None
+                           UrbanizationCode = None
+                           CountryCode = None
+                           CountryName = None
+                           Residential = None
+                        }
+                  }
+            }
+      }
+   SpecialServicesRequested = 
+      (ShipmentSpecialServicesRequested){
+         SpecialServiceTypes[] = <empty>
+         CodDetail = 
+            (CodDetail){
+               CodCollectionAmount = 
+                  (Money){
+                     Currency = None
+                     Amount = None
+                  }
+               AddTransportationChargesDetail = 
+                  (CodAddTransportationChargesDetail){
+                     RateTypeBasis = 
+                        (RateTypeBasisType){
+                           value = None
+                        }
+                     ChargeBasis = 
+                        (CodAddTransportationChargeBasisType){
+                           value = None
+                        }
+                     ChargeBasisLevel = 
+                        (ChargeBasisLevelType){
+                           value = None
+                        }
+                  }
+               CollectionType = 
+                  (CodCollectionType){
+                     value = None
+                  }
+               CodRecipient = 
+                  (Party){
+                     AccountNumber = None
+                     Tins[] = <empty>
+                     Contact = 
+                        (Contact){
+                           ContactId = None
+                           PersonName = None
+                           Title = None
+                           CompanyName = None
+                           PhoneNumber = None
+                           PhoneExtension = None
+                           TollFreePhoneNumber = None
+                           PagerNumber = None
+                           FaxNumber = None
+                           EMailAddress = None
+                        }
+                     Address = 
+                        (Address){
+                           StreetLines[] = <empty>
+                           City = None
+                           StateOrProvinceCode = None
+                           PostalCode = None
+                           UrbanizationCode = None
+                           CountryCode = None
+                           CountryName = None
+                           Residential = None
+                        }
+                  }
+               FinancialInstitutionContactAndAddress = 
+                  (ContactAndAddress){
+                     Contact = 
+                        (Contact){
+                           ContactId = None
+                           PersonName = None
+                           Title = None
+                           CompanyName = None
+                           PhoneNumber = None
+                           PhoneExtension = None
+                           TollFreePhoneNumber = None
+                           PagerNumber = None
+                           FaxNumber = None
+                           EMailAddress = None
+                        }
+                     Address = 
+                        (Address){
+                           StreetLines[] = <empty>
+                           City = None
+                           StateOrProvinceCode = None
+                           PostalCode = None
+                           UrbanizationCode = None
+                           CountryCode = None
+                           CountryName = None
+                           Residential = None
+                        }
+                  }
+               RemitToName = None
+               ReferenceIndicator = 
+                  (CodReturnReferenceIndicatorType){
+                     value = None
+                  }
+               ReturnTrackingId = 
+                  (TrackingId){
+                     TrackingIdType = 
+                        (TrackingIdType){
+                           value = None
+                        }
+                     FormId = None
+                     TrackingNumber = None
+                  }
+            }
+         DeliveryOnInvoiceAcceptanceDetail = 
+            (DeliveryOnInvoiceAcceptanceDetail){
+               Recipient = 
+                  (Party){
+                     AccountNumber = None
+                     Tins[] = <empty>
+                     Contact = 
+                        (Contact){
+                           ContactId = None
+                           PersonName = None
+                           Title = None
+                           CompanyName = None
+                           PhoneNumber = None
+                           PhoneExtension = None
+                           TollFreePhoneNumber = None
+                           PagerNumber = None
+                           FaxNumber = None
+                           EMailAddress = None
+                        }
+                     Address = 
+                        (Address){
+                           StreetLines[] = <empty>
+                           City = None
+                           StateOrProvinceCode = None
+                           PostalCode = None
+                           UrbanizationCode = None
+                           CountryCode = None
+                           CountryName = None
+                           Residential = None
+                        }
+                  }
+               TrackingId = 
+                  (TrackingId){
+                     TrackingIdType = 
+                        (TrackingIdType){
+                           value = None
+                        }
+                     FormId = None
+                     TrackingNumber = None
+                  }
+            }
+         HoldAtLocationDetail = 
+            (HoldAtLocationDetail){
+               PhoneNumber = None
+               LocationContactAndAddress = 
+                  (ContactAndAddress){
+                     Contact = 
+                        (Contact){
+                           ContactId = None
+                           PersonName = None
+                           Title = None
+                           CompanyName = None
+                           PhoneNumber = None
+                           PhoneExtension = None
+                           TollFreePhoneNumber = None
+                           PagerNumber = None
+                           FaxNumber = None
+                           EMailAddress = None
+                        }
+                     Address = 
+                        (Address){
+                           StreetLines[] = <empty>
+                           City = None
+                           StateOrProvinceCode = None
+                           PostalCode = None
+                           UrbanizationCode = None
+                           CountryCode = None
+                           CountryName = None
+                           Residential = None
+                        }
+                  }
+               LocationType = 
+                  (FedExLocationType){
+                     value = None
+                  }
+               LocationId = None
+               LocationNumber = None
+            }
+         EMailNotificationDetail = 
+            (EMailNotificationDetail){
+               PersonalMessage = None
+               Recipients[] = <empty>
+            }
+         ReturnShipmentDetail = 
+            (ReturnShipmentDetail){
+               ReturnType = 
+                  (ReturnType){
+                     value = None
+                  }
+               Rma = 
+                  (Rma){
+                     Reason = None
+                  }
+               ReturnEMailDetail = 
+                  (ReturnEMailDetail){
+                     MerchantPhoneNumber = None
+                     AllowedSpecialServices[] = <empty>
+                  }
+               ReturnAssociation = 
+                  (ReturnAssociationDetail){
+                     TrackingNumber = None
+                     ShipDate = None
+                  }
+            }
+         PendingShipmentDetail = 
+            (PendingShipmentDetail){
+               Type = 
+                  (PendingShipmentType){
+                     value = None
+                  }
+               ExpirationDate = None
+               EmailLabelDetail = 
+                  (EMailLabelDetail){
+                     Message = None
+                     Recipients[] = <empty>
+                  }
+               ProcessingOptions = 
+                  (PendingShipmentProcessingOptionsRequested){
+                     Options[] = <empty>
+                  }
+               RecommendedDocumentSpecification = 
+                  (RecommendedDocumentSpecification){
+                     Types[] = <empty>
+                  }
+            }
+         InternationalControlledExportDetail = 
+            (InternationalControlledExportDetail){
+               Type = 
+                  (InternationalControlledExportType){
+                     value = None
+                  }
+               ForeignTradeZoneCode = None
+               EntryNumber = None
+               LicenseOrPermitNumber = None
+               LicenseOrPermitExpirationDate = None
+            }
+         InternationalTrafficInArmsRegulationsDetail = 
+            (InternationalTrafficInArmsRegulationsDetail){
+               LicenseOrExemptionNumber = None
+            }
+         ShipmentDryIceDetail = 
+            (ShipmentDryIceDetail){
+               PackageCount = None
+               TotalWeight = 
+                  (Weight){
+                     Units = 
+                        (WeightUnits){
+                           value = None
+                        }
+                     Value = None
+                  }
+            }
+         HomeDeliveryPremiumDetail = 
+            (HomeDeliveryPremiumDetail){
+               HomeDeliveryPremiumType = 
+                  (HomeDeliveryPremiumType){
+                     value = None
+                  }
+               Date = None
+               PhoneNumber = None
+            }
+         FlatbedTrailerDetail = 
+            (FlatbedTrailerDetail){
+               Options[] = <empty>
+            }
+         FreightGuaranteeDetail = 
+            (FreightGuaranteeDetail){
+               Type = 
+                  (FreightGuaranteeType){
+                     value = None
+                  }
+               Date = None
+            }
+         EtdDetail = 
+            (EtdDetail){
+               RequestedDocumentCopies[] = <empty>
+               DocumentReferences[] = <empty>
+            }
+         CustomDeliveryWindowDetail = 
+            (CustomDeliveryWindowDetail){
+               Type = 
+                  (CustomDeliveryWindowType){
+                     value = None
+                  }
+               RequestTime = None
+               RequestRange = 
+                  (DateRange){
+                     Begins = None
+                     Ends = None
+                  }
+               RequestDate = None
+            }
+      }
+   ExpressFreightDetail = 
+      (ExpressFreightDetail){
+         PackingListEnclosed = None
+         ShippersLoadAndCount = None
+         BookingConfirmationNumber = None
+         ReferenceLabelRequested = None
+         BeforeDeliveryContact = 
+            (ExpressFreightDetailContact){
+               Name = None
+               Phone = None
+            }
+         UndeliverableContact = 
+            (ExpressFreightDetailContact){
+               Name = None
+               Phone = None
+            }
+      }
+   FreightShipmentDetail = 
+      (FreightShipmentDetail){
+         FedExFreightAccountNumber = None
+         FedExFreightBillingContactAndAddress = 
+            (ContactAndAddress){
+               Contact = 
+                  (Contact){
+                     ContactId = None
+                     PersonName = None
+                     Title = None
+                     CompanyName = None
+                     PhoneNumber = None
+                     PhoneExtension = None
+                     TollFreePhoneNumber = None
+                     PagerNumber = None
+                     FaxNumber = None
+                     EMailAddress = None
+                  }
+               Address = 
+                  (Address){
+                     StreetLines[] = <empty>
+                     City = None
+                     StateOrProvinceCode = None
+                     PostalCode = None
+                     UrbanizationCode = None
+                     CountryCode = None
+                     CountryName = None
+                     Residential = None
+                  }
+            }
+         AlternateBilling = 
+            (Party){
+               AccountNumber = None
+               Tins[] = <empty>
+               Contact = 
+                  (Contact){
+                     ContactId = None
+                     PersonName = None
+                     Title = None
+                     CompanyName = None
+                     PhoneNumber = None
+                     PhoneExtension = None
+                     TollFreePhoneNumber = None
+                     PagerNumber = None
+                     FaxNumber = None
+                     EMailAddress = None
+                  }
+               Address = 
+                  (Address){
+                     StreetLines[] = <empty>
+                     City = None
+                     StateOrProvinceCode = None
+                     PostalCode = None
+                     UrbanizationCode = None
+                     CountryCode = None
+                     CountryName = None
+                     Residential = None
+                  }
+            }
+         Role = 
+            (FreightShipmentRoleType){
+               value = None
+            }
+         CollectTermsType = 
+            (FreightCollectTermsType){
+               value = None
+            }
+         DeclaredValuePerUnit = 
+            (Money){
+               Currency = None
+               Amount = None
+            }
+         DeclaredValueUnits = None
+         LiabilityCoverageDetail = 
+            (LiabilityCoverageDetail){
+               CoverageType = 
+                  (LiabilityCoverageType){
+                     value = None
+                  }
+               CoverageAmount = 
+                  (Money){
+                     Currency = None
+                     Amount = None
+                  }
+            }
+         Coupons[] = <empty>
+         TotalHandlingUnits = None
+         ClientDiscountPercent = None
+         PalletWeight = 
+            (Weight){
+               Units = 
+                  (WeightUnits){
+                     value = None
+                  }
+               Value = None
+            }
+         ShipmentDimensions = 
+            (Dimensions){
+               Length = None
+               Width = None
+               Height = None
+               Units = 
+                  (LinearUnits){
+                     value = None
+                  }
+            }
+         Comment = None
+         SpecialServicePayments[] = <empty>
+         HazardousMaterialsOfferor = None
+         LineItems[] = <empty>
+      }
+   DeliveryInstructions = None
+   VariableHandlingChargeDetail = 
+      (VariableHandlingChargeDetail){
+         FixedValue = 
+            (Money){
+               Currency = None
+               Amount = None
+            }
+         PercentValue = None
+         RateElementBasis = 
+            (RateElementBasisType){
+               value = None
+            }
+         RateTypeBasis = 
+            (RateTypeBasisType){
+               value = None
+            }
+      }
+   CustomsClearanceDetail = 
+      (CustomsClearanceDetail){
+         Brokers[] = <empty>
+         ClearanceBrokerage = 
+            (ClearanceBrokerageType){
+               value = None
+            }
+         CustomsOptions = 
+            (CustomsOptionDetail){
+               Type = 
+                  (CustomsOptionType){
+                     value = None
+                  }
+               Description = None
+            }
+         ImporterOfRecord = 
+            (Party){
+               AccountNumber = None
+               Tins[] = <empty>
+               Contact = 
+                  (Contact){
+                     ContactId = None
+                     PersonName = None
+                     Title = None
+                     CompanyName = None
+                     PhoneNumber = None
+                     PhoneExtension = None
+                     TollFreePhoneNumber = None
+                     PagerNumber = None
+                     FaxNumber = None
+                     EMailAddress = None
+                  }
+               Address = 
+                  (Address){
+                     StreetLines[] = <empty>
+                     City = None
+                     StateOrProvinceCode = None
+                     PostalCode = None
+                     UrbanizationCode = None
+                     CountryCode = None
+                     CountryName = None
+                     Residential = None
+                  }
+            }
+         RecipientCustomsId = 
+            (RecipientCustomsId){
+               Type = 
+                  (RecipientCustomsIdType){
+                     value = None
+                  }
+               Value = None
+            }
+         DutiesPayment = 
+            (Payment){
+               PaymentType = 
+                  (PaymentType){
+                     value = None
+                  }
+               Payor = 
+                  (Payor){
+                     ResponsibleParty = 
+                        (Party){
+                           AccountNumber = None
+                           Tins[] = <empty>
+                           Contact = 
+                              (Contact){
+                                 ContactId = None
+                                 PersonName = None
+                                 Title = None
+                                 CompanyName = None
+                                 PhoneNumber = None
+                                 PhoneExtension = None
+                                 TollFreePhoneNumber = None
+                                 PagerNumber = None
+                                 FaxNumber = None
+                                 EMailAddress = None
+                              }
+                           Address = 
+                              (Address){
+                                 StreetLines[] = <empty>
+                                 City = None
+                                 StateOrProvinceCode = None
+                                 PostalCode = None
+                                 UrbanizationCode = None
+                                 CountryCode = None
+                                 CountryName = None
+                                 Residential = None
+                              }
+                        }
+                  }
+            }
+         DocumentContent = 
+            (InternationalDocumentContentType){
+               value = None
+            }
+         CustomsValue = 
+            (Money){
+               Currency = None
+               Amount = None
+            }
+         FreightOnValue = 
+            (FreightOnValueType){
+               value = None
+            }
+         InsuranceCharges = 
+            (Money){
+               Currency = None
+               Amount = None
+            }
+         PartiesToTransactionAreRelated = None
+         CommercialInvoice = 
+            (CommercialInvoice){
+               Comments[] = <empty>
+               FreightCharge = 
+                  (Money){
+                     Currency = None
+                     Amount = None
+                  }
+               TaxesOrMiscellaneousCharge = 
+                  (Money){
+                     Currency = None
+                     Amount = None
+                  }
+               TaxesOrMiscellaneousChargeType = 
+                  (TaxesOrMiscellaneousChargeType){
+                     value = None
+                  }
+               PackingCosts = 
+                  (Money){
+                     Currency = None
+                     Amount = None
+                  }
+               HandlingCosts = 
+                  (Money){
+                     Currency = None
+                     Amount = None
+                  }
+               SpecialInstructions = None
+               DeclarationStatement = None
+               PaymentTerms = None
+               Purpose = 
+                  (PurposeOfShipmentType){
+                     value = None
+                  }
+               OriginatorName = None
+               TermsOfSale = None
+            }
+         Commodities[] = <empty>
+         ExportDetail = 
+            (ExportDetail){
+               B13AFilingOption = 
+                  (B13AFilingOptionType){
+                     value = None
+                  }
+               ExportComplianceStatement = None
+               PermitNumber = None
+               DestinationControlDetail = 
+                  (DestinationControlDetail){
+                     StatementTypes[] = <empty>
+                     DestinationCountries = None
+                     EndUser = None
+                  }
+            }
+         RegulatoryControls[] = <empty>
+      }
+   PickupDetail = 
+      (PickupDetail){
+         ReadyDateTime = None
+         LatestPickupDateTime = None
+         CourierInstructions = None
+         RequestType = 
+            (PickupRequestType){
+               value = None
+            }
+         RequestSource = 
+            (PickupRequestSourceType){
+               value = None
+            }
+      }
+   SmartPostDetail = 
+      (SmartPostShipmentDetail){
+         ProcessingOptionsRequested = 
+            (SmartPostShipmentProcessingOptionsRequested){
+               Options[] = <empty>
+            }
+         Indicia = 
+            (SmartPostIndiciaType){
+               value = None
+            }
+         AncillaryEndorsement = 
+            (SmartPostAncillaryEndorsementType){
+               value = None
+            }
+         HubId = None
+         CustomerManifestId = None
+      }
+   BlockInsightVisibility = None
+   LabelSpecification = 
+      (LabelSpecification){
+         LabelFormatType = 
+            (LabelFormatType){
+               value = None
+            }
+         ImageType = 
+            (ShippingDocumentImageType){
+               value = None
+            }
+         LabelStockType = 
+            (LabelStockType){
+               value = None
+            }
+         LabelPrintingOrientation = 
+            (LabelPrintingOrientationType){
+               value = None
+            }
+         LabelRotation = 
+            (LabelRotationType){
+               value = None
+            }
+         LabelOrder = 
+            (LabelOrderType){
+               value = None
+            }
+         PrintedLabelOrigin = 
+            (ContactAndAddress){
+               Contact = 
+                  (Contact){
+                     ContactId = None
+                     PersonName = None
+                     Title = None
+                     CompanyName = None
+                     PhoneNumber = None
+                     PhoneExtension = None
+                     TollFreePhoneNumber = None
+                     PagerNumber = None
+                     FaxNumber = None
+                     EMailAddress = None
+                  }
+               Address = 
+                  (Address){
+                     StreetLines[] = <empty>
+                     City = None
+                     StateOrProvinceCode = None
+                     PostalCode = None
+                     UrbanizationCode = None
+                     CountryCode = None
+                     CountryName = None
+                     Residential = None
+                  }
+            }
+         CustomerSpecifiedDetail = 
+            (CustomerSpecifiedLabelDetail){
+               DocTabContent = 
+                  (DocTabContent){
+                     DocTabContentType = 
+                        (DocTabContentType){
+                           value = None
+                        }
+                     Zone001 = 
+                        (DocTabContentZone001){
+                           DocTabZoneSpecifications[] = <empty>
+                        }
+                     Barcoded = 
+                        (DocTabContentBarcoded){
+                           Symbology = 
+                              (BarcodeSymbologyType){
+                                 value = None
+                              }
+                           Specification = 
+                              (DocTabZoneSpecification){
+                                 ZoneNumber = None
+                                 Header = None
+                                 DataField = None
+                                 LiteralValue = None
+                                 Justification = 
+                                    (DocTabZoneJustificationType){
+                                       value = None
+                                    }
+                              }
+                        }
+                  }
+               CustomContentPosition = 
+                  (RelativeVerticalPositionType){
+                     value = None
+                  }
+               CustomContent = 
+                  (CustomLabelDetail){
+                     CoordinateUnits = 
+                        (CustomLabelCoordinateUnits){
+                           value = None
+                        }
+                     TextEntries[] = <empty>
+                     GraphicEntries[] = <empty>
+                     BoxEntries[] = <empty>
+                     TextBoxEntries[] = <empty>
+                     BarcodeEntries[] = <empty>
+                  }
+               ConfigurableReferenceEntries[] = <empty>
+               MaskedData[] = <empty>
+               SecondaryBarcode = 
+                  (SecondaryBarcodeType){
+                     value = None
+                  }
+               TermsAndConditionsLocalization = 
+                  (Localization){
+                     LanguageCode = None
+                     LocaleCode = None
+                  }
+               RegulatoryLabels[] = <empty>
+               AdditionalLabels[] = <empty>
+               AirWaybillSuppressionCount = None
+            }
+      }
+   ShippingDocumentSpecification = 
+      (ShippingDocumentSpecification){
+         ShippingDocumentTypes[] = <empty>
+         CertificateOfOrigin = 
+            (CertificateOfOriginDetail){
+               DocumentFormat = 
+                  (ShippingDocumentFormat){
+                     Dispositions[] = <empty>
+                     TopOfPageOffset = 
+                        (LinearMeasure){
+                           Value = None
+                           Units = 
+                              (LinearUnits){
+                                 value = None
+                              }
+                        }
+                     ImageType = 
+                        (ShippingDocumentImageType){
+                           value = None
+                        }
+                     StockType = 
+                        (ShippingDocumentStockType){
+                           value = None
+                        }
+                     ProvideInstructions = None
+                     OptionsRequested = 
+                        (DocumentFormatOptionsRequested){
+                           Options[] = <empty>
+                        }
+                     Localization = 
+                        (Localization){
+                           LanguageCode = None
+                           LocaleCode = None
+                        }
+                  }
+               CustomerImageUsages[] = <empty>
+            }
+         CommercialInvoiceDetail = 
+            (CommercialInvoiceDetail){
+               Format = 
+                  (ShippingDocumentFormat){
+                     Dispositions[] = <empty>
+                     TopOfPageOffset = 
+                        (LinearMeasure){
+                           Value = None
+                           Units = 
+                              (LinearUnits){
+                                 value = None
+                              }
+                        }
+                     ImageType = 
+                        (ShippingDocumentImageType){
+                           value = None
+                        }
+                     StockType = 
+                        (ShippingDocumentStockType){
+                           value = None
+                        }
+                     ProvideInstructions = None
+                     OptionsRequested = 
+                        (DocumentFormatOptionsRequested){
+                           Options[] = <empty>
+                        }
+                     Localization = 
+                        (Localization){
+                           LanguageCode = None
+                           LocaleCode = None
+                        }
+                  }
+               CustomerImageUsages[] = <empty>
+            }
+         CustomPackageDocumentDetail[] = <empty>
+         CustomShipmentDocumentDetail[] = <empty>
+         ExportDeclarationDetail = 
+            (ExportDeclarationDetail){
+               DocumentFormat = 
+                  (ShippingDocumentFormat){
+                     Dispositions[] = <empty>
+                     TopOfPageOffset = 
+                        (LinearMeasure){
+                           Value = None
+                           Units = 
+                              (LinearUnits){
+                                 value = None
+                              }
+                        }
+                     ImageType = 
+                        (ShippingDocumentImageType){
+                           value = None
+                        }
+                     StockType = 
+                        (ShippingDocumentStockType){
+                           value = None
+                        }
+                     ProvideInstructions = None
+                     OptionsRequested = 
+                        (DocumentFormatOptionsRequested){
+                           Options[] = <empty>
+                        }
+                     Localization = 
+                        (Localization){
+                           LanguageCode = None
+                           LocaleCode = None
+                        }
+                  }
+               CustomerImageUsages[] = <empty>
+            }
+         GeneralAgencyAgreementDetail = 
+            (GeneralAgencyAgreementDetail){
+               Format = 
+                  (ShippingDocumentFormat){
+                     Dispositions[] = <empty>
+                     TopOfPageOffset = 
+                        (LinearMeasure){
+                           Value = None
+                           Units = 
+                              (LinearUnits){
+                                 value = None
+                              }
+                        }
+                     ImageType = 
+                        (ShippingDocumentImageType){
+                           value = None
+                        }
+                     StockType = 
+                        (ShippingDocumentStockType){
+                           value = None
+                        }
+                     ProvideInstructions = None
+                     OptionsRequested = 
+                        (DocumentFormatOptionsRequested){
+                           Options[] = <empty>
+                        }
+                     Localization = 
+                        (Localization){
+                           LanguageCode = None
+                           LocaleCode = None
+                        }
+                  }
+            }
+         NaftaCertificateOfOriginDetail = 
+            (NaftaCertificateOfOriginDetail){
+               Format = 
+                  (ShippingDocumentFormat){
+                     Dispositions[] = <empty>
+                     TopOfPageOffset = 
+                        (LinearMeasure){
+                           Value = None
+                           Units = 
+                              (LinearUnits){
+                                 value = None
+                              }
+                        }
+                     ImageType = 
+                        (ShippingDocumentImageType){
+                           value = None
+                        }
+                     StockType = 
+                        (ShippingDocumentStockType){
+                           value = None
+                        }
+                     ProvideInstructions = None
+                     OptionsRequested = 
+                        (DocumentFormatOptionsRequested){
+                           Options[] = <empty>
+                        }
+                     Localization = 
+                        (Localization){
+                           LanguageCode = None
+                           LocaleCode = None
+                        }
+                  }
+               BlanketPeriod = 
+                  (DateRange){
+                     Begins = None
+                     Ends = None
+                  }
+               ImporterSpecification = 
+                  (NaftaImporterSpecificationType){
+                     value = None
+                  }
+               SignatureContact = 
+                  (Contact){
+                     ContactId = None
+                     PersonName = None
+                     Title = None
+                     CompanyName = None
+                     PhoneNumber = None
+                     PhoneExtension = None
+                     TollFreePhoneNumber = None
+                     PagerNumber = None
+                     FaxNumber = None
+                     EMailAddress = None
+                  }
+               ProducerSpecification = 
+                  (NaftaProducerSpecificationType){
+                     value = None
+                  }
+               Producers[] = <empty>
+               CustomerImageUsages[] = <empty>
+            }
+         Op900Detail = 
+            (Op900Detail){
+               Format = 
+                  (ShippingDocumentFormat){
+                     Dispositions[] = <empty>
+                     TopOfPageOffset = 
+                        (LinearMeasure){
+                           Value = None
+                           Units = 
+                              (LinearUnits){
+                                 value = None
+                              }
+                        }
+                     ImageType = 
+                        (ShippingDocumentImageType){
+                           value = None
+                        }
+                     StockType = 
+                        (ShippingDocumentStockType){
+                           value = None
+                        }
+                     ProvideInstructions = None
+                     OptionsRequested = 
+                        (DocumentFormatOptionsRequested){
+                           Options[] = <empty>
+                        }
+                     Localization = 
+                        (Localization){
+                           LanguageCode = None
+                           LocaleCode = None
+                        }
+                  }
+               Reference = 
+                  (CustomerReferenceType){
+                     value = None
+                  }
+               CustomerImageUsages[] = <empty>
+               SignatureName = None
+            }
+         DangerousGoodsShippersDeclarationDetail = 
+            (DangerousGoodsShippersDeclarationDetail){
+               Format = 
+                  (ShippingDocumentFormat){
+                     Dispositions[] = <empty>
+                     TopOfPageOffset = 
+                        (LinearMeasure){
+                           Value = None
+                           Units = 
+                              (LinearUnits){
+                                 value = None
+                              }
+                        }
+                     ImageType = 
+                        (ShippingDocumentImageType){
+                           value = None
+                        }
+                     StockType = 
+                        (ShippingDocumentStockType){
+                           value = None
+                        }
+                     ProvideInstructions = None
+                     OptionsRequested = 
+                        (DocumentFormatOptionsRequested){
+                           Options[] = <empty>
+                        }
+                     Localization = 
+                        (Localization){
+                           LanguageCode = None
+                           LocaleCode = None
+                        }
+                  }
+               CustomerImageUsages[] = <empty>
+            }
+         FreightAddressLabelDetail = 
+            (FreightAddressLabelDetail){
+               Format = 
+                  (ShippingDocumentFormat){
+                     Dispositions[] = <empty>
+                     TopOfPageOffset = 
+                        (LinearMeasure){
+                           Value = None
+                           Units = 
+                              (LinearUnits){
+                                 value = None
+                              }
+                        }
+                     ImageType = 
+                        (ShippingDocumentImageType){
+                           value = None
+                        }
+                     StockType = 
+                        (ShippingDocumentStockType){
+                           value = None
+                        }
+                     ProvideInstructions = None
+                     OptionsRequested = 
+                        (DocumentFormatOptionsRequested){
+                           Options[] = <empty>
+                        }
+                     Localization = 
+                        (Localization){
+                           LanguageCode = None
+                           LocaleCode = None
+                        }
+                  }
+               Copies = None
+               StartingPosition = 
+                  (PageQuadrantType){
+                     value = None
+                  }
+               DocTabContent = 
+                  (DocTabContent){
+                     DocTabContentType = 
+                        (DocTabContentType){
+                           value = None
+                        }
+                     Zone001 = 
+                        (DocTabContentZone001){
+                           DocTabZoneSpecifications[] = <empty>
+                        }
+                     Barcoded = 
+                        (DocTabContentBarcoded){
+                           Symbology = 
+                              (BarcodeSymbologyType){
+                                 value = None
+                              }
+                           Specification = 
+                              (DocTabZoneSpecification){
+                                 ZoneNumber = None
+                                 Header = None
+                                 DataField = None
+                                 LiteralValue = None
+                                 Justification = 
+                                    (DocTabZoneJustificationType){
+                                       value = None
+                                    }
+                              }
+                        }
+                  }
+               CustomContentPosition = 
+                  (RelativeVerticalPositionType){
+                     value = None
+                  }
+               CustomContent = 
+                  (CustomLabelDetail){
+                     CoordinateUnits = 
+                        (CustomLabelCoordinateUnits){
+                           value = None
+                        }
+                     TextEntries[] = <empty>
+                     GraphicEntries[] = <empty>
+                     BoxEntries[] = <empty>
+                     TextBoxEntries[] = <empty>
+                     BarcodeEntries[] = <empty>
+                  }
+            }
+         ReturnInstructionsDetail = 
+            (ReturnInstructionsDetail){
+               Format = 
+                  (ShippingDocumentFormat){
+                     Dispositions[] = <empty>
+                     TopOfPageOffset = 
+                        (LinearMeasure){
+                           Value = None
+                           Units = 
+                              (LinearUnits){
+                                 value = None
+                              }
+                        }
+                     ImageType = 
+                        (ShippingDocumentImageType){
+                           value = None
+                        }
+                     StockType = 
+                        (ShippingDocumentStockType){
+                           value = None
+                        }
+                     ProvideInstructions = None
+                     OptionsRequested = 
+                        (DocumentFormatOptionsRequested){
+                           Options[] = <empty>
+                        }
+                     Localization = 
+                        (Localization){
+                           LanguageCode = None
+                           LocaleCode = None
+                        }
+                  }
+               CustomText = None
+            }
+      }
+   RateRequestTypes[] = <empty>
+   EdtRequestType = 
+      (EdtRequestType){
+         value = None
+      }
+   PackageCount = None
+   ShipmentOnlyFields[] = <empty>
+   ConfigurationData = 
+      (ShipmentConfigurationData){
+         DangerousGoodsPackageConfigurations[] = <empty>
+      }
+   RequestedPackageLineItems[] = <empty>
+ }
+None
+

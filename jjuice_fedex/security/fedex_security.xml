@@ -1,0 +1,8 @@
+<openerp>
+	<data noupdate = "1" >
+	    <record id="group_fedex_account_access" model="res.groups">
+	        <field name="name">Fedex Accounts Configurations</field>
+	        <field name="category_id" ref="base.module_category_hidden"/>
+	    </record>
+	</data>
+</openerp>

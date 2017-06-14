@@ -1,0 +1,17 @@
+<openerp>
+	<data>
+		  <record id="inheritance_stock_picking_jjuice" model="ir.ui.view">
+		        <field name="name">stock.picking</field>
+		        <field name="model">stock.picking</field>
+		        <field name="inherit_id" ref="stock.view_picking_form"/>
+		        <field name="arch" type="xml">
+					<xpath expr = "/form/sheet/div[contains(@class, 'oe_right oe_button_box')]" position = "before">
+							<button attr = "{'invisible':[('sale_id','=',False)]}" class = "oe_right oe_highlight" string = "Print Delivery List" name="print_delivery_report_custom" type = "object"/>
+					</xpath>
+					<xpath expr = "/form/sheet/group/group/field[@name = 'origin']" position = "after">
+						<field name = "shipment_number" attrs = "{'invisible':[('state','not in',['done'])]}"/>
+					</xpath>
+		 		</field>
+		</record>
+	</data>
+</openerp>

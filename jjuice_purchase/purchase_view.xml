@@ -1,0 +1,80 @@
+<openerp>
+	<data>
+	 <record id="jjuice_purchase_add_fields" model="ir.ui.view">
+            <field name="name">purchase.order.jjuice</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+				<!-- Removing field expeted_date from the page below -->
+	           	<xpath expr = "/form/sheet/notebook/page[@string= 'Deliveries &amp; Invoices']/group/group/field[@name='minimum_planned_date']" position = "replace"/>
+	           	<!-- Adding the field on top -->
+            	<xpath expr = "/form/sheet/group/group/field[@name='picking_type_id']" position = "after">
+					<field name = "card_purchase"/>
+					<field name = "minimum_planned_date"/>
+            	</xpath>
+            	<xpath expr = "/form/sheet/group/group/field[@name='partner_ref']" position = "after">
+					<field name = "requested_by" required = "1"/>
+					<field name = "authorized_by"/>
+            	</xpath>
+            	<!-- Changing the label Request for quotaion -->
+            	<xpath expr = "/form/sheet/div/h1/label[@string='Request for Quotation ']" position="attributes">
+            		<attribute name = "string">Draft Purchase Order</attribute>
+            	</xpath>
+            	<!--  Changing the name of the page -->
+            	<xpath expr = "/form/sheet/notebook/page[@string='RFQ &amp; Bid']" position="attributes">
+            		<attribute name = "string">Bids</attribute>
+            	</xpath>            	
+            	
+            	<!-- Removing the default tax field -->
+            	<xpath expr = "/form/sheet/notebook/page[@string='Products']/group/field[@name='amount_tax']" position = "replace"/>
+            	<xpath expr = "/form/sheet/notebook/page[@string='Products']/field[@name='order_line']/tree/field[@name='taxes_id']" position="replace" />
+            	<!--  adding the shipping fields -->
+            	<xpath expr = "/form/sheet/notebook/page[@string='Products']/group/field[@name='amount_untaxed']" position = "after">
+            		<field name = "id" invisible="1" />
+            		<field name = "shipping_total" widget="monetary" on_change="onchange_tax_amount_entry(tax_amount_entry,amount_untaxed,tax_rate,shipping_total)"
+            		options="{'currency_field': 'currency_id'}"/>
+            		<field attrs = "{'invisible':[('id','=',False)]}" name = "tax_rate" context="{'tax_rate':True}" on_change="onchange_tax_amount_entry(tax_amount_entry,amount_untaxed,tax_rate,shipping_total)"/>
+            		<field attrs = "{'invisible':[('id','=',False)]}" name = "tax_amount_entry" widget="monetary" options="{'currency_field': 'currency_id'}" on_change="onchange_tax_amount_entry(tax_amount_entry,amount_untaxed,tax_rate,shipping_total)" context="{'tax_amount_entry':True}" />
+            		<field attrs = "{'invisible':[('id','=',False)]}" name = "tax_total" widget="monetary" options="{'currency_field': 'currency_id'}" />            		
+            	</xpath>
+            	<!-- Adding the Miscellaneous Overheads tab -->
+            	<xpath expr = "/form/sheet/notebook/page[@string='Products']/group" position = "after">
+	                <div style="width: 50%">
+                       <field name="tax_line" readonly="0">
+                           <tree editable="bottom"  string="Overheads">
+                               <field name="account_id" />
+                               <field name="name" required = "1" />
+                               <field name="amount" />
+                           </tree>
+                       </field>
+                     </div>
+            	</xpath>
+            </field>
+     </record>	
+
+     <record id="card_purcahse_tree" model="ir.ui.view">
+            <field name="name">card.purchase.tree</field>
+            <field name="model">card.purchase</field>
+            <field name="arch" type="xml">
+                <tree string="Card Used for Purchase" editable = "bottom">
+                    <field name="name"/>
+                    <field name="number"/>
+                </tree>
+            </field>
+      </record>
+
+
+	<!-- Defining Action for card.purchase -->
+     <record id="card_purchase_action" model="ir.actions.act_window">
+         <field name="name">Cards Used for Purchases</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="res_model">card.purchase</field>
+         <field name="context">{}</field>
+         <field name="domain"></field>
+         <field name="view_mode">tree,form</field>
+     </record>
+     <menuitem action="card_purchase_action" id="menu_card_purchase"
+         parent="purchase.menu_procurement_management"/>
+
+	</data>
+</openerp>

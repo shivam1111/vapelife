@@ -1,0 +1,148 @@
+<openerp>
+	<data>
+
+        <record id="amounts_before_discount_in_account_invoice" model="ir.ui.view">
+            <field name="name">account.invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form" />
+            <field name="arch" type="xml">
+				<xpath expr = "/form/sheet/h1" position = "before">
+					<field name="account_state" groups="jjuice.access_account_state_field" class="oe_right" widget="statusbar"  statusbar_visible="uncollected,toxic" clickable="1" statusbar_colors='{"toxic":"red","uncollected":"blue"}'/>
+				</xpath>
+				<xpath expr = "/form/sheet/notebook/page/field/tree/field[@name='invoice_line_tax_id']" position = "before" >
+					<field name="total_subtotal_before_discount"  string="Amount Before Discount" />
+				</xpath>
+				<xpath expr = "/form/sheet/notebook/page/group/field[@name='amount_untaxed']" position = "before" >
+					<field name="amount_before_discount_tax" string="Untaxed Amount Before Discount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+					<field name="discount_jjuice" string="Discount" widget="monetary" options="{'currency_field': 'currency_id'}" />
+				</xpath>
+            </field>
+       </record>
+
+	  <record id="view_inheritance_account_invoice_search_view" model="ir.ui.view">
+            <field name="name">first.view.inheritance</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+            	<xpath expr = "/search[@string = 'Search Invoice']/group[@string = 'Group By']" position = "attributes">
+					<attribute name = "expand">1</attribute>            	
+            	</xpath>
+            </field>
+      </record>
+            
+            
+      <record id="invoice_form_accounts_receivables" model="ir.ui.view">
+          <field name="name">account.invoice.form</field>
+          <field name="model">account.invoice</field>
+		  <field name = "priority">1</field>
+          <field name="arch" type="xml">
+              <tree string="Invoice">
+              	<button name = "open_invoice" icon="gtk-redo" type = "object" />
+              	<button name = "adjust_balance" string = "Pay/Adjust Balance" type = "object"/>
+              	<field name = "partner_id"/>
+              	<field name = "user_id" string = "Sales Rep"/>
+              	<field name = "state"/>
+              	<field name = "date_invoice" string = "Invoice Date"/>
+              	<field name = "amount_total" sum = "Total Tax Included"/>
+              	<field name = "paid_balance" sum = "Total Paid"/>
+              	<field name = "residual" sum = "Balance Payments"/>
+              	<field name = "payment_ids"/>
+              	<field name = "payment_plan_ids" string = "Payment Plan Summary" />
+              	<field name = "comment" string = "Order Notes"/>
+              	<field name= "free_shipping_check"/>
+              </tree>
+          </field>
+      </record>
+      <record id="invoice_form_accounts_receivables_action" model="ir.actions.act_window">
+            <field name="name">Accounts Receivables</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree_group_expand</field>
+			<field name="view_id" ref="invoice_form_accounts_receivables"/>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="domain">[('type','=','out_invoice'),('state','=','open'),('account_state','=','uncollected')]</field>
+            <field name="context">{'group_by_no_leaf':0,'search_default_group_by_partner_id': 1,'show_payments':True,'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a customer invoice.
+              </p><p>
+                Odoo's electronic invoicing allows to ease and fasten the
+                collection of customer payments. Your customer receives the
+                invoice by email and he can pay online and/or import it
+                in his own system.
+              </p><p>
+                The discussions with your customer are automatically displayed at
+                the bottom of each invoice.
+              </p>
+            </field>
+        </record>
+
+        <menuitem sequence="3" action="invoice_form_accounts_receivables_action" id="menu_action_invoice_account_receviables_tree" parent="account.menu_finance_receivables"/>
+        <menuitem action="invoice_form_accounts_receivables_action" id="menu_action_invoice_account_receviables_tree_sale" parent="base.menu_sales"/>
+              
+              
+	  <!-- Toxic AR Menuitems -->
+      <record id="invoice_form_accounts_receivables_action_toxic" model="ir.actions.act_window">
+            <field name="name">Toxic Accounts Receivables</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree_group_expand</field>
+			<field name="view_id" ref="invoice_form_accounts_receivables"/>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="domain">[('type','=','out_invoice'),('state','=','open'),('account_state','=','toxic')]</field>
+            <field name="context">{'group_by_no_leaf':0,'search_default_group_by_partner_id': 1,'show_payments':True,'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a customer invoice.
+              </p><p>
+                Odoo's electronic invoicing allows to ease and fasten the
+                collection of customer payments. Your customer receives the
+                invoice by email and he can pay online and/or import it
+                in his own system.
+              </p><p>
+                The discussions with your customer are automatically displayed at
+                the bottom of each invoice.
+              </p>
+            </field>
+        </record>
+		<menuitem sequence = "4" action="invoice_form_accounts_receivables_action_toxic" id="menu_action_invoice_account_receviables_tree_toxic" parent="account.menu_finance_receivables"/>
+
+	  <record id="view_inheritance_account_invoice_tree" model="ir.ui.view">
+            <field name="name">first.view.inheritance</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="arch" type="xml">
+            	<xpath expr = "/tree" position = "inside">
+            		<field name = "payment_ids"/>
+            	</xpath>
+            </field>
+      </record>
+            	
+	  <record id="view_inheritance_account_invoice" model="ir.ui.view">
+            <field name="name">first.view.inheritance</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+			<xpath expr = "/form/sheet/notebook/page[@string = 'Invoice Lines']" position ='after'>
+					<page string = "Payment Plan" >
+						<group>
+							<field name = "payment_plan_ids" nolabel="1">
+								<tree string = "Payment Plan">
+										<field name = "name"/>
+										<field name = "date"/>
+										<field name = "method_of_payment"/>
+										<field name = "partner_id"/>
+										<field name = "amount_original"/>
+										<field name = 'state'/>
+								</tree>
+							</field>
+						</group>
+					</page>
+				</xpath>              
+		       <xpath expr = "/form/header/button[@string = 'Send by Email']" position = "replace">
+					<button name="action_invoice_sent" type="object" string="Send by Email" attrs="{'invisible':['|',('sent','=',True)]}" class="oe_highlight" groups="base.group_user"/>		       	
+		       </xpath>
+			</field>
+		</record>		
+	</data>
+</openerp>

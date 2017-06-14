@@ -1,0 +1,54 @@
+<openerp>
+	<data>
+		<record id="fedex_account_form" model="ir.ui.view">
+		     <field name="name">Fedex Account</field>
+		     <field name="model">fedex.account</field>
+		     <field name="arch" type="xml">
+				<form string = "Fedex Account Form">
+					<sheet>
+	                    <h1>
+	                        <field name="sequence_name" class="oe_inline oe_right" readonly="1"/>
+	                    </h1>
+						<group>
+							<field name = "name" />
+						</group>
+						<group>
+							<group>
+								<field name = "key" />
+								<field name = "password" password = 'True'/>
+								<field name = "meter_number" />
+								<field name = "is_primary" />
+							</group>
+							<group>
+								<field name = "account_number" />
+								<field name = "freight_account_number" />
+								<field name = "sequence" />
+								<field name = "user_test_server" />
+							</group>
+						</group>					
+					</sheet>
+				</form>
+			</field>
+	   	</record>
+		<record id="fedex_account_tree" model="ir.ui.view">
+		     <field name="name">Fedex Account</field>
+		     <field name="model">fedex.account</field>
+		     <field name="arch" type="xml">
+		     	<tree string = "Fedex Accounts">
+		     		<field name = "name"/>
+		     		<field name = "sequence" />
+		     	</tree>
+		     </field>
+        </record>	   	
+
+      <record id="action_fedex_accoount" model="ir.actions.act_window">
+            <field name="name">Fedex Accounts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fedex.account</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+      </record>
+      <menuitem id = "child_fedex_account_menu" sequence="1" parent = "integrations.integrations_menu" name = "FEDEX" />
+      <menuitem id = "child_child_fedex_account_menu" parent = "child_fedex_account_menu" action = "action_fedex_accoount" groups = "jjuice_fedex.group_fedex_account_access" />  	
+	</data>
+</openerp>

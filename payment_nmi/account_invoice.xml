@@ -1,0 +1,20 @@
+<openerp>
+	<data>
+		<record id = "account_invoice_nmi_transactions" model="ir.ui.view">
+            <field name="name">account.invoice.nmi</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr = "/form/header/button[@string='Send by Email']" position = "after">
+            		<button name = "pay_by_nmi" attrs = "{'invisible':[('state','!=','open')]}" type = "object" icon="/payment_nmi/static/src/img/nmi.png" 
+            		string = "Pay by NMI"  />
+            	</xpath>
+				<xpath expr = "/form/sheet/notebook/page[@string='Payments']" position="after">
+					<page string = "NMI Transactions">
+						<field name = "nmi_transaction_ids" nolabel="1" readonly = "1" options="{'always_reload': True}"/>
+					</page>
+				</xpath>            
+            </field>
+        </record>
+	</data>
+</openerp>

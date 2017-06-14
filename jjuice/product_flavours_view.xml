@@ -1,0 +1,26 @@
+<openerp>
+	<data>
+		<record id = "flavors_form" model="ir.ui.view">
+            <field name="name">Product Flavors</field>
+            <field name="model">product.flavors</field>
+            <field name="arch" type="xml">
+				<tree string = "Product Flavors Tree View" editable="bottom">
+					<field name = "name" />
+				</tree>            
+            </field>
+       </record>
+       
+       <record id = "action_product_flavors_view" model="ir.actions.act_window">
+            <field name="name">Flavors</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.flavors</field>
+            <field name="view_mode">tree</field>
+            <field name="view_type">form</field>
+       </record>
+	
+	   <menuitem action="action_product_flavors_view"
+            id="menu_action_product_flavor_view"
+            parent="base.menu_product" sequence="0" />               
+       
+	</data>
+</openerp>

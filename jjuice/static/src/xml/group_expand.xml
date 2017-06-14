@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    
+    <t t-name="group_expand">
+		<button class="oe_highlight" name = "group_expand" href="javascript:void(0)"><t t-esc="name"></t></button>
+    </t>
+
+</templates>

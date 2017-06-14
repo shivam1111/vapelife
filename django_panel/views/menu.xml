@@ -1,0 +1,7 @@
+<openerp>
+	<data>
+		<menuitem id = "django_main_menus" name = "Website" groups="django_panel.django_panel_security_group"/>
+		<menuitem id = "django_main_menu_website_elements_view" parent = "django_main_menus" name = "Website Elements" sequence="1"/>
+		<menuitem id = "django_main_menu_settings_view" parent = "django_main_menus" name = "Configurations" sequence="100"/>
+	</data>
+</openerp>

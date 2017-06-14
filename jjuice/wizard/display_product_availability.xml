@@ -1,0 +1,27 @@
+<openerp>
+	<data>
+		<record id = "display_product_availability_form" model = "ir.ui.view">
+            <field name="name">Product Availability</field>
+            <field name="model">dispaly.product.availability</field>
+            <field name="arch" type="xml">
+            	<form string = "Product Availability">
+            		<field name = "line_ids" nolabel="1" readonly="1">
+            			<tree string = "Product Availability List" colors="red:True">
+            				<field name = "product_id" />
+            				<field name = "required_qty" />
+            				<field name = "available_qty" />
+            			</tree>
+            		</field>
+            	</form>
+           	</field>
+		</record>
+		
+       <record id="action_display_product_availability_form" model="ir.actions.act_window">
+            <field name="name">Product Availability</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dispaly.product.availability</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+      </record>		
+	</data>
+</openerp>

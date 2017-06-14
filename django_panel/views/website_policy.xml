@@ -1,0 +1,59 @@
+<openerp>
+	<data>
+		<record id = "website_policy_form" model= "ir.ui.view">
+			<field name="name">website.policy.form.view</field>
+			<field name="model">website.policy</field>
+			<field name="arch" type="xml">
+				<form string="Website Promotions">
+					<sheet>
+						<group>
+							<group>
+								<field name="name"/>
+								<field name = "sequence" />
+							</group>
+							<group>
+								<field name = "file_name" />							
+							</group>
+						</group>
+						<notebook>
+							<page string = "Description">
+								<field name = "description" nolabel="1" placeholder="Description" />
+							</page>
+							<page string = "Attach Policy Image">
+								<group>
+									<field name = "datas" filename="file_name" widget="image" nolabel="1" readonly="0"/>
+								</group>
+							</page>
+						</notebook>
+					</sheet>				
+				</form> 
+			</field>
+		</record> 	
+			
+		<record id = "website_policy_trees" model= "ir.ui.view">
+			<field name="name">website.policy.tree.view</field>
+			<field name="model">website.policy</field>
+			<field name="arch" type="xml" >
+				<tree string="Website Banners" default_order="sequence" >
+					 <field name = "sequence" widget="handle" />
+					 <field name="name"  />
+				</tree>
+			</field>
+		</record> 	
+		
+		<record model="ir.actions.act_window" id="action_website_policy">
+			<field name="name">Website Promotions</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">website.policy</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+	
+		<menuitem  
+			id="website_policy_link"
+			parent="django_panel.django_main_menu_website_elements_view"
+			groups="base.group_user"
+			action="action_website_policy"
+			/>
+	</data>
+</openerp>

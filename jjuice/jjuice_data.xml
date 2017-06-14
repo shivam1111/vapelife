@@ -1,0 +1,48 @@
+<openerp>
+	<data noupdate="0">
+		<record id = "attribute_conc" model = "product.attribute">
+			<field name = "name">Concentration</field>			
+		</record>
+		
+		<record id = "attribute_18" model = "product.attribute.value">
+			<field name = "attribute_id" ref = "jjuice.attribute_conc"/>
+			<field name = "name">18mg</field>		
+		</record>
+
+		<record id = "attribute_12" model = "product.attribute.value">
+			<field name = "attribute_id" ref = "jjuice.attribute_conc"/>
+			<field name = "name">12mg</field>
+		</record>
+		
+		<record id = "attribute_10" model = "product.attribute.value">
+			<field name = "attribute_id" ref = "jjuice.attribute_conc"/>
+			<field name = "name">10mg</field>		
+		</record>		
+		
+		<record id = "attribute_5" model = "product.attribute.value">
+			<field name = "attribute_id" ref = "jjuice.attribute_conc"/>
+			<field name = "name">5mg</field>		
+		</record>				
+		
+		<record id = "attribute_0" model = "product.attribute.value">
+			<field name = "attribute_id" ref = "jjuice.attribute_conc"/>
+			<field name = "name">0mg</field>		
+		</record>
+						
+		<!-- ******************************************************************************************* -->
+				
+		<record id = "attribute_vol" model = "product.attribute">
+			<field name = "name">Volume</field>			
+		</record>
+		
+		<record id = "attribute_10ml" model = "product.attribute.value">
+			<field name = "attribute_id" ref = "jjuice.attribute_vol"/>
+			<field name = "name">10ml</field>		
+		</record>				
+		
+		<record id = "attribute_350ml" model = "product.attribute.value">
+			<field name = "attribute_id" ref = "jjuice.attribute_vol"/>
+			<field name = "name">350ml</field>		
+		</record>						
+	</data>	
+</openerp>

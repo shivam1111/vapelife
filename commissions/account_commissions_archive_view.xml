@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		  <record id="account_commission_view_form_archive" model="ir.ui.view">
+	            <field name="name">Commissions</field>
+	            <field name="model">account.commissions.archive</field>
+	            <field name="arch" type="xml">
+			     	<form string = "Commissions">
+			     		<header>
+			     		</header>
+			     		<group>
+			     			<field name="user"/>
+			     		</group>
+			     		<group col="4">
+							<field name = "from_date" col = "2"/>
+							<field name = "to_date" col = "2"/>
+						</group>
+						<notebook>
+							<page string = "Details">
+								<field name = "payment_ids" nolabel = "1"  editable="bottom" >
+									<tree string = "Payment Lines">
+										<field name = "name" />
+										<field name = "period_id" />
+										<field name = "date"/>
+										<field name = "ref" />
+										<field name = "partner_id" />
+										<field name = "type_account" />
+										<field name = "debit" sum="Total Debit" />
+										<field name = "credit" sum = "Total Credit" />
+										<field name = "commission" sum = "Total Commission" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</form>
+				</field>
+			</record>
+
+		  <record id="account_commission_view_form_archive_tree" model="ir.ui.view">
+	            <field name="name">Commissions</field>
+	            <field name="model">account.commissions.archive</field>
+	            <field name="arch" type="xml">
+			     	<tree string = "Commissions">
+			     		<field name = "user" />
+			     		<field name = "from_date" />
+			     		<field name = "to_date" />
+					</tree>
+				</field>
+			</record>
+			
+	        <record id="action_account_commission_view_archive" model="ir.actions.act_window">
+	            <field name="name">Commissions Archive</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="res_model">account.commissions.archive</field>
+	            <field name="view_type">form</field>
+	            <field name ="target">current</field>
+	            <field name="view_mode">tree,form</field>
+	        </record>
+			<menuitem id = "account_menu_commission_archive" action = "action_account_commission_view_archive" 
+			 groups = "base.group_hr_user,base.group_user" parent="hr.menu_hr_main"/> 			
+		</data>
+</openerp>

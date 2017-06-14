@@ -1,0 +1,8 @@
+<openerp>
+	<data noupdate="0">
+		<record id = "source_website" model="account.acquisition">
+			<field name = "name">Website</field>
+			<field name = "source">website</field>
+		</record>
+	</data>
+</openerp>

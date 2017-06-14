@@ -1,0 +1,14 @@
+<openerp>
+	<data>
+		<record id = "account_journal_nmi" model="ir.ui.view">
+            <field name="name">account.journal</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr = "/form/notebook/page[@string='Advanced Settings']/group/group/field[@name='sequence_id']" position = "after">
+					<field name = "is_nmi_journal" />
+            	</xpath>
+            </field>
+        </record>		
+	</data>
+</openerp>

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_s3_object,s3.object,model_s3_object,,1,1,1,1
+access_website_contactus,website.contactus,model_website_contactus,,1,1,1,1
+access_website_banner,website.banner,model_website_banner,,1,1,1,1
+access_website_policy,website.policy,model_website_policy,,1,1,1,1
+access_flacor_reviews,flavor.reviews,model_flavor_reviews,,1,1,1,1

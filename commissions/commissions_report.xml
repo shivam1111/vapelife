@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report 
+            id="report_account_commission"
+            string="Commission Receipt"
+            model="account.commissions.archive" 
+            report_type="qweb-pdf"
+            file="commissions.report_account_commissions" 
+            name="commissions.report_account_commissions" 
+        />
+    </data>
+</openerp>

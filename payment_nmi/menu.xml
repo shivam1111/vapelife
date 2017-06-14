@@ -1,0 +1,5 @@
+<openerp>
+	<data>
+      <menuitem id = "child_nmi_menu_main" parent = "integrations.integrations_menu" name = "NMI" />
+	</data>
+</openerp>

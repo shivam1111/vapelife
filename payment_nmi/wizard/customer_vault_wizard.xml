@@ -1,0 +1,148 @@
+<openerp>
+	<data>
+        <record id="customer_vault_wizard_form_view" model="ir.ui.view">
+            <field name="name">Vault</field>
+            <field name="model">customer.vault.wizard</field>
+            <field name="arch" type="xml">
+            	<form string = "Vault Details">
+					<sheet>
+						<group>
+							<group >
+								<field name = "first_name" readonly="1"/>
+								<field name = "company" readonly="1"/>
+	                            <label for="address_1" string="Address"/>
+	                            <div>
+	                                <field name="address_1"  readonly="1"/>
+	                                <field name="address_2" readonly="1"/>
+	                                <div class="address_format">
+	                                    <field name="city" style="width: 40%" readonly="1"/>
+	                                    <field name="state" class="oe_no_button" style="width: 37%" readonly="1"  />
+	                                    <field name="postal_code" placeholder="ZIP" style="width: 20%" readonly="1" />
+	                                </div>
+	                                <field name="country" placeholder="Country" class="oe_no_button" readonly="1" />
+	                            </div>
+	                            <field name="website" widget="url" readonly="1" />
+								 
+							</group>
+							<group>
+								<field name = "last_name" readonly="1" />
+								<field name = "email" readonly="1" />
+								<field name = "fax" readonly="1" />
+								<field name = "cell_phone" readonly="1" />
+							</group>
+						</group>
+						<notebook>
+							<page string = "Card Info" >
+								<group>
+									<field name = "cc_number" readonly="1"/>
+									<field name = "cc_exp" readonly = "1" />
+									<field name = "cc_start_date" readonly ="1" />								
+								</group>
+							</page>
+							<page string = "Shipping Information">
+								<group>
+									<group readonly="1">
+										<field name = "shipping_first_name" readonly="1" />
+										<field name = "shipping_company" readonly="1" />
+			                            <label for="shipping_address_1" string="Address" readonly="1" />
+			                            <div>
+			                                <field name="shipping_address_1"  readonly="1" />
+			                                <field name="shipping_address_2" readonly="1" />
+			                                <div class="address_format">
+			                                    <field name="shipping_city" style="width: 40%" readonly="1" />
+			                                    <field name="shipping_state" class="oe_no_button" style="width: 37%" readonly="1" />
+			                                    <field name="shipping_postal_code" placeholder="ZIP" style="width: 20%" readonly="1" />
+			                                </div>
+			                                <field name="shipping_country" placeholder="Country" class="oe_no_button" readonly="1" />
+			                            </div>										
+										
+									</group>
+									<group readonly="1">
+										<field name = "shipping_last_name" readonly="1" />
+										<field name = "shipping_email" readonly="1" />
+										<field name = "shipping_carrier" readonly="1" />
+										<field name = "tracking_number" readonly="1" />
+										<field name = "shipping_date" readonly="1" />
+									</group>
+								</group>
+							</page>
+						</notebook>
+					</sheet>            		
+            	</form>
+            </field>
+       </record>
+       
+       <!--  View For Creating a new Vault -->
+        <record id="customer_vault_wizard_create_form_view" model="ir.ui.view">
+            <field name="name">Vault</field>
+            <field name="model">customer.vault.wizard</field>
+            <field name="arch" type="xml">       
+            	<form string = "Create Vault" create="0" edit="0">
+            		<header>
+						<button name = "create_vault" string = "Create Vault" type = "object" class="oe_highlight" />            		
+            		</header>
+            		<sheet>
+            			<group>
+            				<field name = "partner_id" />
+            				<field name = "cc_number" required = "1" />
+            				<field name = "cc_exp" required = "1" />            			
+            			</group>
+            			<group>
+            				<group>
+            					<group string = "Billing Info">
+            						<field name = "first_name"  />
+            						<field name = "last_name" />
+            						<field name = "company"  />
+		                            <label for="address_1" string="Address"/>
+		                            <div>
+		                                <field name="address_1"  />
+		                                <field name="address_2" />
+		                                <div class="address_format">
+		                                    <field name="city" style="width: 40%" />
+		                                    <field name="state" class="oe_no_button" style="width: 37%"   />
+		                                    <field name="postal_code" placeholder="ZIP" style="width: 20%"  />
+		                                </div>
+		                                <field name="country" placeholder="Country" class="oe_no_button"  />
+		                            </div>
+		                            <field name="website" widget="url"  />
+            					</group>
+            					<group string = "Shipping Info">
+										<field name = "shipping_first_name"  />
+										<field name = "shipping_last_name" />
+										<field name = "shipping_company"  />
+			                            <label for="shipping_address_1" string="Address" />
+			                            <div>
+			                                <field name="shipping_address_1"   />
+			                                <field name="shipping_address_2"  />
+			                                <div class="address_format">
+			                                    <field name="shipping_city" style="width: 40%"  />
+			                                    <field name="shipping_state" class="oe_no_button" style="width: 37%"  />
+			                                    <field name="shipping_postal_code" placeholder="ZIP" style="width: 20%"  />
+			                                </div>
+			                                <field name="shipping_country" placeholder="Country" class="oe_no_button"  />
+			                            </div>            						
+            					</group>
+            				</group>
+            			</group>
+            		</sheet>
+            	</form>
+           	</field>
+       	</record>
+
+
+      <record id = "action_customer_vault_create_wizard" model="ir.actions.act_window">
+            <field name="name">Create Vault</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.vault.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name = "target">new</field>
+            <field name = "view_id" ref = "customer_vault_wizard_create_form_view" />
+      </record>
+      
+      <menuitem id = "customer_vault_create_wizard" parent = "child_nmi_menu_main" action = "action_customer_vault_create_wizard" 
+      groups = "payment_nmi.group_nmi_transactions" />       	
+       	
+       	
+	</data>
+</openerp>

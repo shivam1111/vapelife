@@ -1,0 +1,16 @@
+<openerp>
+	<data>
+        <!-- Adding Miscellaneous field for Miscellaneous variants in product.product -->
+        <record id="product_product_custom_vapelife" model="ir.ui.view">
+            <field name="name">product.product</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+				<field name = "active" position ="after">
+					<field name = "is_bar"/>
+                    <field name = "max_volume" attrs = "{'invisible':[('is_bar','=',False)],'required':[('is_bar','=',True)]}"/>
+				</field>
+            </field>
+        </record>
+	</data>
+</openerp>

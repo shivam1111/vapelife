@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_commission_archive_user,account.commissions.archive.user,model_account_commissions_archive,base.group_user,1,0,0,0
+access_commission_archive_manager,account.commissions.archive.manager,model_account_commissions_archive,base.group_hr_manager,1,1,1,0
+access_commission_user,account.commissions,model_account_commissions,base.group_user,0,0,0,0
+access_commission_user_account_line,account.move.line.user,model_account_move_line,base.group_user,1,0,0,0

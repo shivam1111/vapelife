@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data noupdate="0" >
+        <!--Email template -->
+        <record id="email_template_registration_notification_internal" model="email.template">
+            <field name="name">New Wholesale account registration</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
+            <field name="subject">New Wholesale account registration</field>
+            <field name="email_to">hello@vapejjuice.com</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${object.lang}</field>
+            <field name="body_html"><![CDATA[
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>JJuice | Thankyou</title>
+    </head>
+    <body style="margin: 0; padding: 0;">
+    <p>There has been a new wholesale account registration by the name of ${object.name} and ID:${object.id}.</p>
+    <p>Please verify it and convert it to customer as soon as possible so that the customer can start placing orders.</p>
+    </body>
+</html>
+            ]]></field>
+        </record>
+    </data>
+</openerp>

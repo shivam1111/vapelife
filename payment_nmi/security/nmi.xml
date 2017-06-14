@@ -1,0 +1,8 @@
+<openerp>
+	<data noupdate = "1" >
+	    <record id="group_nmi_transactions" model="res.groups">
+	        <field name="name">NMI Transactions Access</field>
+	        <field name="category_id" ref="base.module_category_hidden"/>
+	    </record>
+	</data>
+</openerp>

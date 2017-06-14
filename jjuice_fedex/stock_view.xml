@@ -1,0 +1,24 @@
+<openerp>
+	<data>
+        <record id="add_button_transfer_fedex" model="ir.ui.view">
+            <field name="name">stock.fedex.transfer</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+				<xpath expr = "/form/header/button[@string='Mark as Todo']" position = "before" >
+					<button name = "tranfer_fedex" attrs="{'invisible':[('state','!=','assigned')]}"  icon="/jjuice_fedex/static/src/img/icons/gtk-fedex.png" type = "object" string = "FedEx &amp; Transfer"  />
+				</xpath>
+				<xpath expr = "/form/sheet/group/group/field[@name='backorder_id']" position="after">
+					<field name = "fedex_shipment_id" attrs = "{'invisible':[('fedex_shipment_id','=',False)]}">
+						<tree string = "Fedex Shipments">
+							<field name = "name" />
+							<field name = "tracking_number" />
+							<field name = "state" />
+							<button string = "Track Shipment" icon="gtk-media-play" name = "track_shipment" type = "object" /> 
+						</tree>
+					</field>
+				</xpath>
+            </field>
+       </record>
+	</data>
+</openerp>

@@ -1,0 +1,93 @@
+<openerp>
+	<data>
+		<template id="report_account_commissions_doc">
+			<t t-call="report.external_layout">
+				<div class="page">
+					<div class="oe_structure"/>
+		            <div class="row mt32 mb32" id="informations">
+		                <div class="col-xs-5">
+		                    <strong>Name:</strong>
+		                    <p t-field="o.user.name"/>
+		                </div>
+		                <div class="col-xs-3">
+		                    <strong>From:</strong>
+		                    <p t-field="o.from_date"/>
+		                </div>
+		                <div class="col-xs-3">
+		                    <strong>To:</strong>
+		                    <p t-field="o.to_date"/>
+		                </div>
+	                </div>	
+		            <table class="table table-condensed">
+		                <thead>
+		                    <tr>
+		                        <th>Name</th>
+		                        <th>Period</th>
+		                        <th>Deposit Date</th>
+		                        <th>Reference</th>
+		                        <th>Partner</th>
+		                        <th>Type of A/C</th>
+		                        <th>Debit</th>
+		                        <th>Credit</th>
+		                        <th>Commission</th>
+		                    </tr>
+		               </thead>
+		               <tbody class="sale_body">
+		               		<t t-set="commission_total" t-value="0.00"/>
+		               		<tr t-foreach="o.payment_ids" t-as="l">
+		                        <td>
+		                           <span t-field="l.name"/>
+		                        </td>		               			
+		                        <td>
+		                           <span t-field="l.period_id.name"/>
+		                        </td>		               			
+		                        <td>
+		                           <span t-field="l.date"/>
+		                        </td>		            
+		                        <td>
+		                           <span t-field="l.ref"/>
+		                        </td>		              
+		                        <td>
+		                           <span t-field="l.partner_id.name"/>
+		                        </td>		               			
+		                        <td>
+		                        	<span t-field="l.type_account" />
+		                        </td>
+		                        <td>
+		                        	<span t-field="l.debit" />
+		                        </td>
+		                        <td>
+		                        	<span t-field="l.credit" />
+		                        </td>
+		                        <td>
+		                        	<span t-field="l.commission" />
+		                        </td>		    
+		                        <t t-set="commission_total" t-value="commission_total+l.commission"/>           
+		               		</tr>
+		               </tbody>
+	               </table>
+		            <div class="row">
+		                <div class="col-xs-4 pull-right">
+		                    <table class="table">
+		                        <tr class="border-black">
+		                            <td><strong>Total Commission</strong></td>
+		                            <td class="text-right">
+		                                <span><t t-esc="commission_total"
+		                                    t-field-options='{"widget": "monetary", "display_currency": "o.user.company_id.currency_id.id"}'/></span>
+		                            </td>
+		                        </tr>
+	                        </table>
+                        </div>
+                     </div>	                           			                
+				</div>
+			</t>
+		</template>
+		<template id="report_account_commissions">
+		    <t t-call="report.html_container">
+		        <t t-foreach="doc_ids" t-as="doc_id">
+		            <t t-raw="translate_doc(doc_id, doc_model, 'user.partner_id.lang', 'commissions.report_account_commissions_doc')"/>
+		        </t>
+		    </t>
+		</template>		
+	</data>
+</openerp>

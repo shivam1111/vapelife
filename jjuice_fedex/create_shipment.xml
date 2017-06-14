@@ -1,0 +1,492 @@
+<openerp>
+	<data noupdate="0">
+        <!-- Sequences for sale.order -->
+        <record id="seq_type_create_shipment_fedex" model="ir.sequence.type">
+            <field name="name">Fedex Shipment</field>
+            <field name="code">create.shipment.fedex</field>
+        </record>
+
+        <record id="seq_create_shipment_fedex" model="ir.sequence">
+            <field name="name">Fedex Shipment</field>
+            <field name="code">create.shipment.fedex</field>
+            <field name="prefix">FEDEX</field>
+            <field name="padding">2</field>
+        </record>
+	</data>
+	<data>
+        <record id = "view_shipment_from_button_action" model="ir.actions.client">
+            <field name="name">Print Labels</field>
+            <field name="tag">print.shipment</field>
+        </record>
+        
+        <record id = "create_shipment_form2" model="ir.ui.view">
+            <field name="name">Create Shipment</field>
+            <field name="model">create.shipment.fedex</field>
+            <field name="priority" eval="17"/>
+            <field name="arch" type="xml">
+            	<form string = "Review &amp; Confirm Shipment">
+            		<header>
+            			<button string="Confirm Shipment" name="%(view_shipment_from_button_action)d" context="{'print_pdf':False}" attrs="{'invisible':[('state','!=','draft')]}" type="action" class="oe_highlight"/>
+            		</header>
+					<sheet>
+	                    <field name = "state" invisible="1" />
+						<group string = "Recipient Details">
+							<field name = "recipient_id" />
+							<field name = "to_person_name"/>
+							<field name = "to_company_name"/>
+							<field name = "to_phone_number"/>
+							<label for="street" string="Address"/>
+							<div>
+								<div>
+									<field name = "to_street1"/>
+									<field name = "to_street2" />
+									<field name = "to_street3" />
+								</div>
+								<div class="address_format">
+									<field name = "to_city" placeholder="City" style="width: 40%%"/>
+									<field name="to_state_code" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}'/>	
+									<field name="to_postal_code" placeholder="Postal Code" style="width: 20%%" />	
+								</div>
+								<field name="to_country" placeholder="Country" class="oe_no_button" options='{"no_open": True, "no_create": True}' />
+							</div>
+							<field name = "to_residential" />
+						</group>
+						<group string = "Notes" attrs = "{'invisible':[('picking_id','=',False)]}">
+							<field name = "picking_id" invisible="1" />
+							<field name = "picking_note" readonly = "1" />
+						</group>
+						<notebook>
+							<page string = "Packages" >
+								<group>
+									<group class="oe_left"  name="sale_total">
+										<button name = "update_all_status" icon="gtk-media-play" class = "oe_highlight" string = "Update All Status" type = "object" /> 
+									</group>							
+									<group class="oe_subtotal_footer oe_right"  name="sale_total">
+										<field name="total_cost" /> 
+									</group>
+								</group>
+								<field name = "package_ids" nolabel="1" options="{'reload_on_button': true}" attrs="{'readonly':[('state','!=','draft')]}">
+									<form string = "Packages Details" >
+										<div class =  "oe_left">
+											<label  for = "tracking_number" /> 
+											<field name = "tracking_number" readonly = "1" />
+										</div>
+										<div class = "oe_right">
+											<label  for = "cost" />
+											<field name = "cost" readonly="1"/>										
+										</div>
+										<group>
+											<group string = "Weight" col="4">
+												<group>
+													<field name = "weight" col = "2" class = "oe_inline"/>
+												</group>
+												<group>
+													<field name = "units" col="2" string = "Weight Unit" class = "oe_inline"/>												
+												</group>
+											</group>
+										</group>						
+										<group string = "Dimensions" col="6">
+											<group col = "6" >
+												<div>
+													<strong><label for="dimension"  /></strong>
+													<field name = "dimension" nolabel="1"/>
+												</div>
+												<div>
+													<strong><label for="width"  /></strong>
+													<field name = "width" nolabel="1" />												
+												</div>
+												<div>
+													<strong><label for="height"  /></strong>
+													<field name = "height" nolabel="1" />												
+												</div>
+												<div>
+													<strong><label for="length"  /></strong>
+													<field name = "length" nolabel="1" />												
+												</div>
+												<div>
+													<strong><label for="dim_units"  /></strong>
+													<field name = "dim_units"  nolabel="1" />												
+												</div>
+											</group>
+										</group>
+										<group string = "Packaging" col="4">
+											<field name = "physical_packaging" col="2" />
+											<field name = "group_package_count" col = "2" />
+										</group>
+										<group string = "Label" col="4">
+											<field name = "doc_name" col="2" readonly="1" />
+											<field name = "label" readonly="1" filename="doc_name" col="2" />
+										</group>
+										<group string ="Status">
+											<h4>
+												<field name = "status" readonly = "1" />											
+											</h4>
+										</group>
+									</form>
+									<tree string = "Packages Details" >
+										<button string = "Track Shipment" icon="gtk-media-play" name = "track_shipment" type = "object" />
+										<field name = "tracking_number" readonly = "1" />
+										<field name = "status" />
+										<field name = "weight" />
+										<field name = "parent_state" invisible="1" />
+										<field name = "units" string = "Weight Unit"/>
+										<field name = "dimension" />
+										<field name = "length" />
+										<field name = "width" />
+										<field name = "height" />
+										<field name = "dim_units" />
+										<field name = "physical_packaging" />
+										<field name = "cost" readonly="1"/>
+										<field name = "group_package_count" />
+										<field name = "label" readonly="1" filename="doc_name" />
+										<field name = "doc_name" invisible="1"/>
+										<button name = "dublicate_line" attrs = "{'invisible':[('parent_state','!=','draft')]}"  string = "Create Identical" type="object" icon="gtk-dnd-multiple" />
+									</tree>									
+								</field>
+							</page>
+						</notebook>						
+					</sheet>
+            	</form>
+           	</field>
+       	</record>
+        
+        <record id="create_shipment_tree" model="ir.ui.view">
+            <field name="name">Create Shipment</field>
+            <field name="model">create.shipment.fedex</field>
+            <field name="arch" type="xml">
+            	<tree string = "Shipments" colors="green:state=='draft';red:state=='fail';grey:state=='done';">
+					<field name = "name" lablel = "Doc No."/>
+					<field name = "to_person_name" label = "Cutomer Name" />
+					<field name = "to_company_name" label = "Company Name" />
+					<field name = "to_street1" />
+					<field name = "to_city" />
+					<field name = "state" invisible="1" />
+					<field name = "tracking_number" />
+					<field name = "status" />
+					<button string = "Track Shipment" icon="gtk-media-play" name = "track_shipment" type = "object" />          	
+            	</tree>
+            </field>
+        </record>
+        	
+        <record id="create_shipment_form" model="ir.ui.view">
+            <field name="name">Create Shipment</field>
+            <field name="model">create.shipment.fedex</field>
+            <field name="arch" type="xml">
+            	<form string = "Create Shipment">
+            		<header>
+            			<button string = "Rate Request" name = "rate_request" type = "object" />
+						<button string = "Track Shipment" name = "track_shipment" type = "object" />
+            			<button string="Review &amp; Confirm Shipment" name="review_confirm_shipment" attrs="{'invisible':[('state','!=','draft')]}" type="object" class="oe_highlight"/>
+            			<button string="Retry" name="retry_shipment" attrs="{'invisible':[('state','!=','fail')]}" type="object" class="oe_highlight"/>
+            			<button string = "Transfer Picking" name="transfer_picking" attrs = "{'invisible':[('picking_state','not in',['assigned','partially_available'])]}" groups="stock.group_stock_user" class="oe_highlight" type="object" />
+            			<button string = "Print Labels" name = "print_label"  type = "object" /> <!-- attrs = "{'invisible':[('state','!=','done')]}" -->
+            		</header>
+   			        <sheet>
+    			        <field name="state" widget="statusbar" statusbar_visible="draft,done,fail" statusbar_colors='{"fail":"red"}'/>
+	                    <div class="oe_right">
+	                        <label for="tracking_number" />
+	                        <h1>
+	                            <field name="tracking_number"  readonly="1"/>
+	                        </h1>
+	                    </div>
+                        <div class="oe_left">
+                        	<label for="name" class="oe_edit_only" />
+                        	<h1>
+                        		<field name="name"  readonly="1"/>
+                        	</h1>
+                        </div>
+                        <group>
+							<group string = "Tracking Status" attrs = "{'invisible':[('status','=',False)]}">
+								<field name = "status" readonly="1" />
+							</group>
+                    		<group string = "Rate Request" attrs = "{'invisible':[('rate_status','=',False)]}">
+								<field name = "rate_status" readonly="1" />
+							</group>
+                        </group>
+						<group>
+							<group string = "Shipper">
+								<field name = "from_person_name"/>
+								<field name = "from_company_name"/>
+								<field name = "from_phone_number"/>
+								<label for="street" string="Address"/>
+								<div>
+									<div>
+										<field name = "from_street1"/>
+										<field name = "from_street2" />
+										<field name = "from_street3" />
+									</div>
+									<div class="address_format">
+										<field name = "from_city" placeholder="City" style="width: 40%%"/>
+										<field name="from_state_code" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}'/>	
+										<field name="from_postal_code" placeholder="Postal Code" style="width: 20%%" />	
+									</div>
+									<field name="from_country" placeholder="Country" class="oe_no_button" options='{"no_open": True, "no_create": True}' />
+								</div>
+								<field name = "from_residential" string = "Residential"/>
+							</group>
+							<group string = "Recipient">
+								<field name = "recipient_id" />
+								<field name = "to_person_name"/>
+								<field name = "to_company_name" attrs = "{'required':[('to_country_code','!=','US')]}" />
+								<field name = "to_phone_number"/>
+								<label for="street" string="Address"/>
+								<div>
+									<div>
+										<field name = "to_street1" />
+										<field name = "to_street2" />
+										<field name = "to_street3" />
+									</div>
+									<div class="address_format">
+										<field name = "to_city" placeholder="City" style="width: 40%%"/>
+										<field name="to_state_code" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}'/>	
+										<field name="to_postal_code" placeholder="Postal Code" style="width: 20%%" />	
+									</div>
+									<field name="to_country" placeholder="Country" class="oe_no_button" options='{"no_open": True, "no_create": True}' />
+								</div>
+								<field name = "to_residential" />
+							</group>							
+						</group>
+						<group string = "Special Services" >
+							<group>
+								<field name = "special_services_type" />
+								<field name = "cod_currency" attrs = "{'invisible':[('special_services_type','!=','COD')],'required':[('special_services_type','=','COD')]}" /> 
+								<field name = "cod_collection_type" attrs = "{'invisible':[('special_services_type','!=','COD')],'required':[('special_services_type','=','COD')]}" />
+								<field name = "remit_name" attrs = "{'invisible':[('special_services_type','!=','COD')],'required':[('special_services_type','=','COD')]}" />
+							</group>
+<!-- 							<group>
+								<field name = "institution_person_name" attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}" />
+								<field name = "institution_phone_number" attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}" />
+								<field name = "institution_company_name" attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}" />
+								<label for="institution_street" string="Address" attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}"/>
+								<div>
+									<div>
+										<field name = "institution_street" attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}"/>
+										<field name = "institution_street2" attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}"/>
+									</div>
+									<div class="address_format">
+										<field name = "institution_city" placeholder="City" style="width: 40%%" attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}"/>
+										<field name="institution_state_code" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}' attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}"/>	
+										<field name="institution_postal_code" placeholder="Postal Code" style="width: 20%%" attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}" />	
+									</div>
+									<field name="institution_country" placeholder="Country" class="oe_no_button" options='{"no_open": True, "no_create": True}' attrs = "{'invisible':['|',('special_services_type','!=','COD'),('cod_collection_type','=','CASH')]}" />
+								</div>
+							</group> -->
+						</group>
+						<group>
+							<group  string = "International Shipment" attrs = "{'invisible':[('to_country_code','=','US')]}">
+								<field name = "to_country_code" invisible="1" />
+								<field name = "custom_value" attrs = "{'invisible':[('to_country_code','=','US')]}" />
+								<field name = "custom_currency" attrs = "{'invisible':[('to_country_code','=','US')]}" />
+								<field name = "document_type" attrs = "{'invisible':[('to_country_code','=','US')]}" />
+								<field name = "B13AFilingOption" attrs = "{'invisible':[('to_country_code','=','US')]}" />
+								<field name = "commerical_invoice" filename="commercial_invoice_name" attrs = "{'invisible':[('to_country_code','=','US')]}" />
+								<field name = "commercial_invoice_name" invisible="1" /> 
+								<field name = "commodity_lines" attrs = "{'invisible':[('to_country_code','=','US')]}" >
+									<form string = "Commodity Detail">
+										<group col="6">
+											<group>
+												<field name = "name" />
+												<field name = "description" />
+												<field name = "number_of_peices" />
+												<field name = "country_of_manufacture" />									
+											</group>
+											<group>
+												<label for = "quantity" string = "Quantity"/>
+												<div class="address_format">
+													<field name = "quantity"/>
+													<field name = "quantity_units" />										
+												</div>																		
+												<label for = "weight" string = "Weight"/>
+												<div class="address_format">
+													<field name = "weight"/>
+													<field name = "weight_unit" />										
+												</div>																													
+											</group>
+											<group>
+												<field name = "unit_price" />
+												<field name = "customs_value" />
+												<field name = "harmonized_code" />
+											</group>									
+										</group>
+									</form>
+									<tree string = "Commodity Detail" >
+										<field name = "name" />
+										<field name = "number_of_peices" />
+									</tree>
+								</field>
+							</group>
+							<group string = "Broker Details" attrs = "{'invisible':[('to_country_code','=','US')]}">
+								<field name = "is_broker" attrs = "{'invisible':[('to_country_code','=','US')]}"  />
+								<field name = "broker_type" attrs = "{'invisible':[('is_broker','=',False)]}" />
+								<field name = "broker_account_number" attrs = "{'invisible':[('is_broker','=',False)]}" />
+								<field name = "broker_name" attrs = "{'invisible':[('is_broker','=',False)]}" />
+								<field name = "broker_company_name" attrs = "{'invisible':[('is_broker','=',False)],'required':[('is_broker','=',True),('broker_name','=',False)]}" />
+								<field name = "broker_phone_number" attrs = "{'invisible':[('is_broker','=',False)]}" />
+								<label for="broker_street" attrs = "{'invisible':[('is_broker','=',False)]}" string="Address"/>
+								<div>
+									<div>
+										<field name = "broker_street" attrs = "{'invisible':[('is_broker','=',False)]}"/>
+										<field name = "broker_street2" attrs = "{'invisible':[('is_broker','=',False)]}" />
+									</div>
+									<div class="address_format">
+										<field name = "broker_city" attrs = "{'invisible':[('is_broker','=',False)]}" placeholder="City" style="width: 40%%"/>
+										<field name="broker_state_code" attrs = "{'invisible':[('is_broker','=',False)]}" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}'/>	
+										<field name="broker_postal_code" attrs = "{'invisible':[('is_broker','=',False)]}" placeholder="Postal Code" style="width: 20%%" />	
+									</div>
+									<field name="broker_country" attrs = "{'invisible':[('is_broker','=',False)]}" placeholder="Country" class="oe_no_button" options='{"no_open": True, "no_create": True}' />
+								</div>
+							</group>
+						</group>
+						<group string="Commercial Invoice" attrs = "{'invisible':[('to_country_code','=','US')]}">
+							<group>
+								<field name = "freight_amount" attrs = "{'invisible':[('to_country_code','=','US')]}" />
+								<field name = "handling_amount" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "tax_miscellaneous_amount" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "packing_amount" attrs = "{'invisible':[('to_country_code','=','US')]}" />
+								<field name = "tax_miscellaneous_type" attrs = "{'invisible':[('to_country_code','=','US')]}" />
+								<field name = "declaration_statement" attrs = "{'invisible':[('to_country_code','=','US')]}"/>							
+								<field name = "purpose_of_shipment" attrs = "{'invisible':[('to_country_code','=','US')],'required':[('to_country_code','!=','US')]}"/>
+								<field name = "customer_reference" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "customer_reference_value" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "terms_of_sale" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+							</group>
+							<group>
+								<field name = "freight_currency" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "handling_currency" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "tax_miscellaneous_currency" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "packing_currency" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "special_instructions" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "payment_terms" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name = "originator_name" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+								<field name="commercial_invoice_comment" col="4" attrs = "{'invisible':[('to_country_code','=','US')]}"/>
+							</group>
+						</group>
+						<group string = "Picking Details" >
+							<group>
+								<field name = "picking_id" />
+							</group>
+							<group>
+								<field name = "picking_state" readonly="1"/>
+							</group>
+						</group>
+						<group string = "Other Info">
+							<group>
+								<field name = "label_image_type" />
+								<field name = "label_stock_type" />
+								<field name = "label_printing_orientation" />
+								<field name="date"/>
+							</group>
+							<group>
+	            				<field name = "account_id" />
+								<field name = "dropoff_type" />
+								<field name = "service_type" />
+								<field name = "packaging_type" />
+							</group>
+							<group>
+								<field name = "include_duties" />
+								<field name = "payor" />
+							</group>
+							<group>
+								<field name = "total_package_count" />
+							</group>
+						</group>
+						<notebook>
+							<page string = "Packages" >
+								<group>
+									<group class="oe_left"  name="sale_total">
+										<button name = "update_all_status" icon="gtk-media-play" class = "oe_highlight" string = "Update All Status" type = "object" /> 
+									</group>							
+									<group class="oe_subtotal_footer oe_right"  name="sale_total">
+										<field name="total_cost" /> 
+									</group>
+								</group>
+								<field name = "package_ids" nolabel="1" options="{'reload_on_button': true}" attrs="{'readonly':[('state','!=','draft')]}">
+									<form string = "Packages Details" >
+										<header>
+											<button string = "Track Shipment" attrs="{'invisible':[('tracking_number','=',False)]}" icon="gtk-media-play" name = "track_shipment" type = "object" />
+										</header>
+										<sheet>
+											<group>
+												<group>
+													<field name = "tracking_number" readonly = "1" />
+												</group>
+												<group>
+													<field name = "cost" readonly="1"/>										
+													<field name = "special_services_type" invisible="1" />												
+												</group> 
+											</group>
+											<group string = "COD" attrs="{'invisible':[('special_services_type','!=','COD')]}">
+												<group>
+													<field name = "cod_amount" attrs="{'invisible':[('special_services_type','!=','COD')],'required':[('special_services_type','=','COD')]}" />
+												</group>
+												<group>
+													<field name = "cod_return_label" filename="cod_return_label_name" attrs="{'invisible':[('special_services_type','!=','COD')]}" />
+												</group>
+													<field name = "cod_return_label_name" invisible = "1" /> 
+											</group>
+											<group>
+												<group string = "Weight" col="4">
+													<group>
+														<field name = "weight" col = "2" class = "oe_inline"/>
+													</group>
+													<group>
+														<field name = "units" col="2" string = "Weight Unit" class = "oe_inline"/>												
+													</group>
+												</group>
+											</group>						
+											<group string = "Dimensions" >
+												<field name = "dimension"/>
+												<field name = "length"  />
+												<field name = "width" />												
+												<field name = "height"  />												
+												<field name = "dim_units"   />												
+											</group>
+											<group string = "Packaging" col="4">
+												<field name = "physical_packaging" col="2" />
+												<field name = "group_package_count" col = "2" />
+											</group>
+											<group string = "Label" col="4">
+												<field name = "doc_name" col="2" readonly="1" />
+												<field name = "label" readonly="1" filename="doc_name" col="2" />
+											</group>
+											<group string ="Status">
+												<h4>
+													<field name = "status" readonly = "1" />											
+												</h4>
+											</group>
+										</sheet>
+									</form>
+									<tree string = "Packages Details" >
+										<field name = "tracking_number" readonly = "1" />
+										<field name = "weight" />
+										<field name = "parent_state" invisible="1" />
+										<field name = "units" string = "Weight Unit"/>
+										<field name = "dimension" />
+										<field name = "length" />
+										<field name = "width" />
+										<field name = "height" />
+										<field name = "cost" sum="total" readonly="1"/>
+										<field name = "cod_amount" sum="total" readonly = "1" />
+										<field name = "special_services_type" invisible="1" />
+										<field name = "label" readonly="1" filename="doc_name" />
+										<field name = "doc_name" invisible="1"/>
+										<button name = "dublicate_line" attrs = "{'invisible':[('parent_state','!=','draft')]}"  string = "Create Identical" type="object" icon="gtk-dnd-multiple" />
+									</tree>									
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+            	</form>
+            </field>
+		</record>
+      <record id="action_fedex_create_shipment" model="ir.actions.act_window">
+            <field name="name">Create Shipment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.shipment.fedex</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+      </record>
+      <menuitem id = "child_child_fedex_create_shipment" sequence="100" parent = "child_fedex_account_menu" action = "action_fedex_create_shipment" />
+      <menuitem id = "child_child_fedex_create_shipment_warehouse_operations" name = "FedEx Shipments"  parent = "stock.menu_stock_warehouse_mgmt" action = "action_fedex_create_shipment" />				
+	</data>
+</openerp>

@@ -1,0 +1,29 @@
+<openerp>
+	<data>
+		  <record id="inheritance_res_partner_nmi_vault" model="ir.ui.view">
+            <field name="name">nmi.res.partner</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr = "/form/sheet/group/group/field[@name='email']" position ="before">
+            		<field name = "nmi_vault_id" groups = "payment_nmi.group_nmi_transactions" />
+            	</xpath>
+            	<xpath expr = "//notebook" position = "inside">
+					<page string = "Customer Vault" groups = "payment_nmi.group_nmi_transactions">
+						<field name = "customer_vault_ids">
+							<tree string = "Vault">
+								<field name = "customer_vault_id" />
+								<button string = "Details" type = "object" name = "get_vault_details" />
+							</tree>
+							<form string = "Vault">
+								<group>
+									<field name = "customer_vault_id" />
+								</group>
+							</form>
+						</field>
+					</page>
+            	</xpath>
+            </field>
+          </record>	
+	</data>
+</openerp>

@@ -1,0 +1,14 @@
+<openerp>
+	<data>
+		<record id = "res_partner_form_acquisition" model = "ir.ui.view">
+            <field name="name">Account Acquisition Module</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//field[@name='website']" position= "after">
+					<field name ="acquisition_id" />
+				</xpath>
+            </field>
+		</record>
+	</data>
+</openerp>

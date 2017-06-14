@@ -1,0 +1,8 @@
+<openerp>
+	<data noupdate = "0" >
+	    <record id="group_integrations_settings" model="res.groups">
+	        <field name="name">Integrations Settings Access</field>
+	        <field name="category_id" ref="base.module_category_hidden"/>
+	    </record>
+	</data>
+</openerp>

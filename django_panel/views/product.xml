@@ -1,0 +1,71 @@
+<openerp>
+	<data>
+		<record id = "product_prooduct_website_forms" model= "ir.ui.view">
+			<field name="name">product.poduct.form</field>
+			<field name="model">product.product</field>
+			<field name="priority" eval="1000"/>
+			<field name="arch" type="xml">
+				<form string="Product Variants">
+					<sheet>
+						<group>
+							<group>
+								<field name="name" string="Name"/>
+							</group>
+						</group>
+						<notebook>
+							<page string = "Attach Image">
+								<group>
+									<field name = "file_name" />
+								</group>
+								<group>
+									<field name = "datas" filename="file_name" widget="image" nolabel="1" readonly="0"/>
+								</group>
+							</page>
+						</notebook>
+					</sheet>				
+				</form> 
+			</field>
+		</record> 
+		<record id = "product_product_website_tree" model= "ir.ui.view">
+			<field name="name">product.product.tree</field>
+			<field name="model">product.product</field>
+			<field name="priority" eval="1000"/>
+			<field name="arch" type="xml" >
+				<tree string = "Product Variants" >
+					<field name = "name" string = "Name" />
+					<field name = "file_name" />
+				</tree>
+			</field>
+		</record>
+			
+		<record model="ir.actions.act_window" id="product_product_website_action">
+			<field name="name">Product Variants</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">product.product</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('product_tmpl_id.type','=','product')]</field>
+		</record>
+
+ 		<record id="product_product_website_view_tree_website" model="ir.actions.act_window.view">
+		    <field eval="1" name="sequence"/>
+		    <field name="view_mode">tree</field>
+		    <field name="view_id" ref="product_product_website_tree"/>
+		    <field name="act_window_id" ref="product_product_website_action"/>
+		</record>		
+
+ 		<record id="product_product_website_view_form_website" model="ir.actions.act_window.view">
+		    <field eval="2" name="sequence"/>
+		    <field name="view_mode">form</field>
+		    <field name="view_id" ref="product_prooduct_website_forms"/>
+		    <field name="act_window_id" ref="product_product_website_action"/>
+		</record>		
+	
+		<menuitem  
+			id="website_product_product_link"
+			parent="django_panel.django_main_menu_website_elements_view"
+			groups="base.group_user"
+			action="product_product_website_action"
+			/>		
+	</data>
+</openerp>

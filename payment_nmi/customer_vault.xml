@@ -1,0 +1,50 @@
+<openerp>
+	<data>
+        <record id="customer_vault_form_view" model="ir.ui.view">
+            <field name="name">Vault</field>
+            <field name="model">customer.vault</field>
+            <field name="arch" type="xml">
+        		<form string = "Vault" > 
+         			<header>
+        				<button name = "get_vault_details" type = "object" string = "Details" />
+        				<button name = "delete_vault" type = "object" class= "oe_highlight" string = "Delete Vault" />
+        			</header> 
+        			<sheet>
+        				<group>
+        					<group>
+								<field name = "customer_vault_id" />        					
+        					</group>
+        					<group>
+        						<field name = "partner_id" />
+        					</group>
+        				</group>
+        			</sheet>
+        		</form>
+            </field>
+        </record>	
+
+        <record id="customer_vault_tree_view" model="ir.ui.view">
+            <field name="name">Vault</field>
+            <field name="model">customer.vault</field>
+            <field name="arch" type="xml">
+        		<tree string = "Customer Vaults" >
+                    <field name="customer_vault_id"  />
+  					<field name = "partner_id" />
+  					<button name = "get_vault_details" type = "object" string = "Details" />
+        		</tree>
+            </field>
+        </record>	        
+        
+       <record id = "action_customer_vault" model="ir.actions.act_window">
+            <field name="name">Customer Vaults</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.vault</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+      </record>
+      
+      <menuitem id = "customer_vault_transactions_menu" parent = "child_nmi_menu_main" action = "action_customer_vault" 
+      groups = "payment_nmi.group_nmi_transactions" />
+      	
+	</data>
+</openerp>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+	
+	<t t-name="marketing_package">
+		<table class = "table table-hover table-bordered css-serial">
+			<caption><h3>Marketing Packages</h3></caption>
+			<thead>
+				<th>#</th>
+				<th>Name</th>
+				<th>Select</th>
+				<th>Quantity</th>
+				<th></th>
+				<th>Total</th>
+			</thead>
+			<tbody id = "package_body">
+			
+			</tbody>
+		</table>
+	</t>
+	
+    <t t-name="marketing_package_line">
+		<tr>
+			<td class="payment_plan_rows col-md-1">
+								
+			</td>
+			<td style ="text-align:center;" ><t t-esc="name"></t></td>
+			<td style ="text-align:center;" class ="col-md-1">
+				<input id = "select" type = "checkbox" />
+			</td>
+			<td style ="text-align:center;">
+				<input id = "qty" type="number" t-att-value = 'qty' style = "width:60px" />
+			</td>
+			<td>
+				<button  id = "kl" type="button" class = "oe_highlight">Change Details</button>
+			</td>
+			<td style ="text-align:center;">
+				<input type="number" id = "subtotal_marketing" t-att-value = 'total' style = "width:100px" step="0.01" readonly="1"/>
+			</td>
+		</tr>
+	</t>
+	
+	
+	<t t-name = "product_not_available_list">
+		<div class = "table-responsive">
+			<table class="table table-hover table-bordered css-serial">
+				<caption><h2>List of products not available</h2></caption>
+				<thead>
+					<th>#</th>
+					<th>Name</th>
+					<th>Tab Name</th>
+					<th>Required Qty</th>
+					<th>Available Qty</th>
+				</thead>
+				<tbody>
+					<t t-foreach="products" t-as="product">
+						<tr>
+							<td class="payment_plan_rows col-md-2">
+								
+							</td>
+							<td>
+								<span><t t-esc="product.name"/></span>
+							</td>
+							<td>
+								<span><t t-esc="product.tab_name"/></span>
+							</td>
+							<td class = "info">
+								<span><t t-esc="product.required"/></span>
+							</td>							
+							<td class = "danger">
+								<span><t t-esc="product.available"/></span>
+							</td>
+						</tr>
+					</t>
+				</tbody>
+			</table>
+		</div>
+	</t>
+	
+	<t t-name = "payment_plan_line">
+		<tr>
+			<td class="payment_plan_rows col-md-2">
+			</td>
+			<td id="payment_method" class="col-md-4">
+				
+			</td>
+			<td id="amount" class="col-md-2">
+				
+			</td>
+			<td id = "date" class="col-md-3">
+			
+			</td>
+			<td id = "delete" class = "col-md-1">
+				
+			</td>
+		</tr>		
+	</t>
+	
+	<!-- Payment Plan -->
+	<t t-name="payment_plan">
+		<table class = "table table-hover table-condensed css-serial">
+			<caption><h3>Payment Plans</h3></caption>
+			<thead>
+				<th>#</th>
+				<th>Payment Method</th>
+				<th>Amount</th>
+				<th>Date</th>
+				<th></th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</t>
+	
+	<!-- Nav Tabs -->
+	<t t-name = "nav_tabs">
+		<t t-if="class_state == true">
+			<li role="presentation" class="active"><a t-att-href="'#'+tab_id" t-att-aria-controls="tab_id" role="tab" data-toggle="tab"><t t-esc="tab_name"></t></a></li>
+		</t>
+		<t t-if="class_state == false">
+			<li role="presentation" ><a t-att-href="'#'+tab_id" t-att-aria-controls="tab_id" role="tab" data-toggle="tab"><t t-esc="tab_name"></t></a></li>
+		</t>		
+	</t>
+	
+	<!-- Tab panes -->
+	<t t-name = "tab_panes">
+		<t t-if = "class_state == true" >
+			<div role="tabpanel" class="tab-pane active" t-att-id="tab_id">
+			</div>
+		</t>
+		<t t-if = "class_state == false" >
+			<div role="tabpanel" class="tab-pane" t-att-id="tab_id">
+				<div>
+				</div>	
+			</div>
+		</t>		
+	</t>
+	<t t-name="products_list">
+		<div class = "table-responsive">
+			<table class="table table-hover table-bordered">
+				<caption></caption>
+				<thead>
+					<th><span><strong>Product Name</strong></span></th>
+					<th><span><strong>Qty</strong></span></th>
+					<!--  widget comes from marketing package wizard widget -->					
+					<t t-if="tab_style == 2 or tab_style == 3 or (widget and widget.tab_style == 3)" >
+						<th><span>Unit Price<strong></strong></span></th>
+					</t>
+					<t t-if="tab_style == 3 or (widget and widget.tab_style == 3)">
+						<th><span>Discount%<strong></strong></span></th>
+					</t>
+					<t t-if="tab_style == 2 or tab_style == 3 or (widget and widget.tab_style == 3)">
+						<th><span><strong>Subtotal</strong></span></th>
+					</t>					
+				</thead>
+				<tbody id="main_body">
+				
+				</tbody>
+			</table>
+		</div>	
+	</t>
+	
+	<t t-name="flavor_conc_matrix_table" >
+		<div class = "table-responsive">
+			<table class="table table-hover table-bordered">
+				<caption></caption>
+				<thead>
+					<tr>
+						<th></th>
+						<th t-foreach="concentration" t-as="conc">
+							<span><strong><t t-esc="conc[1]"/></strong></span>
+						</th>
+						<t t-if = "tab_style == 1">
+							<th>
+								<span><strong>Unit Price</strong></span>
+							</th>
+							<th>
+								<span><strong>Subtotal</strong></span>
+							</th>
+						</t>
+					</tr>
+				</thead>
+				<tbody id="main_body">
+					
+				</tbody>
+			</table>
+		</div>
+	</t>
+	
+	<t t-name = "confirm_dialog">
+		<div class="modal hide fade">
+		  <div class="modal-body">
+		    Are you sure you want to generate invoice and proceed with the payment ?
+		  </div>
+		  <div class="modal-footer">
+		    <button type="button" data-dismiss="modal" class="btn btn-primary" id="confirm">Ok</button>
+		    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+		  </div>
+		</div>			
+	</t>
+	
+	<!-- Main -->
+	<t t-name = "interface">
+		<div>
+			<ul class="nav nav-tabs" role="tablist">
+			
+			</ul>
+			<div class = "oe_button_box oe_right" style="padding-top:8px;padding-bottom:8px;">
+				<button type="button" id="confirm" class = "oe_highlight"  >Confirm Order</button>
+				<button type="button" id = "check_availability" class = "oe_highlight">Check Availability</button>
+				<button type="button" id = "rate_request" class = "oe_highlight">Rate Request</button>
+			</div>
+			<div class="tab-content">
+					
+			</div>
+			<div class="non-tab-content">
+				<div class = "table-responsive">
+					<table class="table table-hover table-bordered">
+						<caption></caption>
+						<tbody id = "main_body">
+							<tr>
+								<td class="active"><strong>Total Units</strong></td>	
+								<td id="total_units" class="danger">
+								
+								</td>
+								<td class="active"><strong>Subtotal</strong></td>
+								<td id = "subtotal" class="danger">
+								
+								</td>
+							</tr> <!--  -->
+							<tr>
+								<td colspan="2">
+									<table class = "table table-hover table-bordered">
+										<tbody>
+											<tr>
+												<td class="active"><span><strong>Total</strong></span></td>
+												<td id="total" class="danger"></td>
+											</tr>
+											<tr>
+												<td class="active"><span><strong>Paid</strong></span></td>
+												<td id="paid" class="danger"></td>
+											</tr>
+											<tr>
+												<td class="active"><span><strong>Balance</strong></span></td>
+												<td id="balance" class="danger"></td>
+											</tr>
+											<tr>
+												<td class="active"><span><strong>Payment Method</strong></span></td>
+												<td id="payment_method" class="danger"></td>
+											</tr>
+										</tbody>
+									</table>								
+								</td>															
+								<td colspan="2">
+									<table class = "table table-hover table-bordered">
+										<tbody>
+											<tr>
+												<td class="active"><strong>S &amp; H ($)</strong></td>
+												<td class="info" id = "s_h">
+												</td>
+											</tr>
+											<tr>
+												<td class="active"><strong>Discount Percentage</strong></td>
+												<td class="info" id = "discount_percentage">
+													
+												</td>
+											</tr>
+											<tr>
+												<td class="active"><strong>Discount</strong></td>
+												<td class="info" id = "discount">
+													
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button type="button" id = "nmi_payment_button" style="width:100% !important;display:none;" class="text-center oe_highlight oe_inline">
+												        <div class="stat_button_icon fa fa-strikethrough fa-fw"></div>
+														<strong>Pay By NMI</strong>
+				    								</button>																									
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr> <!--  -->
+							<tr colspan="4">
+								<td colspan="4" id = "order_notes" classs = "info"/>
+								<!-- <td class="active">
+									<strong>Taxes</strong>
+								</td>
+								<td>
+									<table class = "table table-hover table-bordered">
+										<tbody id = "taxes">
+											<tr>
+												<td class="active" ><span><strong>Taxes</strong></span></td>
+												<td class="danger" id = "tax_value">
+													
+												</td>
+											</tr>
+										</tbody>
+									</table>								
+								</td> -->
+							</tr> <!--  -->
+							<tr>
+								<tr >
+									<td colspan="4" id = "payment_plans">
+												
+									</td>
+								</tr>											
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<blockquote class="bg-info">
+			<strong>Total</strong> = <strong>(Subtotal + Shipment - Discount)</strong> + <strong>Taxes (Taxable amount is subtotal + Shipping and handling - discount value)</strong>
+		</blockquote>
+		
+	</t>
+
+</templates>

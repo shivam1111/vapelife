@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		  <record id="test_wizard_view_first1" model="ir.ui.view">
+	            <field name="name">product wizard</field>
+	            <field name="model">product.wizard</field>
+	            <field name="arch" type="xml">
+			     	<form string = "form view">
+			     		<group col="2">
+			     			<field name="id" invisible="1"/>
+							<field name="product_ref"/>
+							<field name="date"/>
+						</group>
+						<group>
+							<field name="product" attrs = "{'readonly':[('id','!=',False)]}">
+								<tree string = "Trial" editable='bottom'>
+									<field name="product_name" on_change = "update_product(product_name)"/>
+									<field name="cost_price"/>
+								</tree>						  
+							</field>   		
+			            </group>
+		            </form>
+				</field>
+		</record>
+		<record id="product_update_tree" model="ir.ui.view">
+	            <field name="name">product wizard</field>
+	            <field name="model">product.wizard</field>
+	            <field name="arch" type="xml">
+			     	<tree string = "form view">
+							<field name="product_ref"/>
+							<field name="date"/>
+			            </tree>
+				</field>
+		</record>
+        <record id="action_product_wizard1" model="ir.actions.act_window">
+            <field name="name">Update Product </field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+		<menuitem id = "menu_product_wizard1" action = "action_product_wizard1" parent = "base.menu_product" /> 
+      </data>
+</openerp>  

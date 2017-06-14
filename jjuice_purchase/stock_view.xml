@@ -1,0 +1,57 @@
+<openerp>
+	<data>
+		 
+		 <record id="jjuice_stock_move_supplier" model="ir.ui.view">
+	            <field name="name">stock.move</field>
+	            <field name="model">stock.move</field>
+	            <field name="inherit_id" ref="stock.view_move_form"/>
+	            <field name="arch" type="xml">
+	            	<!-- Adding supplier field -->
+	            	<xpath expr = "/form/sheet/group/group[@name='main_grp']/group[@name='main_grp_col1']/field[@name='product_id']" position ="after">
+						<field name = 'supplier_id'/>	            	
+	            	</xpath>
+	            </field>
+         </record>
+         
+         <!-- Adding grouping fields in seach view of stock.move -->
+		 <record id="jjuice_stock_move_group_supplier" model="ir.ui.view">
+	            <field name="name">stock.move</field>
+	            <field name="model">stock.move</field>
+	            <field name="inherit_id" ref="stock.view_move_search"/>
+	            <field name="arch" type="xml">
+	            	<!-- Adding supplier,Procurement Group field -->
+	            	<xpath expr = "/search/group" position ="inside">
+						<filter string="Supplier" name="supplier_id" icon="terp-accessories-archiver" domain="[]"  context="{'group_by':'supplier_id'}"/>
+            			<filter string = "Procurement Group" name = "group_id" icon="terp-accessories-archiver" domain="[]"  context="{'group_by':'group_id'}"/>
+	            	</xpath>
+	            </field>
+         </record> 
+        
+        <!-- Grouping the incoming products menu in the purchase module -->
+        <record id="stock.action_receipt_picking_move" model="ir.actions.act_window">
+            <field name="name">Incoming  Products (Grouping by default -: Supplier -> Purchase Order/Procurement Doc -> Picking Doc)</field>
+            <field name="res_model">stock.move</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" eval="[('picking_id.picking_type_id.code','=','incoming'), ('location_id.usage','!=','internal'), ('location_dest_id.usage', '=', 'internal')]"/>
+            <field name="view_id" ref="stock.view_move_tree_receipt_picking"/>
+            <field name="context">{'group_by':['supplier_id','group_id','picking_id'],'product_receive': True, 'search_default_future': True}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to register a product receipt. 
+              </p><p>
+                Here you can receive individual products, no matter what
+                purchase order or picking order they come from. You will find
+                the list of all products you are waiting for. Once you receive
+                an order, you can filter based on the name of the supplier or
+                the purchase order reference. Then you can confirm all products
+                received using the buttons on the right of each line.
+              </p>
+            </field>
+        </record>
+                 
+         
+	</data>
+</openerp>
+

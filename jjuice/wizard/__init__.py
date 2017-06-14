@@ -1,0 +1,7 @@
+import stock_detail_transfer
+import pay_payment_plan
+import change_sale_person_customers
+import change_sale_person_lead
+import mail_compose_message
+import customer_filter_wizard
+import display_product_availability

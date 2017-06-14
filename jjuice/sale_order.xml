@@ -1,0 +1,39 @@
+<openerp>
+	<data>
+		  <record id="view_picking_ids_sale_orders" model="ir.ui.view">
+		        <field name="name">sale.order</field>
+		        <field name="model">sale.order</field>
+		        <field name="inherit_id" ref="sale.view_order_form"/>
+		        <field name="arch" type="xml">
+					<xpath expr = "/form/sheet/notebook/page[@string = 'Other Information']" position = "after">
+						<page string = "Delivery Orders" >
+							<field name = "picking_ids" nolabel = "1" readonly = '1'>
+								<tree string = "Delivery Order">
+									<field name = "name"/>
+									<field nmae = "partner_id"/>
+									<field name = "create_date"/>
+									<field name = "origin"/>
+									<field name = "shipment_number"/>
+									<field name = "state"/>
+								</tree>
+							</field>
+						</page>
+					</xpath>
+					 <xpath expr = "/form/sheet/notebook/page[@string = 'Other Information']" position = "after">
+						<page string = "Payment Plan" >
+							<field name = "payment_plan_ids" nolabel="1">
+								<tree string = "Payment Plan">
+										<field name = "name"/>
+										<field name = "date"/>
+										<field name = "method_of_payment"/>
+										<field name = "partner_id"/>
+										<field name = "amount_original"/>
+										<field name = "state"/>
+								</tree>
+							</field>
+						</page>
+					</xpath>
+		 		</field>
+		</record>
+	</data>
+</openerp>

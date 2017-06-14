@@ -1,0 +1,16 @@
+<openerp>
+	<data noupdate = "1">
+		<record id = "create_shipping_account" model = "account.account">
+			<field name = "code">221001</field>
+			<field name = "name">Purchase Shipping Expense</field>
+			<field name = "type">other</field>
+			<field name = "user_type" ref="account.data_account_type_expense"/>
+		</record>
+		<record id = "create_tax_paid_account" model = "account.account">
+			<field name = "code">110301</field>
+			<field name = "name">Purchase Tax Paid</field>
+			<field name = "type">other</field>
+			<field name = "user_type" ref="account.data_account_type_asset"/>
+		</record>		
+	</data>
+</openerp>

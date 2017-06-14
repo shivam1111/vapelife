@@ -1,0 +1,10 @@
+<openerp>
+	<data>
+    	<template id="assets_backend" name="jjuice_fedex assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/jjuice_fedex/static/src/js/jjuice_fedex.js"></script>
+                <script type="text/javascript" src="/jjuice_fedex/static/src/js/concatenate_blob.js"></script>
+             </xpath>
+        </template>		
+	</data>
+</openerp>

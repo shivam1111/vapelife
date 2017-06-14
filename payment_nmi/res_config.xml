@@ -1,0 +1,49 @@
+<openerp>
+	<data>
+        <record id="view_nmi_config_settings" model="ir.ui.view">
+            <field name="name">NMI settings</field>
+            <field name="model">integrations.config.settings</field>
+            <field name="arch" type="xml">
+                <form string="Configure NMI" class="oe_form_configuration">
+                    <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" type="object" name="cancel" class="oe_link"/>
+                    </header>
+                    <separator string="NMI Settings"/>
+                    <group>
+                    	 <label for="id" string="Credentials"/>
+                   	 	<div name = "credentials">
+                   	 		<div>
+                                <label for="nmi_username"/>
+                                <field name="nmi_username" class="oe_inline"/>                   	 			
+                   	 		</div>
+                   	 		<div>
+                                <label for="nmi_password"/>
+                                <field name="nmi_password" class="oe_inline" password="1"/>                   	 			
+                   	 		</div>                   	 		
+                   	 		<div>
+                                <label for="nmi_key"/>
+                                <field name="nmi_key" class="oe_inline" password="1"/>                   	 			
+                   	 		</div>                   	 		                   	 		
+                   	 	</div>
+                    </group>		
+                </form>
+            </field>
+       </record>
+
+        <record id="action_nmi_config" model="ir.actions.act_window">
+            <field name="name">NMI</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">integrations.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="view_id" ref  = "view_nmi_config_settings" />
+        </record>
+
+        <menuitem id="menu_nmi_config"  parent="integrations.integration_setting_main_menu" groups = "payment_nmi.group_nmi_transactions"
+            sequence="1" action="action_nmi_config"/>       
+       
+       
+	</data>
+</openerp>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<template id="report_qweb_order_attachment">
+			<t t-call="report.html_container">
+				<t t-call="report.external_layout">
+					<div class="oe_structure"/>
+					 <t t-foreach="docs" t-as="o">
+				        <div class="page">
+				            <div class="row">
+	                       		<t t-if="data['shipping_stamp']">
+						        	<div class="pull-right watermark" style="position:absolute;opacity:0.6;font-size:3em;left:35%;top:10px;z-index:1000;">
+						        		<p>
+						        			<span t-field="o.company_id.ship_image"  t-field-options="{&quot;widget&quot;: &quot;image&quot;, &quot;class&quot;: &quot;img-rounded&quot;}"  />
+						        		</p>
+						        	</div>	                       		
+	                       		</t>				                
+				                <div class="col-xs-6">
+				                    <strong t-if="o.partner_shipping_id == o.partner_invoice_id">Invoice and shipping address:</strong>
+				                    <strong t-if="o.partner_shipping_id != o.partner_invoice_id">Invoice address:</strong>
+				                    <div t-field="o.partner_invoice_id" 
+				                        t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+				                    <p t-if="o.partner_id.vat">VAT: <span t-field="o.partner_id.vat"/></p>
+				                    <div t-if="o.partner_shipping_id != o.partner_invoice_id" class="mt8">
+				                        <strong>Shipping address:</strong>
+				                        <div t-field="o.partner_shipping_id" 
+				                            t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+				                        <p t-if="o.partner_id.vat">VAT: <span t-field="o.partner_id.vat"/></p>
+				                    </div>                        
+				                </div>
+				                <br/>
+				                <div class="col-xs-5 col-xs-offset-1">
+				                    <div t-field="o.partner_id"
+				                        t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+				                </div>
+				            </div>
+				            <br/>
+				            <br/>
+						  <t t-foreach="data['tabs_data']" t-as = "tab">
+						  	<t t-if="tab[1] == 1 or tab[1] == 5">
+						  		<t t-set="tab_id" t-value="str(tab[0])" />
+								<table class="table table-bordered">
+									<caption><h3><t t-esc="tab[2]" /></h3></caption>
+									<thead>
+										<th>Flavor Name</th>
+										<t t-foreach="data['available_conc'][tab_id]" t-as="conc">
+											<th>
+												<t t-esc="conc[1]" />
+											</th>
+										</t>
+									</thead>
+									<t-body>
+										<t t-foreach="data['available_flavor'][tab_id]" t-as="flavor">
+											<t t-set="flavor_id" t-value="str(flavor[0])" />
+											<tr>
+												<td><span><t t-esc="flavor[1]" /></span></td>
+												<t t-foreach="data['available_conc'][tab_id]" t-as="conc">
+													<t t-set="conc_id" t-value="str(conc[0])" />
+													<t t-if="conc_id in data['matrix_data'][tab_id][flavor_id]">
+														<td><span><t t-esc="data['matrix_data'][tab_id][flavor_id][conc_id]" /></span></td>
+													</t>
+													<t t-if="conc_id not in data['matrix_data'][tab_id][flavor_id]">
+														<td><span>-</span></td>
+													</t>
+												</t>											
+											</tr>
+										</t>
+										<tr class="info">
+											<td>Total</td>
+											<t t-foreach="data['available_conc'][tab_id]" t-as = "conc">
+												<t t-set="conc_id" t-value="str(conc[0])" />
+												<t t-if="conc_id in data['totals'][tab_id]">
+													<td>
+														<span>
+															<t t-esc="data['totals'][tab_id][conc_id]" />
+														</span>
+													</td>																								
+												</t>
+												<t t-if="conc_id not in data['totals'][tab_id]">
+													<td><span>-</span></td>
+												</t>
+											</t>																																	
+										</tr>
+									</t-body>
+								</table>						  	
+						  	</t>
+						  	<t t-if="tab[1] == 2 or tab[1] == 4">
+						  		<t t-set="tab_id" t-value="str(tab[0])" />
+								<table class="table table-bordered">
+									<caption><h3><t t-esc="tab[2]" /></h3></caption>
+									<thead>
+										<th><span>Product Name</span></th>
+										<th><span>Qty</span></th>
+									</thead>
+									<tbody>
+										<t t-foreach="data['list_data'][tab_id]" t-as="product">
+											<tr>
+												<td>
+													<span>
+														<t t-esc="data['product_list'][product]" />
+													</span>
+												</td>
+												<td><span><t t-esc="data['list_data'][tab_id][product]" /></span></td>
+											</tr>
+										</t>
+										<tr class="info">
+											<td><span>Total</span></td>
+											<td><span><t t-esc="data['totals'][tab_id]" /></span></td>
+										</tr>
+									</tbody>
+								</table>
+							</t>
+						  	<t t-if="tab[1] == 3">
+						  		<t t-set="tab_id" t-value="str(tab[0])" />
+								<table class="table table-bordered">
+									<caption><h3><t t-esc="tab[2]" /></h3></caption>
+									<thead>
+										<th><span>Product Name</span></th>
+										<th><span>Qty</span></th>
+									</thead>
+									<tbody>
+										<t t-foreach="data['marketing_data'][tab_id]" t-as="product">
+											<tr>
+												<td>
+													<span>
+														<t t-esc="data['product_list'][product]" />
+													</span>
+												</td>
+												<td><span><t t-esc="data['marketing_data'][tab_id][product]" /></span></td>
+											</tr>
+										</t>
+										<tr class="info">
+											<td><span>Total</span></td>
+											<td><span><t t-esc="data['totals'][tab_id]" /></span></td>
+										</tr>										
+									</tbody>
+								</table>
+							</t>
+`						  </t>
+						  <t t-if = "len(data['extra_data'].keys()) > 0">
+						  		<table class="table table-bordered">
+									<thead>
+										<th>Product Name</th>
+										<th>Qty</th>
+									</thead>
+									<tbody>
+										<t t-foreach="data['extra_data']" t-as="product">
+											<tr>
+												<td>
+													<span><t t-esc="data['product_list'][product]" /></span>
+												</td>
+												<td>
+													<span><t t-esc="data['extra_data'][product]" /></span>
+												</td>
+											</tr>
+										</t>
+										<tr class="info">
+											<td><span>Total</span></td>
+											<td><span><t t-esc="data['totals']['extra']" /></span></td>
+										</tr>										
+									</tbody>
+						  		</table>
+						  </t>
+						  <table class="table table-bordered">
+						  	<tr class = "danger">
+						  		<td><strong>Total</strong></td>
+						  		<td><strong class="pull-right"><t t-esc="data['grand_total']" /></strong></td>
+						  	</tr>
+						  	<tr>
+						  		<td><strong>Order Notes</strong></td>
+						  		<td><span><t t-esc="data['comment']" /></span></td>
+						  	</tr>
+						  </table>
+			               <t t-if = "data['invoice_line']['invoice']">
+								<t t-if = "data['paid_stamp']">
+							        <div class="pull-right watermark" style="position:absolute;opacity:0.4;font-size:3em;width:100%;text-align:center;z-index:1000;">
+										<p>
+											<span t-field="o.company_id.paid_image"  t-field-options="{&quot;widget&quot;: &quot;image&quot;, &quot;class&quot;: &quot;img-rounded&quot;}"  />
+										</p>		        
+							        </div>																
+								</t>
+				                <table class="table">
+					                <thead>
+										<th>Invoice No.</th>
+										<th>Total</th>
+										<th>Paid</th>
+										<th>Balance</th>				                
+					                </thead>
+				                    <tbody>
+					                    <t t-foreach="data['invoice_line']['invoice']" t-as="invoice">
+					                    	<tr>
+					                    		<td><span t-esc="invoice or '/'"></span></td>
+					                    		<td><span t-esc = "data['invoice_line']['invoice'][invoice]['total']"></span></td>
+					                    		<td><span t-esc = "data['invoice_line']['invoice'][invoice]['paid']"></span></td>
+					                    		<td><span t-esc = "data['invoice_line']['invoice'][invoice]['residual']"></span></td>
+					                    	</tr>
+					                    </t>
+					                    <tr class = "border-black">
+					                    	<td>Total</td>
+					                    	<td><span t-esc = "data['invoice_line']['total']"></span></td>
+					                    	<td><span t-esc = "data['invoice_line']['paid']"></span></td>
+					                    	<td><span t-esc = "data['invoice_line']['residual']"></span></td>
+					                    </tr>
+		              			   </tbody>
+		                       </table>
+			                </t>
+						</div>				
+					</t>
+				</t>
+			</t>
+		</template>		
+		
+		<report id="report_qweb_report_order_register"
+		        string="Order Details"
+                model="sale.order"
+                menu="False"
+			    report_type="qweb-pdf"
+			    file="jjuice.report_sale_order"
+			    name="jjuice.report_qweb_order_attachment" />	
+			    		
+	</data>
+</openerp>

@@ -1,0 +1,17 @@
+<openerp>
+	<data noupdate="1">
+        <!-- Sequences for nmi.transactions -->
+        <record id="seq_nmi_transactions_type" model="ir.sequence.type">
+            <field name="name">NMI Account Transactions</field>
+            <field name="code">NMI</field>
+        </record>
+        
+        <record id="seq_nmi_transactions" model="ir.sequence">
+            <field name="name">NMI Account Transactions</field>
+            <field name="code">NMI</field>
+            <field name="prefix">NMI</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>		
+	</data>
+</openerp>

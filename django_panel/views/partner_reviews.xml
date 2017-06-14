@@ -1,0 +1,28 @@
+<openerp>
+	<data>
+		<record id = "partner_reviews_tree" model = "ir.ui.view">
+			<field name="name">Partner Reviews</field>
+			<field name = "model">partner.reviews</field>
+			<field name="arch" type="xml" >
+				<tree string="Partner Reviews" editable="top">
+					<field name = "sequence" widget="handle" />
+					<field name = "partner_id" />
+					<field name = "review"  />
+				</tree>
+			</field>
+		</record>		
+
+        <record id="action_partner_reviews" model="ir.actions.act_window">
+            <field name="name">Customer Reviews</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">partner.reviews</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>		
+		
+		<menuitem id = "menu_product_reviews" 
+		parent = "django_panel.django_main_menu_website_elements_view" 
+		action = "action_partner_reviews" 
+		groups = "base.group_user"/>
+	</data>
+</openerp>

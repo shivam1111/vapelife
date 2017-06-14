@@ -1,0 +1,192 @@
+<openerp>
+	<data>
+		  <record id="view_inheritance_res_partner" model="ir.ui.view">
+            <field name="name">first.view.inheritance</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//notebook/page[@name='internal_notes']" position = "after">
+            		<page string = "JJuice Internal Info">
+            			<group>
+            				<field name = "date_field" />
+            				<field name = "how_met" />
+            				<field name = "lead_type" attrs = "{'invisible':[('leads','=',False)]}" />
+            			</group>
+            		</page>
+            	</xpath>
+				<xpath expr="//field[@name='email']" position= "after">
+					<field name ="skype_id"/>
+					<field name = "priority" widget="priority"/>
+				</xpath>
+				<xpath expr="//field[@name='website']" position= "before">
+					<field string = "Additional Address" name = "multi_address" context="{'default_type':'delivery','default_parent_id': active_id,'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_supplier': False, 'default_customer': False, 'default_use_parent_address': False}}">
+		                <tree string = "Address">
+		                	<field name = "name" />
+		                	<field name = "type" />
+		                </tree>
+		                <form string="Address">
+		                    <field name="image" widget='image' class="oe_avatar oe_left" options='{"preview_image": "image_medium"}'/>
+		                    <div class="oe_title">
+		                        <div class="oe_edit_only">
+		                            <label for="name"/> 
+		                        </div>
+		                        <h1>
+		                            <field name="name" default_focus="1" placeholder="Name" />
+		                        </h1>
+		                    </div>
+		                    <field name = "type" required = "1" />
+		                    <field name="category_id" widget="many2many_tags" placeholder="Tags..."/>
+		                    <group>
+			                    <group>
+			                    	<div>
+		                                <field name="street" placeholder="Street..."  />
+		                                <field name="street2" />
+		                                <div class="address_format">
+		                                    <field name="city" placeholder="City" style="width: 40%%" />
+		                                    <field name="state_id" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}' on_change="onchange_state(state_id)" />
+		                                    <field name="zip" placeholder="ZIP" style="width: 20%%" />
+		                                </div>
+		                                <field name="country_id" placeholder="Country" class="oe_no_button" options='{"no_open": True, "no_create": True}' />			                    	
+			                    	</div>
+			                    </group>
+			                    <group>
+			                        <field name="user_ids" invisible="1"/>
+			                        <field name="email" widget="email" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}"/>
+			                        <field name="phone"/>
+			                        <field name="mobile"/>
+			                        <div>
+			                        	<label for = "customer"/><field name = "customer" />
+			                        	<label for = "supplier"/><field name = "supplier" />
+			                        </div>		                    		                    
+			                    </group>		                    
+		                    </group>
+		                </form>					
+					</field>				
+				</xpath>
+				<xpath expr="//field[@name='website']" position= "after">
+					<field name ="resale_no"/>
+					<field name = "classify_finance" />
+					<field name ="acccount_type"/>
+				</xpath>
+				<xpath expr="//notebook/page[@name='internal_notes']" position="after">
+					<page string="Logs">
+						<group>
+							<field name="m2m" nolabel="1">
+								<tree editable="bottom">
+									<field name='display_lead' required="1"/>
+									<field name='notes'/>
+								</tree>
+							</field>
+						</group>
+					</page>
+				</xpath>
+		</field>
+	</record>
+	
+	
+        
+	  <record id="view_inheritance_sale_order" model="ir.ui.view">
+            <field name="name">first.view.inheritances</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//field[@name='date_order']" position= "after">
+					<field name ="shipment"/>
+				</xpath>
+				<xpath expr="//field[@name='partner_id']" position= "after">
+					<field name ="internal_sale"/>
+				</xpath>
+				<xpath expr="//field[@name='user_id']" position= "attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='client_order_ref']" position= "attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='date_order']" position= "replace">
+					<field name ="date_order" string="Sale Date"/>
+				</xpath>
+			</field>
+		</record>
+    	
+    	<record id="view_inheritance_sale_order1" model="ir.ui.view">
+            <field name="name">first.view.inheritancess</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_leads"/>
+            <field name="arch" type="xml">
+				<xpath expr="//field[@name='user_id']" position= "after">
+					<field name ="account_type"/>
+				</xpath>
+				<xpath expr="//notebook/page[@string='Internal Notes']" position="after">
+					<page string="Primary Contact and Details">
+					<group>
+						<field name="primary_name"/>
+						<field name="primary_phone"/>
+						<field name="primary_email"/>
+						<field name="2nd_name"/>
+						<field name="2nd_phone"/>
+						<field name="2nd_email"/>
+						</group>
+						</page>
+					<page string="JJuice Internal Info">
+						<group>
+							<field name="date_field"/>
+							<field name="how_met"/>
+							<field name="lead_type"/>
+						</group>
+                   	</page>
+                   	<page string="Logs">
+						<group>
+							<field name="logs" nolabel="1">
+								<tree editable="bottom">
+									<field name="display_partner" required="1"/>
+									<field name="notes"/>
+								</tree>
+							</field>	
+						</group>
+                  </page>
+				</xpath>
+			</field>
+		</record>
+		
+		<!-- Rename the menu of sale  from Quotation to Consignment -->
+		<!-- i have add only sale.id of menu not more than that -->
+		  <record id="action_quotations" model="ir.actions.act_window">
+            <field name="name">Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="domain">[('state','in',('draft','sent','cancel'))]</field>
+        </record>
+
+        <menuitem id="sale.menu_sale_quotations"
+                action="action_quotations" parent="base.menu_sales"
+                sequence="5"/>
+                
+        <!-- use sale order menu and adding domain in  state field  -->        
+      	<record id="action_orders" model="ir.actions.act_window">
+            <field name="name">Sales Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel','done'))]</field>
+        </record>
+
+        <menuitem action="action_orders" id="sale.menu_sale_order" parent="base.menu_sales" sequence="6" groups="base.group_sale_salesman,base.group_sale_manager"/>
+          
+          <!-- this view inherit the sale order tree view and add the string in state field "State" -->      
+         <record id="view_inheritance_sale_order_tree" model="ir.ui.view">
+            <field name="name">first.view.state</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+	            <xpath expr="//tree/field[@name='state']" position='replace'>
+	            	<field name='state' string='State'/>
+	            </xpath>
+            </field>
+         </record>
+                   
+
+	</data>	
+</openerp>		

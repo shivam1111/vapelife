@@ -1,0 +1,174 @@
+<openerp>
+	<data>
+        <record id="rate_request_form" model="ir.ui.view">
+            <field name="name">Track Shipment Number</field>
+            <field name="model">rate.fedex.request</field>
+            <field name="arch" type="xml">
+            	<form string = "Rate Request">
+            		<header>
+            			<button string="Get Rates" name="get_rates" type="object" class="oe_highlight"/>
+            			<button string = "Create Shipment" name = "create_shipment" type = "object" class = "oe_highlight" />
+            		</header>
+            		<sheet>
+						<group string = "Response" attrs = "{'invisible':[('response','=',False)]}">
+							<field name = "response" nolabel="1" readonly="1"/>
+						</group>
+						<group>
+							<group string = "Shipper">
+								<field name = "from_country"/>
+								<field name = "from_postal_code" />
+								<field name = "from_residential" />
+							</group>
+							<group string = "Recipient">
+								<field name = "recipient_id" />
+								<field name = "to_country"/>
+								<field name = "to_postal_code" />
+								<field name = "to_residential" />
+							</group>							
+						</group>
+						<group string = "Other Info">
+							<group>
+								<field name = "dropoff_type" />
+								<field name = "service_type" />
+								<field name = "packaging_type" />
+							</group>
+							<group>
+								<field name = "include_duties" />
+								<field name = "payor" />
+								<field name = "B13AFilingOption" />
+							</group>
+						</group>
+						<group string = "Special Services" >
+							<group>
+								<field name = "special_services_type" />
+								<field name = "cod_currency" attrs = "{'invisible':[('special_services_type','!=','COD')],'required':[('special_services_type','=','COD')]}" /> 
+								<field name = "cod_collection_type" attrs = "{'invisible':[('special_services_type','!=','COD')],'required':[('special_services_type','=','COD')]}" />
+							</group>
+						</group>
+						<field name = "to_country_code" invisible="1" />
+						<notebook>
+							<page string = "Packages" >
+								<group>
+									<field name = "package_ids" nolabel="1">
+									<form string = "Packages Details" >
+										<group col="6">
+											<group>
+												<field name = "cod_amount" />
+											</group>
+											<group>
+												<field name = "weight" col = "2" class = "oe_inline"/>
+											</group>
+											<group>
+												<field name = "units" col="2" string = "Weight Unit" class = "oe_inline"/>												
+											</group>
+										</group>						
+										<group string = "Dimensions" col="6">
+											<group col = "6" >
+												<div>
+													<strong><label for="dimension"  /></strong>
+													<field name = "dimension" nolabel="1"/>
+												</div>
+												<div>
+													<strong><label for="width"  /></strong>
+													<field name = "width" nolabel="1" />												
+												</div>
+												<div>
+													<strong><label for="height"  /></strong>
+													<field name = "height" nolabel="1" />												
+												</div>
+												<div>
+													<strong><label for="length"  /></strong>
+													<field name = "length" nolabel="1" />												
+												</div>
+												<div>
+													<strong><label for="dim_units"  /></strong>
+													<field name = "dim_units"  nolabel="1" />												
+												</div>
+											</group>
+										</group>
+										<group string = "Packaging" col="4">
+											<group>
+												<field name = "physical_packaging"  />
+											</group>
+											<group>
+												<field name = "group_package_count" />
+											</group>
+											
+										</group>
+									</form>
+									<tree string = "Packages Details" >
+										<field name = "weight" />
+										<field name = "units" string = "Weight Unit"/>
+										<field name = "dimension" />
+										<field name = "length" />
+										<field name = "width" />
+										<field name = "height" />
+										<field name = "dim_units" />
+										<field name = "physical_packaging" />
+										<field name = "group_package_count" />
+									</tree>
+									</field>
+								</group>
+							</page>
+							<page string = "International Shipment" attrs = "{'invisible':[('to_country_code','=','US')]}">
+								<group>
+									<field name = "customs_value" />
+									<field name = "customs_currency" />								
+								</group>
+								<label for="commodity_lines" string = "Commodities"/>
+								<field name = "commodity_lines">
+									<form string = "Commodity Detail">
+										<group col="6">
+											<group>
+												<field name = "name" />
+												<field name = "description" />
+												<field name = "number_of_peices" />
+												<field name = "country_of_manufacture" />									
+											</group>
+											<group>
+												<label for = "quantity" string = "Quantity"/>
+												<div class="address_format">
+													<field name = "quantity"/>
+													<field name = "quantity_units" />										
+												</div>																		
+												<label for = "weight" string = "Weight"/>
+												<div class="address_format">
+													<field name = "weight"/>
+													<field name = "weight_unit" />										
+												</div>																													
+											</group>
+											<group>
+												<field name = "unit_price" />
+												<field name = "customs_value" />
+												<field name = "harmonized_code" />
+											</group>									
+										</group>
+									</form>								
+									<tree string = "Commodity Lines">
+										<field name = "name" />									
+									</tree>
+								</field>
+							</page>							
+						</notebook>
+            		</sheet>
+	                <footer>
+	                    <button string="Get Rates" name="get_rates" type="object" class="oe_highlight"/>
+	                    or
+	                    <button string="Done" class="oe_link" special="cancel"/>
+	                </footer>
+            	</form>
+            </field>
+		</record>
+
+      <record id="action_fedex_rate_request" model="ir.actions.act_window">
+            <field name="name">Rate Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rate.fedex.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name = "target">new</field>
+      </record>
+      <menuitem id = "child_child_fedex_rate_request" sequence="102" parent = "child_fedex_account_menu" action = "action_fedex_rate_request" />		
+		
+	</data>
+</openerp>

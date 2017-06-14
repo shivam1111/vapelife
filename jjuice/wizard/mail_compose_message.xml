@@ -1,0 +1,19 @@
+<openerp>
+	<data>
+		<record id = "optional_emails" model = "ir.ui.view">
+        <field name="name">mail.compose.message</field>
+        <field name="model">mail.compose.message</field>
+        <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+        <field name="arch" type="xml">
+			<xpath expr = "/form/group/div/field[@name = 'partner_ids']" position = "attributes">
+				<attribute name = "on_change">on_change_update_optional_emails(partner_ids)</attribute>
+				<!-- <label for = "update_optional_emails" /> -->
+				<!-- <field name = "update_optional_emails" on_change = "on_change_update_optional_emails(partner_ids)"/> -->
+			</xpath>
+			<xpath expr = "/form/group/div/field[@name = 'partner_ids']" position = "after">
+					<field name = "partner_multi_emails" />
+			</xpath>
+ 		</field>			
+		</record>
+	</data>
+</openerp>

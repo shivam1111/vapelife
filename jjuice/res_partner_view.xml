@@ -1,0 +1,129 @@
+<openerp>
+	<data>
+		  <record id="inheritance_res_partner_order" model="ir.ui.view">
+            <field name="name">first.view.inheritancess</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr = "/form/sheet" position = "before">
+<!--              		<header>
+						<button name = "call_view_jjuice" string = "Place Order" type="object"/>       			
+            		</header> -->  <!-- Depricated because the whole interface is now in the customer tab itself, This is just for reference-->
+            	</xpath>
+				<xpath expr = "/form/sheet" position = "inside">
+					  <widget type="jjuice" context = "{'id':price}"/> 
+				</xpath>
+				
+				<xpath expr = "/form/sheet/group/group/field[@name='title']" position ="replace"/>
+				<xpath expr = "/form/sheet/group/group/field[@name='email']" position ="after">
+					<field name = "email_multi_to">
+						<tree string = "Emails" editable = "top">
+							<field name = "email" />
+						</tree>
+					</field>
+				</xpath>
+
+                <xpath expr="//div[@name='buttons']" position="inside">
+                    <button class="oe_inline oe_stat_button" type="action" name="%(sale.act_res_partner_2_sale_order)d" 
+                        attrs="{'invisible': [('leads', '=', False)]}"
+                        icon="fa-strikethrough">
+                        <field string="Quotations" name="draft_order_count" widget="statinfo"/>
+                    </button>     
+                </xpath>
+				
+				<xpath expr="//notebook/page[@name='internal_notes']" position="after">
+					<page string = "Prices">
+						<field name = "volume_prices" nolabel = "1">
+							<tree string = "Volume Prices" editable = "bottom" >
+								<field name ="product_attribute" context = "{'jjuice':True}"/>
+								<field name = "price"/>
+							</tree>
+						</field>
+					</page>
+					<page string="Order">
+						<group>
+							<field name="order" nolabel="1">
+								<form>
+								<group>
+									<field name='name'/>
+									<field name='res_partner'/>
+									<field name='order_date'/>
+									<field name='ref'/>
+								</group>
+									<notebook>
+										<page string="10 ML">
+											<group>
+												<field name='10_ml' nolabel="1">
+													<tree editable="bottom">
+															<field name='product_id'/>
+															<field name='quantity'/>
+															<field name='unit_price'/>
+															<field name='sub_total'/>
+													</tree>
+												</field>
+											</group>
+										</page>
+										<page string="350 ML">
+											<group>
+												<field name='350_ml' nolabel="1">
+													<tree editable='bottom'>
+															<field name='product_id'/>
+															<field name='quantity'/>
+															<field name='unit_price'/>
+															<field name='sub_total'/>
+														</tree>
+												</field>
+											</group>
+										</page>
+									</notebook>
+								</form>
+							</field>
+						</group>
+					</page>
+				</xpath>
+		</field>
+		</record>
+		
+		<record id="inheritance_res_partner_lead" model="ir.ui.view">
+            <field name="name">first.view.inheritancess.lead</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="/form/sheet/notebook/page[@name='sales_purchases']/group/group/field[@name='supplier']" position='after'>
+					<field name='leads'/>
+				</xpath>
+            </field>
+        </record>
+        
+        <record id='search_view_lead' model='ir.ui.view'>
+			<field name="name">Leads</field>
+			<field name='model'>res.partner</field>
+			<field name="inherit_id" ref="base.view_res_partner_filter"/>
+			<field name='arch' type='xml'>
+				<xpath expr ="/search/filter[@name='customer']" position = "after">
+	           		<filter string="Potential Customer" name="leads" domain="[('leads','=',1)]" help="Potential Customers"/>
+	        	</xpath>
+			</field>
+		</record>    
+		    
+        <record id="action_partner_lead" model="ir.actions.act_window">
+            <field name="name">Leads</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{"search_default_leads":1,"filter":True}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a customer; discussions, history of business opportunities,
+                documents, etc.
+              </p>
+            </field> 
+        </record>
+        
+		<menuitem id='lead_menuitem' sequence="2" name='Leads/Potential Customers' parent='base.menu_sales' action="action_partner_lead" />
+	</data>
+</openerp>

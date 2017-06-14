@@ -1,0 +1,10 @@
+<openerp>
+	<data noupdate="0">
+		<record id = "django_website_sale_order_tags" model = "crm.case.categ">
+			<field name = "name">Website</field>
+		</record>
+		<record id = "django_website_sale_order_source" model = "crm.tracking.source">
+			<field name = "name">Website</field>
+		</record>		
+	</data>
+</openerp>

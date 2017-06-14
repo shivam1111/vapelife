@@ -1,0 +1,60 @@
+<openerp>
+	<data>
+        <record id="nmi_transactions_form_view" model="ir.ui.view">
+            <field name="name">NMI Transactions</field>
+            <field name="model">nmi.transactions</field>
+            <field name="arch" type="xml">
+        		<form string = "NMI Transactions" edit="0" create="0"> 
+        			<sheet>
+	                    <div class="">
+	                        <label for="name" />
+	                        <h1>
+	                            <field name="name"  readonly="1"/>
+	                        </h1>
+	                    </div>        			
+        				<group>
+        					<group>
+        						<field name = "partner_id" />
+        						<field name = "transaction_id" />
+        						<field name = "response_code" />
+        						<field name = "amount" />
+        					</group>
+        					<group>
+        						<field name = "vault_id" />
+        						<field name = "invoice_id" />
+        						<field name = "remarks" />
+        						<field name = "created_time" />
+        					</group>
+        				</group>
+        			</sheet>
+        		</form>
+            </field>
+        </record>	
+
+        <record id="nmi_transactions_tree_view" model="ir.ui.view">
+            <field name="name">NMI Transactions</field>
+            <field name="model">nmi.transactions</field>
+            <field name="arch" type="xml">
+        		<tree string = "NMI Transactions" edit="0" create="0">
+                    <field name="name"  readonly="1"/>
+  					<field name = "partner_id" />
+  					<field name = "amount" />
+  					<field name = "response_code" />
+  					<field name = "remarks" />
+        		</tree>
+            </field>
+        </record>	        
+        
+        <record id = "action_nmi_transactions" model="ir.actions.act_window">
+            <field name="name">NMI Transactions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">nmi.transactions</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+      </record>
+      
+      <menuitem id = "nmi_payment_transactions_menu" parent = "child_nmi_menu_main" action = "action_nmi_transactions" 
+      groups = "payment_nmi.group_nmi_transactions" />
+      	
+	</data>
+</openerp>

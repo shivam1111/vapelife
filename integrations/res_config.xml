@@ -1,0 +1,6 @@
+<openerp>
+	<data>
+		<menuitem id = "integration_setting_main_menu" parent = "integrations_menu" sequence="100" name = "Settings"  
+      	groups = "integrations.group_integrations_settings" />
+	</data>
+</openerp>

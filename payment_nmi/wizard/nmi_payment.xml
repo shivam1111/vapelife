@@ -1,0 +1,52 @@
+<openerp>
+	<data>
+        <record id="nmi_payment_wizard_form" model="ir.ui.view">
+            <field name="name">Make Payment</field>
+            <field name="model">nmi.payment.wizard</field>
+            <field name="arch" type="xml">
+				<form string = "Make Payment">
+					<header>
+						<button string = "Get Vault Details" type = "object" name = "get_vault_details" class = "oe_highlight"/>
+						<button string = "Make Payment" type = "object" name = "make_payment" class = "oe_highlight"/>
+					</header>
+					<sheet>
+						<group>
+							<field name = "invoice_id"  invisible="context.get('default_invoice_id',False) or context.get('hide_invoice',False)"
+							readonly = "context.get('read_invoice_id',False)"
+							domain = "[('type','=','out_invoice'),('state','=','open')]"/>
+							<field name = "partner_id" readonly = "context.get('read_partner_id',False)"/>
+							<field name = "register_payment" attrs = "{'invisible':[('invoice_id','=',False)]}" />
+							<field name = "invoice_balance" attrs = "{'invisible':[('invoice_id','=',False)]}" />
+							<field name = "diff_balance" attrs = "{'invisible':[('invoice_id','=',False)]}" />							
+						</group>
+						<group>
+								<field name = "line_ids" nolabel = "1">
+									<tree string = "Payment Lines" editable="top">
+										<field name = "active" />
+										<field name = "vault_id" readonly="1" />
+										<field name = "cc_number" readony = "1" />
+										<field name = "cc_exp" readonly="1" />
+										<field name = "amount" />
+									</tree>
+								</field>
+						</group>
+					</sheet>
+				</form>
+            </field>
+        </record>
+      <record id = "action_make_payment_wizard_nmi" model="ir.actions.act_window">
+            <field name="name">Pay by NMI</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">nmi.payment.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name = "target">new</field>
+            <field name = "view_id" ref = "nmi_payment_wizard_form" />
+      </record>
+      
+      <menuitem id = "menu_make_payment_wizard_nmi" parent = "child_nmi_menu_main" action = "action_make_payment_wizard_nmi" 
+      groups = "payment_nmi.group_nmi_transactions" />       	        
+        
+        
+	</data>
+</openerp>

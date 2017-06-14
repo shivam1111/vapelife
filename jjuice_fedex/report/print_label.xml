@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<template id="report_print_label">
+		    <t t-call="report.external_layout">
+		    	<t  t-foreach="docs" t-as='o'>
+			        <div class="page">
+			            <div class="oe_structure"/>
+			            	<t t-foreach="o.package_ids" t-as="package">
+			            		<t t-if = "package.label">
+			            			<image t-att-src="'data:image/png;base64,%s' % package.label"/>
+			            		</t>
+			            	</t>
+			            <div class="oe_structure"/>		        	
+			        </div>		    	
+		    	</t>
+		    </t>
+		</template>
+        <report 
+            id="report_fedex_print_label"
+            string="Print Labels"
+            model="create.shipment.fedex" 
+            report_type="qweb-pdf"
+            file="jjuice_fedex.print_label" 
+            name="jjuice_fedex.report_print_label" 
+            attachment = "'Master_'+(object.date or 'unavailable')+'_'+(object.to_person_name or 'unavailable')+'_'+(object.tracking_number or 'unavailable')+'.pdf'"
+        />
+	</data>
+</openerp>

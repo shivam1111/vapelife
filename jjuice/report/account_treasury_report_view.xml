@@ -1,0 +1,15 @@
+<openerp>
+	<data>
+	  <record id="view_inheritance_account_treasury" model="ir.ui.view">
+		<field name="name">account.treasury.report</field>
+		<field name="model">account.treasury.report</field>
+		<field name="inherit_id" ref="account.view_account_treasury_report_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr = "/tree/field[@name='period_id']" position = "after">
+				<field name = "partner_id"/>
+				<field name = "account_type"/>
+		   	</xpath>
+		</field>
+  	 </record>		
+	</data>
+</openerp>

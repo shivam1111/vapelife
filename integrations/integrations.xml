@@ -1,0 +1,5 @@
+<openerp>
+	<data>
+		<menuitem id = "integrations_menu" name = "Integrations"  groups="integrations.group_integrations_settings"/>
+	</data>
+</openerp>

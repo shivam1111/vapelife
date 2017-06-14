@@ -1,0 +1,110 @@
+<openerp>
+	<data>
+		<record id = "product_attribute_value_forms" model= "ir.ui.view">
+			<field name="name">product.attribute.value.form</field>
+			<field name="model">product.attribute.value</field>
+			<field name="priority" eval="1000"/>
+			<field name="arch" type="xml">
+				<form string="Volumes">
+					<sheet>
+						<group>
+							<group>
+								<field name="name" string="Name"/>
+								<field name = "weight" />
+								<field name = "ratio" />
+							</group>
+							<group>
+								<field name = "msrp" />
+								<field name = "wholesale_price" />
+								<field name = "old_price" />
+								<field name = "sequence" />
+								<!-- <field name = "url" widget="url" /> -->
+							</group>
+						</group>
+						<notebook>
+							<page string = "Category Image">
+								<group>
+									<field name = "file_name_category" />
+								</group>
+								<group>
+									<field name = "category_datas" filename="file_name_category" widget="image" nolabel="1" readonly="0"/>
+								</group>
+							</page>						
+							<page string = "Drop Down List Image">
+								<group>
+									<field name = "file_name" />
+								</group>
+								<group>
+									<field name = "datas" filename="file_name" widget="image" nolabel="1" readonly="0"/>
+								</group>
+							</page>
+							<page string = "Banner" >
+								<group>
+									<field name = "banner_file_name" />
+								</group>
+								<group>
+									<field name = "banner_datas" filename="banner_file_name" widget="image" nolabel="1" readonly="0"/>
+								</group>
+							</page>
+						</notebook>
+					</sheet>				
+				</form> 
+			</field>
+		</record> 
+		<record id = "product_attribute_value_tree" model= "ir.ui.view">
+			<field name="name">product.attribute.value.tree</field>
+			<field name="model">product.attribute.value</field>
+			<field name="priority" eval="1000"/>
+			<field name="arch" type="xml" >
+				<tree string = "Volumes" >
+					<field name = "sequence" widget="handle" />
+					<field name = "name" string = "Name" />
+				</tree>
+			</field>
+		</record>
+			
+		<record id = "product_attribute_value_search" model= "ir.ui.view">
+			<field name="name">product.attribute.value.search</field>
+			<field name="model">product.attribute.value</field>
+			<field name="arch" type="xml">
+				<search string="Student Information">
+					<field name="name" />
+					<field name = "attribute_id" />
+					<filter name="fil_by_volume" string="Volume" domain="[('attribute_id','=',%(jjuice.attribute_vol)d)]"
+						help="Display only Volume Attributes" />
+				</search>				 
+			</field>
+		</record>		 	
+		
+		<record model="ir.actions.act_window" id="product_attribute_value_action">
+			<field name="name">Volumes</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">product.attribute.value</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="product_attribute_value_search"/>
+			<field name="context">{'search_default_fil_by_volume':1}</field>
+		</record>
+
+ 		<record id="product_attribute_value_view_tree_website" model="ir.actions.act_window.view">
+		    <field eval="1" name="sequence"/>
+		    <field name="view_mode">tree</field>
+		    <field name="view_id" ref="product_attribute_value_tree"/>
+		    <field name="act_window_id" ref="product_attribute_value_action"/>
+		</record>		
+
+ 		<record id="product_attribute_value_view_form_website" model="ir.actions.act_window.view">
+		    <field eval="2" name="sequence"/>
+		    <field name="view_mode">form</field>
+		    <field name="view_id" ref="product_attribute_value_forms"/>
+		    <field name="act_window_id" ref="product_attribute_value_action"/>
+		</record>		
+	
+		<menuitem  
+			id="website_volumes_link"
+			parent="django_panel.django_main_menu_website_elements_view"
+			groups="base.group_user"
+			action="product_attribute_value_action"
+			/>		
+	</data>
+</openerp>

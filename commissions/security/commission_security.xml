@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="0">
+	    <record id="commission_calculator" model="res.groups">
+	        <field name="name">Commission Calculator</field>
+	    </record>
+	</data>
+	<data noupdate="0">
+	    <record id="commission_archive_access_manager" model="ir.rule">
+	        <field name="name">Commission Archives Access</field>
+	        <field name="model_id" ref="model_account_commissions_archive"/>
+	        <field name="groups" eval="[(4, ref('base.group_hr_manager'))]"/>
+	        <field name="domain_force">[(1,'=',1)]</field>
+	    </record>
+
+	    <record id="commission_archive_access_user" model="ir.rule">
+	        <field name="name">Commission Archives Access</field>
+	        <field name="model_id" ref="model_account_commissions_archive"/>
+	        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+	        <field name="domain_force">[('user','=',user.id)]</field>
+	    </record>	    
+	</data>	
+	
+</openerp>

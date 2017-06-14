@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<template id="assets_backend" name="jjuice assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/jjuice/static/src/js/jjuice.js"></script>
+                <script type="text/javascript" src="/jjuice/static/src/js/interface.js"></script>
+                <script type="text/javascript" src="/jjuice/static/src/js/marketing_package.js"></script>
+                <script type="text/javascript" src="/jjuice/static/src/lib/bootbox.min.js"></script>
+                <link rel="stylesheet" href="/jjuice/static/src/css/tabcontent.css"/>
+            </xpath>
+        </template>
+        
+        <!-- This has not been deleted just to demonstrate how custom actions are created -->
+        <record model="ir.actions.client" id="action_client_graph">
+            <field name="name">JJuice</field>
+            <field name="tag">interface.action</field>
+        </record>
+    </data>
+</openerp>

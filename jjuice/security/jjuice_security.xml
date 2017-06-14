@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="0">
+	
+	<!-- Sales Manager should be able to see all the contacts -->
+    <record id="sale_manager_all_res_partners_rule" model="ir.rule">
+        	<field name="name">All Partner Access</field>
+     		 <field name="model_id" ref="model_res_partner"/>
+	        <field name="domain_force">[(1, '=' ,1)]</field>
+	        <field name="groups" eval="[(4,ref('base.group_sale_manager'))]"/>
+	    	<field name="perm_read" eval="True"/>
+    </record>	
+	
+    <!-- Sales man should be able to access his own user details to create invoice and sales order -->
+    <record id="sale_user_own_res_users_rule" model="ir.rule">
+        	<field name="name">Own User</field>
+     		 <field name="model_id" ref="base.model_res_users"/>
+	        <field name="domain_force">[('id', '=' ,user.id)]</field>
+	        <field name="groups" eval="[(4,ref('base.group_sale_salesman'))]"/>
+	    	<field name="perm_read" eval="True"/>
+    </record>
+	    	
+	<!-- Sales man should see their own customers or partners -->
+	<record id="jjuice_see_own_partners" model="ir.rule">
+	        <field name="name">See own Customers</field>
+	        <field ref="model_res_partner" name="model_id"/>
+	        <field name="domain_force">[('user_id', '=' ,user.id)]</field>
+	        <field name="groups" eval="[(4,ref('base.group_sale_salesman'))]"/>
+	    	<field name="perm_read" eval="True"/>
+	    	<field name="perm_write" eval="True"/>
+	    	<field name="perm_create" eval = "True"/>
+	    </record> 
+
+	<!-- Sales man should see their own Invoices -->
+	    <record id="jjuice_see_own_invoices" model="ir.rule">
+	        <field name="name">See own Invoices</field>
+	        <field ref="model_account_invoice" name="model_id"/>
+	        <field name="domain_force">[('user_id', '=' ,user.id)]</field>
+	        <field name="groups" eval="[(4,ref('account.group_account_invoice'))]"/>
+	    	<field name="perm_read" eval="True"/>
+	    	<field name="perm_write" eval="True"/>
+	    	<field name="perm_create" eval = "True"/>	    	
+	    </record>	    	    
+	</data>
+	<data noupdate="0">
+	    <record id="access_account_state_field" model="res.groups">
+	        <field name="name">Toxic Accounts Declaration Right</field>
+	    </record>		
+
+	    <record id="payment_verification_access" model="res.groups">
+	        <field name="name">Payment Verification Access</field>
+	    </record>		
+	    
+	</data>
+</openerp>

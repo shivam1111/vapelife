@@ -1,0 +1,15 @@
+<openerp>
+	<data>
+		<record id = "fedex_message_form" model = "ir.ui.view">
+            <field name="name">Message</field>
+            <field name="model">fedex.message</field>
+            <field name="arch" type="xml">
+           		<form string = "Message">
+           			<h3>
+           				<field name = "name" readonly="1" />
+           			</h3>
+           		</form>
+            </field>		
+		</record>
+	</data>
+</openerp>
