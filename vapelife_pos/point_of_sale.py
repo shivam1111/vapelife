@@ -116,11 +116,10 @@ class pos_order_line(models.Model):
     _description = "Lines of Point of Sale"
 
 
-    product_mix_a_id =  fields.Many2one('product.product', 'Product A', domain=[('sale_ok', '=', True)], required=True,
-                                  change_default=True)
+    product_mix_a_id =  fields.Many2one('product.product', 'Product A', domain=[('sale_ok', '=', True)])
 
 
-    product_mix_b_id = fields.Many2one('product.product', 'Product B', domain=[('sale_ok', '=', True)], required=True,
-                                   change_default=True)
+
+    product_mix_b_id = fields.Many2one('product.product', 'Product B', domain=[('sale_ok', '=', True)])
 
     mixture = fields.Selection(_MIXTURE)
