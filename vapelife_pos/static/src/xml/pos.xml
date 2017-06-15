@@ -48,7 +48,7 @@
                 border-radius: 5px 5px 0 0;
             }
         </style>
-        <button class = "paypad-button">JJuice Bars</button>
+        <button class = "paypad-button">Juice Bar</button>
     </t>
 
     <t t-name="mixture_options">

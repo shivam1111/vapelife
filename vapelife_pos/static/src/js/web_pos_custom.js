@@ -7,7 +7,21 @@ openerp.vapelife_pos = function(instance) {
     var round_pr = instance.web.round_precision;
     var cash_register = {};
     var mixture_options = [['quarter','Quarter'],['half','Half'],['three_quarters','Three Quarters'],['full','Full']]
-//$(QWeb.render('ClientDetailsEditNewModify',{widget:self.pos_widget.clientlist_screen, partner:self.pos.db.partner_by_id[custmer_id]}));
+
+    module.ProductListWidget.include ({
+        init:function(parent, options) {
+            var self = this;
+            this._super(parent,options);
+            this.click_product_handler = function(event){
+                var product = self.pos.db.get_product_by_id(this.dataset['productId']);
+                if (product.is_bar){
+                    self.pos_widget.screen_selector.show_popup('jjuicebarspopup',{'product':product})
+                }else{
+                    options.click_product_action(product);
+                }
+            };
+        },
+    })
     module.PosModel = module.PosModel.extend({
         models: [
             {
@@ -280,16 +294,20 @@ openerp.vapelife_pos = function(instance) {
         set_discount: function(discount){
             var self = this;
             var disc = Math.min(Math.max(parseFloat(discount) || 0, 0),100);
-            if (disc > 20){
-                self.pos.pos_widget.screen_selector.show_popup('error',{
-                    'message': _t('Warning!'),
-                    'comment': _t('Cannot exceed 20% discount.'),
-                });
-                return
-            }
-            this.discount = disc;
-            this.discountStr = '' + disc;
-            this.trigger('change',this);
+            // get the user group
+            var user_model = new instance.web.Model("res.users");
+            user_model.call("has_group",["point_of_sale.group_pos_manager"]).done(function(is_manager){
+                if (!is_manager && disc > 20){
+                    self.pos.pos_widget.screen_selector.show_popup('error',{
+                        'message': _t('Warning!'),
+                        'comment': _t('Cannot exceed 20% discount.'),
+                    });
+                    return
+                }
+                self.discount = disc;
+                self.discountStr = '' + disc;
+                self.trigger('change',self);
+            })
         },
         get_product_mix_a_id:function(){
             return this.product_mix_a_id;
@@ -324,19 +342,6 @@ openerp.vapelife_pos = function(instance) {
             this.def1 = data_model.call('get_object_reference',['jjuice','attribute_12']);
             this.def2 = data_model.call('get_object_reference',['jjuice','attribute_0']);
             this.def3 = data_model.call('get_object_reference',['jjuice','attribute_350ml']);
-
-//            new instance.web.Model('res.partner')
-//            .query([])
-//            .filter([['customer','=',true],['write_date','>',this.db.get_partner_write_date()]])
-//            .all({'timeout':3000, 'shadow': true})
-//            .then(function(partners){
-//                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
-//                    def.resolve();
-//                } else {
-//                    def.reject();
-//                }
-//            }, function(err,event){ event.preventDefault(); def.reject(); });
-
         },
         get_product_image_url: function(product){
             return window.location.origin + '/web/binary/image?model=product.product&field=image_medium&id='+product.id;
@@ -444,12 +449,16 @@ openerp.vapelife_pos = function(instance) {
         get_display_name:function(product){
             var self = this;
             var name = product.display_name;
-            if (self.model.get('product_mix_a_id')){
-                name = name + '(' + self.pos.db.product_by_id[self.model.get('product_mix_a_id')].display_name + ')';
-            }
-            if (self.model.get('product_mix_b_id')){
-                name = name + '(' + self.pos.db.product_by_id[self.model.get('product_mix_b_id')].display_name + ')';
-            }
+//            try{
+                if (self.model.get('product_mix_a_id')){
+                    name = name + ' - ' + self.pos.db.product_by_id[self.model.get('product_mix_a_id')].display_name.split(" ")[0];
+                }
+                if (self.model.get('product_mix_b_id')){
+                    name = name + ' / ' + self.pos.db.product_by_id[self.model.get('product_mix_b_id')].display_name.split(" ")[0];
+                }
+//            }catch(err){
+                //pass
+//            }
             return name;
 
         },
@@ -506,14 +515,15 @@ openerp.vapelife_pos = function(instance) {
             this.wrapper = $('<div class="wrapper"></div>');
             this.wrapper.prependTo(self.$el.find("div.popup.jjuicebarspopup"))
             this.header.appendTo(self.$el.find("div.footer"))
-//            this.product_mix_a_id = options.product_mix_a_id;
-//            this.product_mix_b_id = options.product_mix_b_id;
-//            this.mixture = 'quarter'
             $.when(self.def1,self.def2,self.def3).done(function(conc_12_id,conc_0_id,vol_350_id){
                 var products1 = self.render_step1({})
                 _.each(products1,function(product1){
+                    if (options.hasOwnProperty('product')){
+                        if (options.product.id == $(product1).data('product-id')){
+                            $(product1).css("border","orange solid 5px")
+                        }
+                    }
                     product1.on('click',function(){
-                        console.log(product1)
                         self.model.set({'product_id':$(this).data('product-id')})
                         // get product id $(this).data('product-id')
                         var products2 = self.render_step2(conc_0_id,vol_350_id,{});
