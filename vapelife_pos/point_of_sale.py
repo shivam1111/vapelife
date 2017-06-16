@@ -139,7 +139,8 @@ class pos_order(models.Model):
                 tax_amount = -line.price_subtotal * tax['ref_base_sign']
 
             return (tax_code_id, tax_amount,)
-
+        order_amount_total = 0.00
+        order_currency_amount_total = 0.00
         for order in self.browse(cr, uid, ids, context=context):
             if order.account_move:
                 continue
@@ -236,7 +237,6 @@ class pos_order(models.Model):
                 for t in line.product_id.taxes_id:
                     if t.company_id.id == current_company.id:
                         taxes.append(t)
-                print "=======================line.price_unit",line.price_unit
                 computed_taxes = \
                 account_tax_obj.compute_all(cr, uid, taxes, line.price_unit * (100.0 - line.discount) / 100.0, line.qty)[
                     'taxes']
@@ -251,11 +251,8 @@ class pos_order(models.Model):
                     group_tax.setdefault(group_key, 0)
                     group_tax[group_key] += cur_obj.round(cr, uid, cur, tax['amount']) if round_per_line else tax['amount']
 
-                print "=====================conversion factor",conversion
                 amount = line.price_subtotal
-                print "=======================amount before conversion",amount
                 amount = amount * conversion
-                print "=====================================amount after conversion",amount
                 # Search for the income account
                 if line.product_id.property_account_income.id:
                     income_account = line.product_id.property_account_income.id
@@ -276,7 +273,6 @@ class pos_order(models.Model):
                     # If there is one we stop
                     if tax_code_id:
                         break
-
                 vals = {
                     'name': line.product_id.name,
                     'quantity': line.qty,
@@ -334,7 +330,6 @@ class pos_order(models.Model):
                     'partner_id': order.partner_id and self.pool.get("res.partner")._find_accounting_partner(
                         order.partner_id).id or False
                 })
-
             vals = {
                 'name': _("Trade Receivables"),  # order.name,
                 'account_id': order_account,
@@ -349,7 +344,7 @@ class pos_order(models.Model):
                 vals.update({
                     'credit': counterpart_amount_credit,
                     'debit': counterpart_amount_debit,
-                    'amount_currency':((order.amount_total > 0) and order.amount_total) or 0.0,
+                    'amount_currency':counterpart_amount_debit/conversion,
                     'currency_id':from_currency.id,
                 })
             # counterpart
