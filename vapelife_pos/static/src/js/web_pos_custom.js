@@ -359,9 +359,12 @@ openerp.vapelife_pos = function(instance) {
         render_step1:function(options){
             var self = this;
             var products = []
-            self.set_heading("Select Volume of JJuice Bar");
+            self.set_heading("Select Volume of Juice Bar");
             self.product_list_widget = $(QWeb.render('ProductListWidget',{}));
             self.product_list_widget.appendTo(self.wrapper);
+            console.log(self.product_list_widget);
+            self.product_list_widget.css('top','45px')
+            self.product_list_widget.css('bottom','60px')
             _.each(self.jjuice_bars,function(product){
                 var product_render = self.render_product(product)
                 product_render.appendTo(self.product_list_widget.find("div.product-list"));
@@ -391,10 +394,11 @@ openerp.vapelife_pos = function(instance) {
         render_step3:function(options){
             // Render the mixture to select the composition of the mixture
             var self = this;
-            self.wrapper.empty();
+            self.product_list_widget.find("div.product-list").empty();
+//            self.wrapper.empty();
             var ratio_columns = [];
             self.set_heading("Select 0mg mix ratio");
-            self.wrapper.append("<table><tbody><tr></tr></tbody></table>");
+            self.product_list_widget.find("div.product-list").append("<table><tbody><tr></tr></tbody></table>");
             _.each(mixture_options,function(mix){
                 var mix_render = $(QWeb.render('mixture_options',{'name':mix[1],'key':mix[0]}));
                 mix_render.data('name',mix[0]);
@@ -415,21 +419,22 @@ openerp.vapelife_pos = function(instance) {
                         mix_render.find('div.fill').css('height','250');
                         break;
                 }
-                self.wrapper.find('tr').append(mix_render)
+                self.product_list_widget.find("div.product-list").find('tr').append(mix_render)
                 ratio_columns.push(mix_render);
             })
+            self.product_list_widget.css('top','0px')
+            self.product_list_widget.css('bottom','0px')
+            self.product_list_widget.find('div.product-list-scroller').css('overflow-y','hidden')
             return ratio_columns;
         },
         render_step4:function(conc_12_id,vol_350_id,options){
             var self = this;
             var products = []
+            self.product_list_widget.find("div.product-list").empty();
             if (options.mix_ratio == 'full'){
                 self.add_order_line({});
             }else{
                 self.set_heading("Select 12mg Flavor");
-                self.wrapper.empty();
-                self.product_list_widget = $(QWeb.render('ProductListWidget',{}));
-                self.product_list_widget.appendTo(self.wrapper);
                 _.each(self.pos.db.product_by_id,function(value,key){
                     if (value.vol_id[0] == vol_350_id[1] && value.conc_id[0] == conc_12_id[1]){
                         var product_render = self.render_product(value);
@@ -438,6 +443,9 @@ openerp.vapelife_pos = function(instance) {
                         products.push(product_render);
                     }
                 });
+                self.product_list_widget.css('top','45px')
+                self.product_list_widget.css('bottom','60px')
+                self.product_list_widget.find('div.product-list-scroller').css('overflow-y','auto')
             }
             return products
         },
@@ -514,7 +522,7 @@ openerp.vapelife_pos = function(instance) {
             this.header = $('<div class="header"></div>');
             this.wrapper = $('<div class="wrapper"></div>');
             this.wrapper.prependTo(self.$el.find("div.popup.jjuicebarspopup"))
-            this.header.appendTo(self.$el.find("div.footer"))
+            this.header.insertAfter(self.$el.find("div.footer"))
             $.when(self.def1,self.def2,self.def3).done(function(conc_12_id,conc_0_id,vol_350_id){
                 var products1 = self.render_step1({})
                 _.each(products1,function(product1){

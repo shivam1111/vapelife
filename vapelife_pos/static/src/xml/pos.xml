@@ -24,7 +24,7 @@
                 transition: 0.3s;
                 float:left;
                 height:340px;
-                width:125px;
+                width:122px;
             }
 
             /* On mouse-over, add a deeper shadow */
@@ -57,7 +57,7 @@
                 <div class="unfill"></div>
                 <div class="fill" style="background-color:orange;" ></div>
                 <div class="container">
-                    <h4><b><t t-esc="name"></t></b></h4>
+                    <h4 style="text-align:center;" ><b><t t-esc="name"></t></b></h4>
                 </div>
             </div>
         </td>
