@@ -69,7 +69,7 @@ class pos_order(models.Model):
                 }, context=context))
                 if line.product_id.is_bar:
                     if line.product_mix_a_id:
-                        qty_a = line.product_id.max_volume * _RATIO_DICT.get(line.mixture)
+                        qty_a = line.product_id.max_volume * _RATIO_DICT.get(line.mixture) * line.qty
                         move_list.append(move_obj.create(cr, uid, {
                             'name': line.name,
                             'product_uom': line.product_mix_a_id.uom_id.id,
@@ -84,7 +84,7 @@ class pos_order(models.Model):
                             'location_dest_id': destination_id if line.qty >= 0 else location_id,
                         }, context=context))
                         if line.mixture != "full" and line.product_mix_a_id:
-                            qty_b = line.product_id.max_volume * (1 - _RATIO_DICT.get(line.mixture))
+                            qty_b = line.product_id.max_volume * (1 - _RATIO_DICT.get(line.mixture)) * line.qty
                             move_list.append(move_obj.create(cr, uid, {
                                 'name': line.name,
                                 'product_uom': line.product_mix_b_id.uom_id.id,
