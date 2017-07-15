@@ -445,7 +445,7 @@ openerp.vapelife_pos = function(instance) {
                 });
                 self.product_list_widget.css('top','45px')
                 self.product_list_widget.css('bottom','60px')
-                self.product_list_widget.find('div.product-list-scroller').css('overflow-y','autot')
+                self.product_list_widget.find('div.product-list-scroller').css('overflow-y','auto')
             }
             return products
         },
