@@ -4,7 +4,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="JJuiceBarPopupWidget">
         <div class="modal-dialog">
-            <div class="popup jjuicebarspopup">
+            <div class="popup jjuicebarspopup" style = "top:30% !important;left:30% !important;width:1000px !important;height:700px !important;">
                 <!--<p class="message"><t t-esc=" widget.message || 'Confirm ?' " /></p>-->
                 <!--<p class="comment"><t t-esc=" widget.comment || '' "/></p>-->
                 <div class="footer">
@@ -13,6 +13,72 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </t>
+
+    <t t-name="AddNotesPopUp">
+        <div class="modal-dialog">
+            <div class="popup" >
+                <!--<p class="message"><t t-esc=" widget.message || 'Confirm ?' " /></p>-->
+                <!--<p class="comment"><t t-esc=" widget.comment || '' "/></p>-->
+
+                <textarea class="field_text" rows="6" name="order_notes_input" placeholder="Order Notes"
+                style="height: 80%;width:90%;overflow: hidden; word-wrap: break-word; resize: vertical;"></textarea>
+
+                <div class="footer">
+                    <div class="button cancel">
+                        Close
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    <t t-name="AddNoteButtonWidget">
+        <button class="paypad-button">Add Note</button>
+    </t>
+
+    <t t-name="PopUpSummary">
+        <style>
+        .table-pop {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .td-pop {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .tr-popup:nth-child(even) {
+            background-color: #dddddd;
+        }
+        </style>
+        <div>
+            <table class="table-pop">
+                <caption></caption>
+                <colgroup>
+                    <col width='70%' />
+                    <col width='20%' />
+                    <col width='10%' />
+                </colgroup>
+                <tr class="tr-popup" t-foreach="summary" t-as="line">
+                    <td class="td-pop">
+                        <t t-esc="line.name" />
+                    </td>
+                    <td class="td-pop" >
+                        <t t-if="summary.length > 1">
+                            <t t-esc="line.qty" /> / <t t-esc="total_length" />
+                        </t>
+                    </td>
+
+                    <td class="td-pop" id = "reduce" t-att-data-product-id = "line.id" style="cursor:pointer;">
+                        x
+                    </td>
+                </tr>
+            </table>
+            <button class = "button" >Submit</button>
         </div>
     </t>
 
@@ -101,6 +167,13 @@
                     <t t-esc="widget.format_currency(order.getChange())"/>
                     </td></tr>
             </table>
+            <t t-if="order.getNote()">
+                <br />
+                    <tr><td>Note:</td><td class="pos-right-align">
+                        <t t-esc="order.getNote()"/>
+                        </td>
+                    </tr>
+            </t>
             <t t-if="widget.pos.config.receipt_footer">
                 <br />
                 <div style='text-align:center'>

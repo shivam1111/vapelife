@@ -1,8 +1,6 @@
 from openerp import models, fields, api, _
 
-_MIXTURE = [('quarter','Quarter'),('half','Half'),('three_quarters','Three Quarters'),('full','Full')]
-_RATIO = [('quarter',0.25),('half',0.50),('three_quarters',0.75),('full',1)]
-_RATIO_DICT = dict(_RATIO)
+
 class product_product(models.Model):
     _inherit="product.product"
     _order = "name"
@@ -12,6 +10,18 @@ class product_product(models.Model):
 
 class pos_order(models.Model):
     _inherit="pos.order"
+
+    @api.model
+    def get_details(self):
+        res = {'conc_ids':[]}
+        conc_xml_ids = ["jjuice.attribute_12","jjuice.attribute_0"]
+        try:
+            res['conc_ids'] = [self.env.ref(i).read([])[0] for i in conc_xml_ids]
+            res['vol_350_id'] = self.env.ref('jjuice.attribute_350ml').read([])[0]
+        except Exception as e:
+            pass
+        return res
+
 
     def create_picking(self, cr, uid, ids, context=None):
         """Create a picking for each order and validate it."""
@@ -67,39 +77,23 @@ class pos_order(models.Model):
                     'location_id': location_id if line.qty >= 0 else destination_id,
                     'location_dest_id': destination_id if line.qty >= 0 else location_id,
                 }, context=context))
+                # Changes made by Shivam Goyal
                 if line.product_id.is_bar:
-                    if line.product_mix_a_id:
-                        qty_a = line.product_id.max_volume * _RATIO_DICT.get(line.mixture) * line.qty
+                    for j in line.mixture_line_id:
+                        qty = line.product_id.max_volume * j.mix * line.qty
                         move_list.append(move_obj.create(cr, uid, {
                             'name': line.name,
-                            'product_uom': line.product_mix_a_id.uom_id.id,
-                            'product_uos': line.product_mix_a_id.uom_id.id,
+                            'product_uom': j.product_id.uom_id.id,
+                            'product_uos': j.product_id.uom_id.id,
                             'picking_id': picking_id,
                             'picking_type_id': picking_type.id,
-                            'product_id': line.product_mix_a_id.id,
-                            'product_uos_qty': abs(qty_a),
-                            'product_uom_qty': abs(qty_a),
+                            'product_id': j.product_id.id,
+                            'product_uos_qty': abs(qty),
+                            'product_uom_qty': abs(qty),
                             'state': 'draft',
                             'location_id': location_id if line.qty >= 0 else destination_id,
                             'location_dest_id': destination_id if line.qty >= 0 else location_id,
                         }, context=context))
-                        if line.mixture != "full" and line.product_mix_a_id:
-                            qty_b = line.product_id.max_volume * (1 - _RATIO_DICT.get(line.mixture)) * line.qty
-                            move_list.append(move_obj.create(cr, uid, {
-                                'name': line.name,
-                                'product_uom': line.product_mix_b_id.uom_id.id,
-                                'product_uos': line.product_mix_b_id.uom_id.id,
-                                'picking_id': picking_id,
-                                'picking_type_id': picking_type.id,
-                                'product_id': line.product_mix_b_id.id,
-                                'product_uos_qty': abs(qty_b),
-                                'product_uom_qty': abs(qty_b),
-                                'state': 'draft',
-                                'location_id': location_id if line.qty >= 0 else destination_id,
-                                'location_dest_id': destination_id if line.qty >= 0 else location_id,
-                            }, context=context))
-
-
             if picking_id:
                 picking_obj.action_confirm(cr, uid, [picking_id], context=context)
                 picking_obj.force_assign(cr, uid, [picking_id], context=context)
@@ -366,10 +360,12 @@ class pos_order_line(models.Model):
     _description = "Lines of Point of Sale"
 
 
-    product_mix_a_id =  fields.Many2one('product.product', 'Product A', domain=[('sale_ok', '=', True)])
+    mixture_line_id = fields.One2many('pos.mixture.line','line_id',string = 'Mixture')
 
+class pos_mixture_line(models.Model):
+    _name = "pos.mixture.line"
+    _description = "POS Mixture Line"
 
-
-    product_mix_b_id = fields.Many2one('product.product', 'Product B', domain=[('sale_ok', '=', True)])
-
-    mixture = fields.Selection(_MIXTURE)
+    line_id = fields.Many2one('pos.order.line',"POS Order Line")
+    product_id = fields.Many2one('product.product',"Product",required=True)
+    mix = fields.Float("Mix")

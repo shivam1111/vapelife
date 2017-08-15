@@ -1,0 +1,15 @@
+<openerp>
+	<data>
+        <!-- Adding Miscellaneous field for Miscellaneous variants in product.product -->
+        <record id="product_attribute_value_tree" model="ir.ui.view">
+            <field name="name">product.product</field>
+            <field name="model">product.attribute.value</field>
+            <field name="inherit_id" ref="product.variants_tree_view"/>
+            <field name="arch" type="xml">
+				<field name = "name" position ="after">
+					<field name = "actual_value"/>
+				</field>
+            </field>
+        </record>
+	</data>
+</openerp>

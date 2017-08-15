@@ -8,6 +8,9 @@ openerp.vapelife_pos = function(instance) {
     var cash_register = {};
     var mixture_options = [['quarter','Quarter'],['half','Half'],['three_quarters','Three Quarters'],['full','Full']]
 
+    var EventBus = {};
+    _.extend(EventBus, Backbone.Events);
+
     module.ProductListWidget.include ({
         init:function(parent, options) {
             var self = this;
@@ -272,11 +275,62 @@ openerp.vapelife_pos = function(instance) {
             },
         ],
     })
+    module.Order = module.Order.extend({
+        initialize: function(attributes){
+            Backbone.Model.prototype.initialize.apply(this, arguments);
+            this.pos = attributes.pos;
+            this.sequence_number = this.pos.pos_session.sequence_number++;
+            this.uid =     this.generateUniqueId();
+            this.set({
+                creationDate:   new Date(),
+                orderLines:     new module.OrderlineCollection(),
+                paymentLines:   new module.PaymentlineCollection(),
+                name:           _t("Order ") + this.uid,
+                client:         null,
+                note:           "",
+            });
+            this.selected_orderline   = undefined;
+            this.selected_paymentline = undefined;
+            this.screen_data = {};  // see ScreenSelector
+            this.receipt_type = 'receipt';  // 'receipt' || 'invoice'
+            this.temporary = attributes.temporary || false;
+            return this;
+        },
+        getNote:function(){
+            return this.get('note') || "";
+        },
+        export_as_JSON: function() {
+            var orderLines, paymentLines;
+            orderLines = [];
+            (this.get('orderLines')).each(_.bind( function(item) {
+                return orderLines.push([0, 0, item.export_as_JSON()]);
+            }, this));
+            paymentLines = [];
+            (this.get('paymentLines')).each(_.bind( function(item) {
+                return paymentLines.push([0, 0, item.export_as_JSON()]);
+            }, this));
+            EventBus.trigger("clear_note");
+            return {
+                name: this.getName(),
+                amount_paid: this.getPaidTotal(),
+                amount_total: this.getTotalTaxIncluded(),
+                amount_tax: this.getTax(),
+                amount_return: this.getChange(),
+                lines: orderLines,
+                statement_ids: paymentLines,
+                pos_session_id: this.pos.pos_session.id,
+                partner_id: this.get_client() ? this.get_client().id : false,
+                user_id: this.pos.cashier ? this.pos.cashier.id : this.pos.user.id,
+                uid: this.uid,
+                sequence_number: this.sequence_number,
+                note:this.get('note'),
+            };
+        },
+    })
     var orderline_id = 1;
     module.Orderline = module.Orderline.extend({
         initialize: function(attr,options){
             this.pos = options.pos;
-            console.log(options)
             this.order = options.order;
             this.product = options.product;
             this.price   = options.product.price;
@@ -287,9 +341,6 @@ openerp.vapelife_pos = function(instance) {
             this.type = 'unit';
             this.selected = false;
             this.id       = orderline_id++;
-            this.product_mix_a_id = options.product_mix_a_id;
-            this.product_mix_b_id = options.product_mix_b_id;
-            this.mixture = 'quarter'
         },
         set_discount: function(discount){
             var self = this;
@@ -309,25 +360,13 @@ openerp.vapelife_pos = function(instance) {
                 self.trigger('change',self);
             })
         },
-        get_product_mix_a_id:function(){
-            return this.product_mix_a_id;
-        },
-        get_product_mix_b_id:function(){
-            return this.product_mix_b_id;
-        },
-        get_mixture:function(){
-            return this.mixture;
-        },
-
         export_as_JSON: function() {
             return {
                 qty: this.get_quantity(),
                 price_unit: this.get_unit_price(),
                 discount: this.get_discount(),
                 product_id: this.get_product().id,
-                product_mix_a_id:this.get_product_mix_a_id(),
-                product_mix_b_id:this.get_product_mix_b_id(),
-                mixture:this.get_mixture(),
+                mixture_line_id:this.mixture_line_id,
             };
         },
     })
@@ -338,16 +377,16 @@ openerp.vapelife_pos = function(instance) {
             var self = this;
             this._super(parent,options);
             this.jjuice_bars = [];
-            var data_model = new instance.web.Model("ir.model.data");
-            this.def1 = data_model.call('get_object_reference',['jjuice','attribute_12']);
-            this.def2 = data_model.call('get_object_reference',['jjuice','attribute_0']);
-            this.def3 = data_model.call('get_object_reference',['jjuice','attribute_350ml']);
+            this.total_parts = 0;
+            var data_model = new instance.web.Model('pos.order');
+            this.def1 = data_model.call('get_details',[])
         },
         get_product_image_url: function(product){
             return window.location.origin + '/web/binary/image?model=product.product&field=image_medium&id='+product.id;
         },
         set_heading:function(text,options){
             var self = this;
+            return;
             self.header.text(text);
         },
         render_product:function(product){
@@ -356,98 +395,141 @@ openerp.vapelife_pos = function(instance) {
             var product_render = $(QWeb.render('Product',{'product':product,'image_url':image_url,'widget':self}));
             return product_render
         },
-        render_step1:function(options){
+        click_product_handler:function(elem,product){
             var self = this;
-            var products = []
-            self.set_heading("Select Volume of Juice Bar");
-            self.product_list_widget = $(QWeb.render('ProductListWidget',{}));
-            self.product_list_widget.appendTo(self.wrapper);
-            console.log(self.product_list_widget);
-            self.product_list_widget.css('top','45px')
-            self.product_list_widget.css('bottom','60px')
-            _.each(self.jjuice_bars,function(product){
-                var product_render = self.render_product(product)
-                product_render.appendTo(self.product_list_widget.find("div.product-list"));
-                product_render.data('id',product.id)
-                products.push(product_render)
-            })
-            return products
-        },
-        render_step2:function(conc_0_id,vol_350_id,options){
-            /*
-                Get 0mg , 350 ml products from the db and display it
-            */
-            var self = this;
-            var products = [];
-            self.set_heading("Select 0mg Flavor");
-            self.product_list_widget.find("div.product-list").empty();
-            _.each(self.pos.db.product_by_id,function(value,key){
-                if (value.vol_id[0] == vol_350_id[1] && value.conc_id[0] == conc_0_id[1]){
-                    var product_render = self.render_product(value);
-                    product_render.appendTo(self.product_list_widget.find("div.product-list"));
-                    product_render.data('id',value.id)
-                    products.push(product_render);
-                }
-            });
-            return products
-        },
-        render_step3:function(options){
-            // Render the mixture to select the composition of the mixture
-            var self = this;
-            self.product_list_widget.find("div.product-list").empty();
-//            self.wrapper.empty();
-            var ratio_columns = [];
-            self.set_heading("Select 0mg mix ratio");
-            self.product_list_widget.find("div.product-list").append("<table><tbody><tr></tr></tbody></table>");
-            _.each(mixture_options,function(mix){
-                var mix_render = $(QWeb.render('mixture_options',{'name':mix[1],'key':mix[0]}));
-                mix_render.data('name',mix[0]);
-                switch(mix[0]){
-                    case 'quarter':
-                        mix_render.find('div.fill').css('height','62.5');
-                        mix_render.find('div.unfill').css('height','187.5');
-                        break;
-                    case 'half':
-                        mix_render.find('div.fill').css('height','125');
-                        mix_render.find('div.unfill').css('height','125');
-                        break;
-                    case 'three_quarters':
-                        mix_render.find('div.fill').css('height','187.5');
-                        mix_render.find('div.unfill').css('height','62.5');
-                        break;
-                    case 'full':
-                        mix_render.find('div.fill').css('height','250');
-                        break;
-                }
-                self.product_list_widget.find("div.product-list").find('tr').append(mix_render)
-                ratio_columns.push(mix_render);
-            })
-            self.product_list_widget.css('top','0px')
-            self.product_list_widget.css('bottom','0px')
-            self.product_list_widget.find('div.product-list-scroller').css('overflow-y','hidden')
-            return ratio_columns;
-        },
-        render_step4:function(conc_12_id,vol_350_id,options){
-            var self = this;
-            var products = []
-            self.product_list_widget.find("div.product-list").empty();
-            if (options.mix_ratio == 'full'){
-                self.add_order_line({});
+            if (self.db.has(product.id)){
+                self.db.set(product.id,self.db.get(product.id) + 1);
             }else{
-                self.set_heading("Select 12mg Flavor");
+                self.db.set(product.id,1);
+            }
+        },
+        render_pages:function(options){
+            var self = this;
+            self.pages = {}
+            self.tab_buttons = {};
+            console.log(options)
+            self.conc_ids = new Backbone.Collection(options.conc_ids);
+            var products = [];
+            self.conc_ids.each(function(conc_id,index){
+                self.pages[conc_id.get("id")] = $(QWeb.render('ProductListWidget',{}));
+                self.pages[conc_id.get("id")].appendTo(self.wrapper)
+                var button = $("<button class='button' >%NAME%</button>".replace("%NAME%",conc_id.get("name")))
+                self.tab_buttons[conc_id.get("id")] = button;
+                self.header.append(button);
+                self.pages[conc_id.get("id")].css({"width":"70%",'top':'85px','bottom':'61px','float':'left'})
                 _.each(self.pos.db.product_by_id,function(value,key){
-                    if (value.vol_id[0] == vol_350_id[1] && value.conc_id[0] == conc_12_id[1]){
+                    if (value.vol_id[0] == options.vol_350_id.id && value.conc_id[0] == conc_id.get("id")){
                         var product_render = self.render_product(value);
-                        product_render.appendTo(self.product_list_widget.find("div.product-list"));
+                        product_render.appendTo(self.pages[conc_id.get("id")].find("div.product-list"));
                         product_render.data('id',value.id)
                         products.push(product_render);
+                        product_render.on("click",function(){
+                            self.click_product_handler(this,value)
+                        });
                     }
                 });
-                self.product_list_widget.css('top','45px')
-                self.product_list_widget.css('bottom','60px')
-                self.product_list_widget.find('div.product-list-scroller').css('overflow-y','auto')
+                if (index == 0){
+                    button.removeClass("button")
+                }else{
+                    self.pages[conc_id.get("id")].hide();
+                }
+                button.on("click",function(){
+                    _.each(self.pages,function(elem,key){
+                        if (key == conc_id.get("id")){
+                            self.tab_buttons[key].removeClass("button")
+                            elem.show();
+                        }else{
+                            self.tab_buttons[key].addClass("button")
+                            elem.hide();
+                        }
+                    })
+                })
+            })
+        },
+        _get_mix_ratio:function(mix_part){
+            var self = this;
+            return mix_part/self.total_parts;
+        },
+        _get_line_concentration:function(){
+            var self = this;
+            var line_concentration_value = 0.00;
+            _.each(self.db.attributes,function(value,key){
+                if (self.pos.db.product_by_id[key].conc_id){
+                    var conc = self.conc_ids.get(self.pos.db.product_by_id[key].conc_id[0]);
+                    line_concentration_value = line_concentration_value + (conc.get("actual_value") * self._get_mix_ratio(value));
+                }
+            });
+            return line_concentration_value;
+        },
+        on_change_db:function(){
+            var self = this;
+            var summary = [];
+            var total = 0;
+            self.summary_page.empty();
+            line_concentration_value = 0.00;
+            _.each(self.db.attributes,function(value,key){
+                var  p = self.pos.db.product_by_id[key]
+                summary.push({
+                    id:p.id,
+                    name:p.display_name,
+                    qty:value,
+                })
+                total = total + value;
+            })
+            self.total_parts = total;
+            self.line_concentration_value = self._get_line_concentration();
+            var summary_elem = $(QWeb.render('PopUpSummary',{'summary':summary,total_length : self.total_parts}))
+            summary_elem.appendTo(self.summary_page);
+            $("td#reduce").on("click",function(){
+                var product_id = $(this).data().productId;
+                var qty  = self.db.get(product_id);
+                if (qty == 1){
+                    self.db.unset(product_id)
+                }else{
+                    self.db.set(product_id, self.db.get(product_id) - 1)
+                }
+                if (Object.keys(self.db.attributes).length <= 0){
+                    self.summary_page.empty();
+                }
+            })
+            summary_elem.find("caption").text("Conc. %REPLACE% mg".replace("%REPLACE%",self.line_concentration_value))
+            summary_elem.find("button.button").on('click',function(){
+                self.add_order_line();
+            })
+        },
+
+        show: function(options){
+            var self = this;
+            self.product = options.product;
+            options = options || {};
+            self.db = new Backbone.Model();
+            self.db.on("change",function(){
+                self.on_change_db();
+            })
+            this._super();
+            // We reset the model information every time we show this popup
+            this.model = new Backbone.Model()
+            if (self.jjuice_bars.length <= 0){ // only add the first time
+                _.each(self.pos.db.product_by_id,function(value,key){
+                    if (value.is_bar){
+                        self.jjuice_bars.push(self.pos.db.product_by_id[key])
+                    }
+                })
             }
-            return products
+            this.renderElement();
+            this.header = $('<div class="header" style="width:66%;"></div>')
+            this.wrapper = $('<div class="wrapper"><div style="width:66%;" >%REPLACE%</div></div>'.replace("%REPLACE%",self.product.display_name));
+            this.wrapper.prependTo(self.$el.find("div.popup.jjuicebarspopup"))
+            this.header.insertAfter(self.$el.find("div.footer"))
+            $.when(self.def1).done(function(res){
+                var products1 = self.render_pages(res)
+            });
+            self.summary_page = $("<div></div>")
+            self.summary_page.css({"width":"30%",'top':'85px','bottom':'61px','float':'right','position':'relative','font-size':"14px",'font-weight':"normal"})
+            self.summary_page.appendTo(self.wrapper);
+            this.$('.footer .button').click(function(){
+                self.pos_widget.screen_selector.close_popup();
+            });
         },
         add_order_line:function(options){
             var self = this;
@@ -457,23 +539,15 @@ openerp.vapelife_pos = function(instance) {
         get_display_name:function(product){
             var self = this;
             var name = product.display_name;
-//            try{
-                if (self.model.get('product_mix_a_id')){
-                    name = name + ' - ' + self.pos.db.product_by_id[self.model.get('product_mix_a_id')].display_name.split(" ")[0];
-                }
-                if (self.model.get('product_mix_b_id')){
-                    name = name + ' / ' + self.pos.db.product_by_id[self.model.get('product_mix_b_id')].display_name.split(" ")[0];
-                }
-//            }catch(err){
-                //pass
-//            }
+            _.each(self.db.attributes,function(value,key){
+                name = name + ' - ' + self.pos.db.product_by_id[key].display_name.split(" ")[0]
+            })
             return name;
 
         },
         addProduct:function(order,options){
             var self = this;
-            var product = Object.assign({}, self.pos.db.product_by_id[self.model.get('product_id')]);
-            product.display_name = self.get_display_name(product);
+            var product = Object.assign({}, self.pos.db.product_by_id[self.product.id]);
             if(order._printed){
                 order.destroy();
                 return order.pos.get('selectedOrder').addProduct(product, {});
@@ -484,9 +558,14 @@ openerp.vapelife_pos = function(instance) {
             attr.order = this;
 
             var line = new module.Orderline({}, {pos: order.pos, order: order, product: product});
-            line.product_mix_a_id = self.model.get('product_mix_a_id');
-            line.product_mix_b_id = self.model.get('product_mix_b_id');
-            line.mixture = self.model.get('mixture');
+            line.mixture_line_id = [];
+            _.each(self.db.attributes,function(val,key){
+                line.mixture_line_id.push([0,0,{
+                    product_id:parseInt(key),
+                    mix:self._get_mix_ratio(val)
+                }])
+            })
+            product.display_name = product.display_name + " - REPLACE mg".replace("REPLACE",self.line_concentration_value)
 
             if(options.quantity !== undefined){
                 line.set_quantity(1);
@@ -499,70 +578,10 @@ openerp.vapelife_pos = function(instance) {
             if(options.discount !== undefined){
                 line.set_discount(options.discount);
             }
-
             var last_orderline = order.getLastOrderline();
             order.get('orderLines').add(line);
             order.selectLine(order.getLastOrderline());
             self.pos_widget.screen_selector.close_popup();
-        },
-        show: function(options){
-            options = options || {};
-            var self = this;
-            this._super();
-            // We reset the model information every time we show this popup
-            this.model = new Backbone.Model()
-            if (self.jjuice_bars.length <= 0){ // only add the first time
-                _.each(self.pos.db.product_by_id,function(value,key){
-                    if (value.is_bar){
-                        self.jjuice_bars.push(self.pos.db.product_by_id[key])
-                    }
-                })
-            }
-            this.renderElement();
-            this.header = $('<div class="header"></div>');
-            this.wrapper = $('<div class="wrapper"></div>');
-            this.wrapper.prependTo(self.$el.find("div.popup.jjuicebarspopup"))
-            this.header.insertAfter(self.$el.find("div.footer"))
-            $.when(self.def1,self.def2,self.def3).done(function(conc_12_id,conc_0_id,vol_350_id){
-                var products1 = self.render_step1({})
-                _.each(products1,function(product1){
-                    if (options.hasOwnProperty('product')){
-                        if (options.product.id == $(product1).data('product-id')){
-                            $(product1).css("border","orange solid 5px")
-                        }
-                    }
-                    product1.on('click',function(){
-                        self.model.set({'product_id':$(this).data('product-id')})
-                        // get product id $(this).data('product-id')
-                        var products2 = self.render_step2(conc_0_id,vol_350_id,{});
-                        _.each(products2,function(product2){
-                            product2.on('click',function(){
-                                self.model.set({'product_mix_a_id':$(this).data('product-id')})
-                                // get product id $(this).data('product-id')
-                                var ratio_columns = self.render_step3({});
-                                _.each(ratio_columns,function(col){
-                                    col.on('click',function(){
-                                        self.model.set({'mixture':$(this).data('name')})
-                                        // access data -: this,$(this).data('name')
-                                        var mix_ratio = $(this).data('name');
-                                        var products4 = self.render_step4(conc_12_id,vol_350_id,{'mix_ratio':mix_ratio});
-                                        _.each(products4,function(product4){
-                                            product4.on('click',function(){
-                                                self.model.set({'product_mix_b_id':$(this).data('product-id')})
-                                                self.add_order_line({});
-                                            })
-
-                                        })
-                                    })
-                                })
-                            })
-                        })
-                    })
-                })
-            });
-            this.$('.footer .button').click(function(){
-                self.pos_widget.screen_selector.close_popup();
-            });
         },
         close:function(){
             var self = this;
@@ -572,23 +591,65 @@ openerp.vapelife_pos = function(instance) {
         },
     });
 
-    module.JJuiceBarsWidget = module.PosBaseWidget.extend({
-        template: 'JJuiceBarsWidget',
+    module.AddNotesPopUp = module.PopUpWidget.extend({
+        template:'AddNotesPopUp',
+        init:function(parent,options){
+            var self = this;
+            this._super(parent,options);
+        },
+        show:function(options){
+            var self = this;
+            this._super();
+            EventBus.on('clear_note',function(){
+                console.log("Event Triggered")
+                self.$("textarea").val("");
+            })
+            this.$('.footer .button').click(function(){
+                var order = self.pos.get('selectedOrder');
+                self.pos_widget.screen_selector.close_popup();
+                order.set('note',self.$("textarea").val() || "")
+            });
+        },
+    })
+    module.AddNotesButton = module.PosBaseWidget.extend({
+        template: 'AddNoteButtonWidget',
         init: function(parent, options){
             this._super(parent, options);
         },
         renderElement: function() {
             var self = this;
             this._super();
+            this.$el.click(function(){
+                self.pos_widget.screen_selector.show_popup('add_notes_popup',{})
+            })
+        }
+    });
+    module.JJuiceBarsWidget = module.PosBaseWidget.extend({
+        init: function(parent, options){
+            this._super(parent, options);
+            this.start();
+        },
+        renderElement: function() {
+            // RenderElement will not work until we are not appending the $el of this widget into DOM but start will work always
+            var self = this;
+            this._super();
+        },
+        start:function(){
+            // RenderElement will not work until we are not appending the $el of this widget into DOM but start will work always
+            var self = this;
+            this._super();
             this.popup_widget = new module.JJuiceBarPopupWidget(this.pos_widget,{});
             this.popup_widget.appendTo(self.pos_widget.$el);
+            this.add_notes_popup = new module.AddNotesPopUp(this.pos_widget,{});
+            this.add_notes_popup.appendTo(self.pos_widget.$el);
             // In the widget.js when error pop is initialized it is then added to screenSelector -> pop_set. Then it is hidden manually
             // to confirm check screen.js -> module.ScreenSelector -> init()
             this.popup_widget.hide();
-            this.pos_widget.screen_selector.popup_set.jjuicebarspopup = this.popup_widget
-            this.$el.on('click',function(){
-                self.pos_widget.screen_selector.show_popup('jjuicebarspopup',{})
-            })
+            this.add_notes_popup.hide();
+            this.pos_widget.screen_selector.popup_set.jjuicebarspopup = this.popup_widget;
+            this.pos_widget.screen_selector.popup_set.add_notes_popup = this.add_notes_popup;
+            this.addnotespad = new module.AddNotesButton(this, {});
+            this.addnotespad.appendTo(self.pos_widget.$el.find('.paypad.touch-scrollable'));
         },
     });
 
@@ -597,7 +658,6 @@ openerp.vapelife_pos = function(instance) {
             var self = this;
             this._super();
             this.jjuice_bars = new module.JJuiceBarsWidget(this,{});
-            this.jjuice_bars.prependTo(this.paypad.$el)
         },
     })
 }
