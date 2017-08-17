@@ -14,6 +14,7 @@ OpenERP Point of sale Customization
         'resources.xml',
         'product.xml',
         'product_attribute_value.xml',
+        'point_of_sale_view.xml',
     ],
     'qweb': ['static/src/xml/pos.xml'],
     'auto_install': False,

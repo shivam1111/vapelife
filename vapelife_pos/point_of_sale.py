@@ -11,6 +11,19 @@ class product_product(models.Model):
 class pos_order(models.Model):
     _inherit="pos.order"
 
+    @api.multi
+    def _compute_discount_percentage(self):
+        pass
+
+    @api.multi
+    def _compute_total_discount(self):
+        total = 0
+        # for i in self:
+        #     for line in i.lines:
+        #         if line.discount > 0:
+        #             total = line.price_unit *
+        return
+
     @api.model
     def get_details(self):
         res = {'conc_ids':[]}
@@ -354,6 +367,8 @@ class pos_order(models.Model):
 
         return True
 
+    # total_discount_given =  fields.Float(string='Discount',compute=_compute_total_discount)
+    # discount_percentage = fields.Float(string = "Discount Percentage", compute=_compute_discount_percentage)
 
 class pos_order_line(models.Model):
     _inherit = "pos.order.line"
