@@ -26,7 +26,7 @@ class account_treasury_report(osv.osv):
     
     _columns = {
                 'partner_id':fields.many2one('res.partner','Partner',readonly=True),
-                'account_type':fields.selection(ACCOUNT_TYPE,string = "Type Of Account",readonly=True),
+                # 'account_type':fields.selection(ACCOUNT_TYPE,string = "Type Of Account",readonly=True),
                 'classify_finance':fields.selection(FINANCE_CLASSIFY,string = "Account Classification(For Finance)",readonly=True),
                 'source':fields.selection(_SOURCE,string="Basic Acquisition Source",readonly=True),
                 'source_name':fields.char("Acquisition Source",readonly=True),                
@@ -40,8 +40,8 @@ class account_treasury_report(osv.osv):
                 p.id as id,
                 p.fiscalyear_id as fiscalyear_id,
                 p.id as period_id,
-                COALESCE (partner.acccount_type, 'No Label') as account_type ,
-                COALESCE (partner.classify_finance, 'No Finance Classification') as classify_finance,
+                COALESCE (partner.acccount_type, 'Retail') as account_type ,
+                COALESCE (partner.classify_finance, 'Retail') as classify_finance,
                 aq.name as source_name,
                 aq.source as source,
                 l.partner_id as partner_id,

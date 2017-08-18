@@ -14,10 +14,7 @@ crm.AVAILABLE_PRIORITIES = [
 ]
 
 FINANCE_CLASSIFY  = [
-                 ('retailer','Retailer'),
                  ('wholesale','Wholesaler / Distributer'),
-                 ('private_label','Private Label'),
-                 ('website','Vapejjuice.com'),
                  ]
 
 ACCOUNT_TYPE  = [('smoke_shop',"Smoke Shop"),('vape_shop','Vape Shop'),('convenient_gas_store','Convenient Store/ Gas Station'),

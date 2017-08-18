@@ -7,7 +7,7 @@
 		<field name="arch" type="xml">
 			<xpath expr = "/tree/field[@name='period_id']" position = "after">
 				<field name = "partner_id"/>
-				<field name = "account_type"/>
+				<!--<field name = "account_type"/>-->
 		   	</xpath>
 		</field>
   	 </record>		
