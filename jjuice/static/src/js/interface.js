@@ -350,8 +350,12 @@ local.product_lists = instance.Widget.extend(local.AbstractWidget,{
 		initialize:function(){
 			var self = this;
 			$.each(self.data.product_ids,function(index,product){
-				conc = product.conc_id[0];
-				flavor = product.flavor_id[0];
+				conc = (product.conc_id)?product.conc_id[0] : false ;
+				flavor = (product.flavor_id)?product.flavor_id[0]: false;
+				if ((!flavor) || (!conc)){
+                    alert ("Please configure the flavor and concentration value of the product %REPLACE% properly".replace("%REPLACE%",product.name))
+                    return
+				}
 				self.available_flavors[flavor] = product.flavor_id[1];
 				self.available_conc[conc] = product.conc_id[1];
 				widget = new instance.web.form.FieldFloat(self.dfm,{
@@ -383,6 +387,7 @@ local.product_lists = instance.Widget.extend(local.AbstractWidget,{
 						}
 				}//end else
 			}) // end each
+			console.log("================avaialble_flavors",self.available_flavors)
 			self.available_flavors = sortProperties(self.available_flavors,'asc');
 			self.available_conc = sortProperties(self.available_conc,'desc');
 		},
