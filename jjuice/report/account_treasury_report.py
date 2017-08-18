@@ -29,7 +29,9 @@ class account_treasury_report(osv.osv):
                 # 'account_type':fields.selection(ACCOUNT_TYPE,string = "Type Of Account",readonly=True),
                 'classify_finance':fields.selection(FINANCE_CLASSIFY,string = "Account Classification(For Finance)",readonly=True),
                 'source':fields.selection(_SOURCE,string="Basic Acquisition Source",readonly=True),
-                'source_name':fields.char("Acquisition Source",readonly=True),                
+                'source_name':fields.char("Acquisition Source",readonly=True),
+                'debit': fields.float('Deposited', readonly=True),
+                'credit': fields.float('Withdrawn', readonly=True),
                 }
     
     def init(self, cr):
