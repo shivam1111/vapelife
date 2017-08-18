@@ -344,21 +344,22 @@ openerp.vapelife_pos = function(instance) {
         },
         set_discount: function(discount){
             var self = this;
-            var disc = Math.min(Math.max(parseFloat(discount) || 0, 0),100);
-            // get the user group
-            var user_model = new instance.web.Model("res.users");
-            user_model.call("has_group",["point_of_sale.group_pos_manager"]).done(function(is_manager){
-                if (!is_manager && disc > 20){
-                    self.pos.pos_widget.screen_selector.show_popup('error',{
-                        'message': _t('Warning!'),
-                        'comment': _t('Cannot exceed 20% discount.'),
-                    });
-                    return
-                }
-                self.discount = disc;
-                self.discountStr = '' + disc;
-                self.trigger('change',self);
-            })
+            this._super();
+//            var disc = Math.min(Math.max(parseFloat(discount) || 0, 0),100);
+//            // get the user group
+//            var user_model = new instance.web.Model("res.users");
+//            user_model.call("has_group",["point_of_sale.group_pos_manager"]).done(function(is_manager){
+//                if (!is_manager && disc > 20){
+//                    self.pos.pos_widget.screen_selector.show_popup('error',{
+//                        'message': _t('Warning!'),
+//                        'comment': _t('Cannot exceed 20% discount.'),
+//                    });
+//                    return
+//                }
+//                self.discount = disc;
+//                self.discountStr = '' + disc;
+//                self.trigger('change',self);
+//            })
         },
         export_as_JSON: function() {
             return {
@@ -597,7 +598,7 @@ openerp.vapelife_pos = function(instance) {
             var self = this;
             this._super(parent,options);
         },
-        show:function(options){
+        renderElement:function(){
             var self = this;
             this._super();
             EventBus.on('clear_note',function(){
@@ -610,11 +611,16 @@ openerp.vapelife_pos = function(instance) {
                 order.set('note',self.$("textarea").val() || "")
             });
         },
+        show:function(options){
+            var self = this;
+            this._super();
+        },
     })
     module.AddNotesButton = module.PosBaseWidget.extend({
-        template: 'AddNoteButtonWidget',
+        template: 'AddButtonWidget',
         init: function(parent, options){
             this._super(parent, options);
+            this.name = "Add Note"
         },
         renderElement: function() {
             var self = this;
@@ -624,6 +630,52 @@ openerp.vapelife_pos = function(instance) {
             })
         }
     });
+
+    module.AddMassDiscountPopUp = module.PopUpWidget.extend({
+        template:'AddDiscountPopUp',
+        init:function(parent,options){
+            var self = this;
+            this._super(parent,options);
+        },
+        renderElement:function(){
+            var self = this;
+            this._super();
+            this.$('div.button.set').click(function(){
+                event.stopImmediatePropagation()
+                var lines = self.pos.get('selectedOrder').get('orderLines');
+                var discount = self.$("input").val() || "0.00";
+                lines.forEach(function(model,index){
+                    model.set_discount(discount)
+                })
+                self.pos_widget.screen_selector.close_popup();
+                self.$("input").val("0.00");
+            });
+            this.$('.footer .button.cancel').click(function(){
+                self.pos_widget.screen_selector.close_popup();
+            });
+        },
+        show:function(options){
+            var self = this;
+            this._super();
+        },
+    });
+
+
+    module.MassDiscountButton = module.PosBaseWidget.extend({
+        template: 'AddButtonWidget',
+        init: function(parent, options){
+            this._super(parent, options);
+            this.name = "Mass Discount";
+        },
+        renderElement: function() {
+            var self = this;
+            this._super();
+            this.$el.click(function(){
+                self.pos_widget.screen_selector.show_popup('AddMassDiscountPopUp',{})
+            })
+        }
+    });
+
     module.JJuiceBarsWidget = module.PosBaseWidget.extend({
         init: function(parent, options){
             this._super(parent, options);
@@ -642,14 +694,22 @@ openerp.vapelife_pos = function(instance) {
             this.popup_widget.appendTo(self.pos_widget.$el);
             this.add_notes_popup = new module.AddNotesPopUp(this.pos_widget,{});
             this.add_notes_popup.appendTo(self.pos_widget.$el);
+            this.AddMassDiscountPopUp = new module.AddMassDiscountPopUp(this.pos_widget,{});
+            this.AddMassDiscountPopUp.appendTo(self.pos_widget.$el);
             // In the widget.js when error pop is initialized it is then added to screenSelector -> pop_set. Then it is hidden manually
             // to confirm check screen.js -> module.ScreenSelector -> init()
             this.popup_widget.hide();
             this.add_notes_popup.hide();
+            this.AddMassDiscountPopUp.hide();
+
             this.pos_widget.screen_selector.popup_set.jjuicebarspopup = this.popup_widget;
             this.pos_widget.screen_selector.popup_set.add_notes_popup = this.add_notes_popup;
-            this.addnotespad = new module.AddNotesButton(this, {});
-            this.addnotespad.appendTo(self.pos_widget.$el.find('.paypad.touch-scrollable'));
+            this.pos_widget.screen_selector.popup_set.AddMassDiscountPopUp = this.AddMassDiscountPopUp;
+
+            this.AddNotespadButton = new module.AddNotesButton(this, {});
+            this.AddMassDiscountButton = new module.MassDiscountButton(this,{})
+            this.AddNotespadButton.appendTo(self.pos_widget.$el.find('.paypad.touch-scrollable'));
+            this.AddMassDiscountButton.appendTo(self.pos_widget.$el.find('.paypad.touch-scrollable'));
         },
     });
 

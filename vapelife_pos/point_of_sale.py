@@ -11,18 +11,22 @@ class product_product(models.Model):
 class pos_order(models.Model):
     _inherit="pos.order"
 
-    @api.multi
-    def _compute_discount_percentage(self):
-        pass
+    def _get_subtotal_line_undiscounted(self,line,precision):
+        return round(line.price_unit * line.qty, precision)
 
     @api.multi
     def _compute_total_discount(self):
-        total = 0
-        # for i in self:
-        #     for line in i.lines:
-        #         if line.discount > 0:
-        #             total = line.price_unit *
-        return
+        precision = self.env['decimal.precision'].precision_get('Account')
+        for order in self:
+            total_undiscounted = sum (self._get_subtotal_line_undiscounted(line,precision)  for line in order.lines)
+            total_discounted = sum (line.price_subtotal for line in order.lines)
+            discount = total_undiscounted - total_discounted
+            try:
+                discount_percentage = discount*100/total_undiscounted
+            except ZeroDivisionError:
+                discount_percentage = 0
+            order.total_discount_given = discount
+            order.discount_percentage = discount_percentage
 
     @api.model
     def get_details(self):
@@ -367,8 +371,8 @@ class pos_order(models.Model):
 
         return True
 
-    # total_discount_given =  fields.Float(string='Discount',compute=_compute_total_discount)
-    # discount_percentage = fields.Float(string = "Discount Percentage", compute=_compute_discount_percentage)
+    total_discount_given =  fields.Float(string='Discount',compute='_compute_total_discount',readonly=True)
+    discount_percentage = fields.Float(string = "Discount Percentage", compute='_compute_total_discount',readonly=True)
 
 class pos_order_line(models.Model):
     _inherit = "pos.order.line"

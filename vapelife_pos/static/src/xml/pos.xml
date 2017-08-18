@@ -33,9 +33,32 @@
             </div>
         </div>
     </t>
-    <t t-name="AddNoteButtonWidget">
-        <button class="paypad-button">Add Note</button>
+    <t t-name="AddDiscountPopUp">
+        <div class="modal-dialog">
+            <div class="popup" style="height: 150px !important;">
+                <div class="paymentline selected">
+                    <div class="paymentline-name">
+                        Add Discount
+                    </div>
+                    <input class="paymentline-input" step="0.01" type="number" value="0.00" pattern="[0-9]+([\.][0-9]+)?" />
+                </div>
+                <div class="footer">
+                    <div class="button cancel">
+                        Close
+                    </div>
+                    <div class="button set">
+                        Set
+                    </div>
+                </div>
+            </div>
+        </div>
     </t>
+
+    <t t-name="AddButtonWidget">
+        <button class="paypad-button"><t t-esc="widget.name"></t></button>
+    </t>
+
+
 
     <t t-name="PopUpSummary">
         <style>
