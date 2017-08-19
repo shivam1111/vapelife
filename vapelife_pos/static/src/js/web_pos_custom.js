@@ -344,9 +344,11 @@ openerp.vapelife_pos = function(instance) {
         },
         set_discount: function(discount){
             var self = this;
-            this._super();
-//            var disc = Math.min(Math.max(parseFloat(discount) || 0, 0),100);
-//            // get the user group
+            var disc = Math.min(Math.max(parseFloat(discount) || 0, 0),100);
+            self.discount = disc;
+            self.discountStr = '' + disc;
+            self.trigger('change',self);
+            // get the user group
 //            var user_model = new instance.web.Model("res.users");
 //            user_model.call("has_group",["point_of_sale.group_pos_manager"]).done(function(is_manager){
 //                if (!is_manager && disc > 20){
