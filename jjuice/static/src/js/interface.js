@@ -387,7 +387,6 @@ local.product_lists = instance.Widget.extend(local.AbstractWidget,{
 						}
 				}//end else
 			}) // end each
-			console.log("================avaialble_flavors",self.available_flavors)
 			self.available_flavors = sortProperties(self.available_flavors,'asc');
 			self.available_conc = sortProperties(self.available_conc,'desc');
 		},

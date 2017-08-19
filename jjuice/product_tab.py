@@ -2,6 +2,7 @@ from openerp import models, fields, api,_
 import openerp.addons.decimal_precision as dp
 from openerp.exceptions import except_orm, Warning, RedirectWarning
 from datetime import date
+from openerp import SUPERUSER_ID
 
 _list_tab_style = [
                    (1,"Flavor Concentration Matrix"),
@@ -25,7 +26,7 @@ class product_tab(models.Model):
         res = {}
         products = self.pool.get('product.product')
         taxes = self.pool.get('account.tax')
-        tabs = self.search_read(cr,uid,order="sequence")
+        tabs = self.search_read(cr,SUPERUSER_ID,order="sequence")
         marketing_package = self.pool.get('marketing.package')
         for i in tabs:
             if i.get("tab_style",False) == 3:
