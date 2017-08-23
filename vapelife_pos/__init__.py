@@ -1,2 +1,3 @@
 import point_of_sale
 import product_attribute_value
+import report
